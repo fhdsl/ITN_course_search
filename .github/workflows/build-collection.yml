@@ -72,7 +72,7 @@ jobs:
           path: resources/collection.tsv
 
       # Commit the created files
-      - name: Commit .csv files to main
+      - name: Commit .tsv file to main
         if: ${{ inputs.render-type == 'main' }}
         env:
           GH_PAT: ${{ secrets.gh_pat }}
@@ -83,7 +83,7 @@ jobs:
           git merge -s recursive --strategy-option=ours origin/main --allow-unrelated-histories
           git push -u origin main || echo "No changes to push"
 
-      - name: Commit .tsv files to preview
+      - name: Commit .tsv file to preview
         if: ${{ inputs.render-type == 'preview' }}
         run: |
           branch_name='preview-${{ github.event.pull_request.number }}'
