@@ -235,7 +235,7 @@ for (page in 1:last) {
 }
 
 full_repo_df <- full_repo_df %>%
-  separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
+  tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
   mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course"), NA))) %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
   rename(GithubLink = html_url)
