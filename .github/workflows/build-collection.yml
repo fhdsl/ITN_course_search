@@ -13,8 +13,6 @@ on:
     secrets:
       gh_pat:
         required: true
-      yt_key:
-        required: true
 
 jobs:
   build-repo-collection:
