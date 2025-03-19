@@ -82,7 +82,7 @@ jobs:
 
   render-preview:
     name: Render preview
-    needs: build-collection
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
     container:
       image: ${{needs.yaml-check.outputs.rendering_docker_image}}

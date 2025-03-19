@@ -58,7 +58,7 @@ jobs:
 
   # This workflow contains a single job called "build-all"
   render-main:
-    needs: build-collection
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
     container:
       image: ${{needs.yaml-check.outputs.rendering_docker_image}}
