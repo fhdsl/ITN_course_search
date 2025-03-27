@@ -25,6 +25,25 @@ full_repo_df <- read_tsv(here("resources/collection.tsv"))
 full_repo_df$CurrentOrFuture = "Current"
 
 ```
+```{r}
+colnames(full_repo_df)
+```
+
+```{r}
+sum(is.na(full_repo_df$concepts_slide))
+```
+
+```{r}
+sum(is.na(full_repo_df$lo_slide))
+```
+
+```{r}
+sum(is.na(full_repo_df$for_slide))
+```
+
+```{r}
+sum(is.na(full_repo_df$prereq_slide))
+```
 
 ```{r}
 wrangled <- full_repo_df %>%

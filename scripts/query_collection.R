@@ -36,11 +36,7 @@ get_book_info <- function(df){
   df$BookdownLink <- ""
   df$CourseraLink <- ""
   df$LeanpubLink <- ""
-  #df$concepts_slide <- "" #can add later, not in table
-  #df$lo_slide <- "" #can add later, not in table
-  #df$for_slide <- "" #can add later, not in table
-  #df$prereq_slide <- "" #can add later, not in table
-
+  
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
       # Make raw content url
@@ -143,6 +139,79 @@ get_book_info <- function(df){
   return(df)
 }
 
+# -------- Function to get slide URL info ----------
+
+get_slide_info <- function(df){
+  df$concepts_slide <- ""
+  df$lo_slide <- ""
+  df$for_slide <- ""
+  df$prereq_slide <- ""
+  
+  if (nrow(df) >=1){
+    for (i in 1:nrow(df)) {
+      if (df$book_title != "AI for Decision Makers"){
+        # Make raw content url
+        base_url <-
+          str_replace(df[i,]$html_url,
+                      "github.com",
+                      "raw.githubusercontent.com")
+      
+        # Determine if the index.Rmd file can be read
+        try_url <- try(readLines(paste0(base_url, "/main/01-intro.Rmd")), silent = TRUE)
+      
+        # If try was ok, continue reading index file -- we'll get course formats from these
+        if (class(try_url) != "try-error") {
+          intro_data <- readLines(paste0(base_url, "/main/01-intro.Rmd"))
+        } else { #if 01-intro.Rmd doesn't exist
+          try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
+          
+          if (class(try_urlIndex) != "try-error") {
+            intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
+          
+            try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
+            
+            #add in an if for LO link
+              
+          } else { #if index.Rmd doesn't exist
+            try_urlQmd <- try(readlines(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd
+            
+            if (class(try_urlQmd) != "try-error") {
+              intro_data <- readlines(paste0(base_url, "/main/01-intro.qmd"))
+            } else {
+              intro_data <- ""
+              message("No available course information added to this last chunk after checking `01-intro.Rmd`, `index.Rmd` and `01-intro.qmd`")
+            }
+          
+          }
+        } #intro_data should be defined now
+        if (sum(intro_data != "") > 1) {
+          first_url_replacement <- 'ottrpal::include_slide\\(\"'
+          second_url_replacement <- '\"\\)'
+        
+          concepts_lines <- grep("topics_covered", intro_data)
+          concepts_data <- str_replace(intro_data[concepts_lines+1], first_url_replacement, "")
+          df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
+        
+          lo_lines <- grep("learning_objectives", intro_data)
+          lo_data <- str_replace(intro_data[lo_lines+1], first_url_replacement, "")
+          df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
+        
+          for_lines <- grep("for_individuals_who", intro_data)
+          for_data <- str_replace(intro_data[for_lines+1], first_url_replacement, "")
+          df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
+        
+          if(sum(grepl("prereqs", intro_data)) >= 1){
+            prereq_lines <- grep("prereqs", intro_data)
+            prereq_data <- str_replace(intro_data[prereq_lines+1], first_url_replacement, "")
+            df$prereq_slide[i] <- str_replace(prereq_data, second_url_replacement, "")
+          }
+      } else { message("This will be filled in later with branch specific grabbing of slides.")} #check AI for Decision Makers branches 
+    }#end for loop
+  } else { message("No relevant resources, so no data added")} #end if not at least one row
+  
+  return(df)
+}
+
 
 # --------- Set url and token ---------
 
@@ -229,7 +298,8 @@ for (page in 1:last) {
     tidyr::unite(col = "Category", starts_with("cat_"), sep=";", na.rm = TRUE) %>%
     mutate(hutch_funding = str_detect(topics, "hutch-course")) %>%
 
-    get_book_info()
+    get_book_info() %>%
+    get_slide_info() %>%
 
     full_repo_df <- rbind(full_repo_df, repo_df)
 }
