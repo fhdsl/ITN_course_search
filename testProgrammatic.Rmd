@@ -46,6 +46,10 @@ sum(is.na(full_repo_df$prereq_slide))
 ```
 
 ```{r}
+saveRDS(full_repo_df, file = here("resources/testCollection.rds"))
+```
+
+```{r}
 wrangled <- full_repo_df %>%
   mutate(Concepts = str_to_title(Concepts),
          Concepts = str_replace_all(Concepts, "Ai", "AI"),
