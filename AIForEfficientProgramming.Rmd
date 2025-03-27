@@ -1,0 +1,90 @@
+---
+title: "AI for Efficient Programming"
+subtitle: " "
+output: html_document
+---
+
+<style type="text/css">
+  body{
+  text-align: justify;
+  text-justify: inter-word;
+}
+</style>
+
+<style>
+ pre {
+        border: 0;
+    }
+</style>
+
+```{r include=FALSE}
+knitr::opts_chunk$set(comment = NA)
+```
+
+```{r,echo=FALSE,results='hide',message=FALSE, warning=FALSE}
+
+library(here)
+#library(googlesheets4)
+library(tidyverse)
+library(magrittr)
+library(ottrpal)
+
+#source("scripts/format-tables.R") can add back in if I can functionalize this -- which I totally can from what I was reading online
+```
+
+
+```{r,echo=FALSE,results='hide',message=FALSE, warning=FALSE}
+# read in the google sheet
+## set blank cells and "NA" strings to be NAs
+
+#courses_sheet <- read_sheet("https://docs.google.com/spreadsheets/d/1TiNdu92hK-0FN8GbmWi_QbdUaX2yJF76yFt2oljm_qE/edit?usp=sharing", na = c("NA", ""))
+
+courses_sheet <- read_csv(here("resources/CourseTable.csv"), na = c("NA", ""))
+currentROI <- courses_sheet %>%
+  filter(CourseName == "AI for Efficient Programming")
+```
+## About this course
+
+```{r echo=FALSE,message=FALSE, warning=FALSE,results = 'asis'}
+cat(currentROI$WebsiteDescription)
+```
+
+This course is one of our **Scientific Software Development** Courses.
+
+## For individuals who
+
+```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
+ottrpal::include_slide(currentROI$ForIndividualsWhoSlideLink)
+```
+
+We particularly recommend this course for those who are **Researchers** or **Software Developers**
+
+![Researchers](resources/images/NewToDataScience.png){width=10% height=10%}
+
+![Software Developer](resources/images/SoftwareDeveloper.png){width=10% height=10%}
+
+### Concepts Discussed
+
+```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
+ottrpal::include_slide(currentROI$ConceptsDiscussedSlideLink)
+```
+
+### Learning Objectives
+
+```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
+ottrpal::include_slide(currentROI$LOSlideLink)
+```
+
+### Course formats
+
+This course is available in the following formats:
+
+- [as a Bookdown website](`r currentROI$BookdownLink`)
+- [on Coursera](`r currentROI$CourseraLink`)
+- [on Leanpub](`r currentROI$LeanpubLink`)
+- [as GitHub source material](`r currentROI$GithubLink`)
+
+### Funding
+
+[![ITCR](resources/images/ITCRLogo.png){width=10% height=10%}](https://itcr.cancer.gov/)
+[![Fred Hutch Cancer Center](resources/images/fhlogo.png){width=10% height=10%}](https://www.fredhutch.org/en/about/about-the-hutch.html)
