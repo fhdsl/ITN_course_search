@@ -1,0 +1,75 @@
+---
+title: "Testing Programmatic Retrieval of Data"
+author: "Kate Isaac"
+date: "2025-03-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(here)
+library(tidyverse)
+library(DT)
+```
+
+```{r}
+source("scripts/format-tables.R")
+#query collection should be run from the workflows
+```
+
+```{r}
+full_repo_df <- read_tsv(here("resources/collection.tsv"))
+full_repo_df$CurrentOrFuture = "Current"
+
+```
+
+```{r}
+wrangled <- full_repo_df %>%
+  mutate(Concepts = str_to_title(Concepts),
+         Concepts = str_replace_all(Concepts, "Ai", "AI"),
+         Concepts = str_replace_all(Concepts, "Ci-Cd", "Continuous Integration/Continuous Deployment"),
+         Concepts = str_replace_all(Concepts, "Nih", "NIH"),
+         Concepts = str_replace_all(Concepts, "Hipaa", "HIPAA"),
+         Concepts = str_replace_all(Concepts, "Llm", "LLM"),
+         Concepts = str_replace_all(Concepts, "Phi", "(PHI)"),
+         Concepts = str_replace_all(Concepts, "Pii", "(PII)"),
+         Concepts = str_replace_all(Concepts, "Arxiv", "ArXiv"),
+         Concepts = str_replace_all(Concepts, "Latex", "LaTex"),
+         Concepts = str_replace_all(Concepts, "And", "&")
+        )
+```
+
+```{r}
+output_prep <- prep_table(wrangled, keep_category = TRUE) %>% mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
+output_table <- setup_table(output_prep, "Test Courses Table with Programmatic Querying",
+                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4)),
+                                                         list(className = "dt-left", targets = c(3,5)),
+                                                         list(width = '240px', targets = c(3)),
+                                                         list(width = '80px', targets = c(1)),
+                                                         list(width = "75px", targets = c(2,4)),
+                                                         list(width = "145px", targets = c(5))
+                                                        )
+                            ) #"Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"
+```
+
+```{r}
+output_table
+```
+
+This is the URL that the Hutch logo goes to: https://www.fredhutch.org/en/about/about-the-hutch.html
+
+This is the URL that the ITCR logo goes to: https://itcr.cancer.gov
+
+And these are the column justifications and sizes I've got set right now
+
+| Column Name        | Location | Justified | Width         |
+| :----------------: | :------: | :-------: | :-----------: |
+| Course Name        | 0        | Center    | Not Specified |
+| Funding            | 1        | Center    | 80px          |
+| Broad Audience     | 2        | Center    | 75px          |
+| Description        | 3        | Left      | 240px         |
+| Category           | 4        | Center    | 75px          |
+| Concepts Discussed | 5        | Left      | 145px         |

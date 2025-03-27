@@ -2,13 +2,25 @@
 # It was adapted by Candace Savonen for the OTTR_template https://github.com/jhudsl/OTTR_Template.
 
 # This code was adapted by Carrie Wright to enable automated rendering of the site associated with this repository
+# This code now incorporates adaptations by Ava Hoffman to build a collection on a schedule
+
+# +---------------- minute (0 - 59)
+# |  +------------- hour (0 - 23)
+# |  |  +---------- day of month (1 - 31)
+# |  |  |  +------- month (1 - 12)
+# |  |  |  |  +---- day of week (0 - 6) (Sunday=0 or 7)
+# |  |  |  |  |
+# *  *  *  *  *  command to be executed
+
 
 name: Render html
 
 # Controls when the action will run. Triggers the workflow on push
-# events only for the master branch
+# events only for the main branch
 on:
   workflow_dispatch:
+  schedule:
+  - cron: "0 3 * * 0" #3 am every Sunday?
   push:
     branches: [ main ]
     paths:
@@ -35,9 +47,18 @@ jobs:
     outputs:
       rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
 
+  build-collection:
+    name: Build Collection
+    uses: ./.github/workflows/build-collection.yml
+    with:
+      render-type: 'main'
+      repository: $GITHUB_REPOSITORY
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
+
   # This workflow contains a single job called "build-all"
   render-main:
-    needs: yaml-check
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
     container:
       image: ${{needs.yaml-check.outputs.rendering_docker_image}}
