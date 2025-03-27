@@ -205,6 +205,7 @@ get_slide_info <- function(df){
             prereq_data <- str_replace(intro_data[prereq_lines+1], first_url_replacement, "")
             df$prereq_slide[i] <- str_replace(prereq_data, second_url_replacement, "")
           }
+        }
       } else { message("This will be filled in later with branch specific grabbing of slides.")} #check AI for Decision Makers branches 
     }#end for loop
   } else { message("No relevant resources, so no data added")} #end if not at least one row
