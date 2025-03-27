@@ -47,6 +47,16 @@ jobs:
       toggle_render_preview: "${{ env.RENDER_PREVIEW }}"
       rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
 
+  build-collection:
+    name: Build Collection
+    needs: yaml-check
+    uses: ./.github/workflows/build-collection.yml
+    with:
+      render-type: 'preview'
+      repository: $GITHUB_REPOSITORY
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
+
 ########################## Make the error reports ##############################
   spell-check:
     name: Check spelling
@@ -56,7 +66,8 @@ jobs:
     with:
       check_type: spelling
       error_min: 3
-      gh_pat: secrets.GH_PAT
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
 
   url-check:
     name: Check URLs
@@ -66,11 +77,12 @@ jobs:
     with:
       check_type: urls
       error_min: 0
-      gh_pat: secrets.GH_PAT
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
 
   render-preview:
     name: Render preview
-    needs: yaml-check
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
     container:
       image: ${{needs.yaml-check.outputs.rendering_docker_image}}
