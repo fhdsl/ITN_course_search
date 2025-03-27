@@ -300,7 +300,7 @@ for (page in 1:last) {
     mutate(hutch_funding = str_detect(topics, "hutch-course")) %>%
 
     get_book_info() %>%
-    get_slide_info() %>%
+    get_slide_info()
 
     full_repo_df <- rbind(full_repo_df, repo_df)
 }
