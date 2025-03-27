@@ -188,18 +188,24 @@ get_slide_info <- function(df){
           first_url_replacement <- 'ottrpal::include_slide\\(\"'
           second_url_replacement <- '\"\\)'
         
-          concepts_lines <- grep("topics_covered", intro_data)
-          concepts_data <- str_replace(intro_data[concepts_lines+1], first_url_replacement, "")
-          df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
+          if(sum(grepl("topics_covered", intro_data)) >= 1){
+            concepts_lines <- grep("topics_covered", intro_data)
+            concepts_data <- str_replace(intro_data[concepts_lines+1], first_url_replacement, "")
+            df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
+          }
         
-          lo_lines <- grep("learning_objectives", intro_data)
-          lo_data <- str_replace(intro_data[lo_lines+1], first_url_replacement, "")
-          df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
+          if(sum(grepl("learning_objectives", intro_data)) >= 1){
+            lo_lines <- grep("learning_objectives", intro_data)
+            lo_data <- str_replace(intro_data[lo_lines+1], first_url_replacement, "")
+            df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
+          }
         
-          for_lines <- grep("for_individuals_who", intro_data)
-          for_data <- str_replace(intro_data[for_lines+1], first_url_replacement, "")
-          df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
-        
+          if(sum(grepl("for_individuals_who", intro_data)) >=1){
+            for_lines <- grep("for_individuals_who", intro_data)
+            for_data <- str_replace(intro_data[for_lines+1], first_url_replacement, "")
+            df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
+          }
+          
           if(sum(grepl("prereqs", intro_data)) >= 1){
             prereq_lines <- grep("prereqs", intro_data)
             prereq_data <- str_replace(intro_data[prereq_lines+1], first_url_replacement, "")
