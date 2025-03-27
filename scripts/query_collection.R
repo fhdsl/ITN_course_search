@@ -149,7 +149,7 @@ get_slide_info <- function(df){
   
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
-      if (df$book_title != "AI for Decision Makers"){
+      if (df$CourseName != "AI for Decision Makers"){
         # Make raw content url
         base_url <-
           str_replace(df[i,]$html_url,
