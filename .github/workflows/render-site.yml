@@ -49,6 +49,7 @@ jobs:
 
   build-collection:
     name: Build Collection
+    needs: yaml-check
     uses: ./.github/workflows/build-collection.yml
     with:
       render-type: 'main'
