@@ -150,10 +150,7 @@ get_book_info <- function(df){
 }
 
 
-find_line_of_interest <- function(char_vec, line_with_tag){
-  first_url_replacement <- 'ottrpal::include_slide\\(\"'
-  second_url_replacement <- '\"\\)'
-
+find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
   data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
   str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
   str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
@@ -163,6 +160,10 @@ find_line_of_interest <- function(char_vec, line_with_tag){
 # -------- Function to get slide URL info ----------
 
 get_slide_info <- function(df){
+  
+  first_url_replacement <- 'ottrpal::include_slide\\(\"'
+  second_url_replacement <- '\"\\)'
+  
   df$concepts_slide <- ""
   df$lo_slide <- ""
   df$for_slide <- ""
