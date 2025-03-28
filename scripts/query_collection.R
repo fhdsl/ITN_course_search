@@ -66,9 +66,10 @@ get_book_info <- function(df){
 
         # Append
         df$CourseName[i] <- CourseName
+        
+        print(CourseName)
 
         # Get Available Course Format Links
-        ## NIH has everything on the same line, soooooo need to handle that -- can I do a specific grep on str_extract? Imagine it's grabbing every URL, right??!
         url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
         
         if(sum(grepl("Coursera", index_data)) >= 1){
