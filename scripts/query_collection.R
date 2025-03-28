@@ -69,23 +69,33 @@ get_book_info <- function(df){
         df$CourseName[i] <- CourseName
 
         # Get Available Course Format Links
+        ## NIH has everything on the same line, soooooo need to handle that -- can I do a specific grep on str_extract? Imagine it's grabbing every URL, right??!
         url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
         if(sum(grepl("Bookdown website", index_data)) >= 1){
           bookdown_lines <- grep("Bookdown website", index_data)
           bookdown_data <- index_data[bookdown_lines]
-          df$BookdownLink[i] <- str_extract(bookdown_data, url_pattern)
+          extracted_string <- str_extract(bookdown_data, url_pattern)
+          if (length(extracted_string) > 1){
+            df$BookdownLink[i] <- extracted_string[grep("hutchdatascience|jhudatascience", extracted_string)]
+          } else { df$BookdownLink[i] <- extracted_string}
         } else { df$BookdownLink[i] <- NA_character_ }
 
         if(sum(grepl("Coursera", index_data)) >= 1){
           coursera_lines <- grep("Coursera", index_data)
           coursera_data <- index_data[coursera_lines][grepl("https", index_data[coursera_lines])]
-          df$CourseraLink[i] <- str_extract(coursera_data, url_pattern)
+          extracted_string <- str_extract(coursera_data, url_pattern)
+          if (length(extracted_string) > 1){
+            df$CourseraLink[i] <- extracted_string[grep("coursera", extracted_string)]
+          } else {df$CourseraLink[i] <- extracted_string}}
         } else { df$CourseraLink[i] <- NA_character_ }
 
         if(sum(grepl("Leanpub", index_data)) == 1){
           leanpub_lines <- grep("Leanpub", index_data)
           leanpub_data <- index_data[leanpub_lines]
-          df$LeanpubLink[i] <- str_extract(leanpub_data, url_pattern)
+          extracted_string <- str_extract(leanpub_data, url_pattern)
+          if (length(extracted_string) >1){
+            df$LeanpubLink[i] <- extracted_string[grep("leanpub", extracted_string)]
+          } else {df$LeanpubLink[i] <- extracted_string}
         } else { df$LeanpubLink[i] <- NA_character_ }
       } else { #if try-error for `index.Rmd`, assume quarto course
         # Determine if the _quarto.yml file can be read
@@ -139,6 +149,17 @@ get_book_info <- function(df){
   return(df)
 }
 
+
+find_line_of_interest <- function(char_vec, line_with_tag){
+  first_url_replacement <- 'ottrpal::include_slide\\(\"'
+  second_url_replacement <- '\"\\)'
+
+  data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
+  str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
+  str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
+  
+  return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
+}
 # -------- Function to get slide URL info ----------
 
 get_slide_info <- function(df){
@@ -149,7 +170,7 @@ get_slide_info <- function(df){
   
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
-      if (df$CourseName[i] != "AI for Decision Makers"){
+      if (!(df$CourseName[i] %in% c("AI for Decision Makers", "Data Management and Sharing for NIH Proposals", "AI for Efficient Programming"))){
         # Make raw content url
         base_url <-
           str_replace(df[i,]$html_url,
@@ -159,63 +180,59 @@ get_slide_info <- function(df){
         # Determine if the index.Rmd file can be read
         try_url <- try(readLines(paste0(base_url, "/main/01-intro.Rmd")), silent = TRUE)
       
-        # If try was ok, continue reading index file -- we'll get course formats from these
+        # If try was ok, continue reading index file -- we'll get slide URLs from these
         if (class(try_url) != "try-error") {
           intro_data <- readLines(paste0(base_url, "/main/01-intro.Rmd"))
         } else { #if 01-intro.Rmd doesn't exist
-          try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
-          
-          if (class(try_urlIndex) != "try-error") {
-            intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
-          
-            try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
+          try_urlQmd <- try(readlines(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
             
-            #add in an if for LO link
-              
-          } else { #if index.Rmd doesn't exist
-            try_urlQmd <- try(readlines(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd
-            
-            if (class(try_urlQmd) != "try-error") {
-              intro_data <- readlines(paste0(base_url, "/main/01-intro.qmd"))
-            } else {
-              intro_data <- ""
-              message("No available course information added to this last chunk after checking `01-intro.Rmd`, `index.Rmd` and `01-intro.qmd`")
-            }
-          
-          }
-        } #intro_data should be defined now
-        if (sum(intro_data != "") > 1) {
-          first_url_replacement <- 'ottrpal::include_slide\\(\"'
-          second_url_replacement <- '\"\\)'
-        
-          if(sum(grepl("topics_covered", intro_data)) >= 1){
-            concepts_lines <- grep("topics_covered", intro_data)
-            concepts_data <- str_replace(intro_data[concepts_lines+1], first_url_replacement, "")
-            df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
-          }
-        
-          if(sum(grepl("learning_objectives", intro_data)) >= 1){
-            lo_lines <- grep("learning_objectives", intro_data)
-            lo_data <- str_replace(intro_data[lo_lines+1], first_url_replacement, "")
-            df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
-          }
-        
-          if(sum(grepl("for_individuals_who", intro_data)) >=1){
-            for_lines <- grep("for_individuals_who", intro_data)
-            for_data <- str_replace(intro_data[for_lines+1], first_url_replacement, "")
-            df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
-          }
-          
-          if(sum(grepl("prereqs", intro_data)) >= 1){
-            prereq_lines <- grep("prereqs", intro_data)
-            prereq_data <- str_replace(intro_data[prereq_lines+1], first_url_replacement, "")
-            df$prereq_slide[i] <- str_replace(prereq_data, second_url_replacement, "")
+          if (class(try_urlQmd) != "try-error") {
+            intro_data <- readlines(paste0(base_url, "/main/01-intro.qmd"))
+          } else {
+            intro_data <- ""
+            message("No available course information added to this last chunk after checking `01-intro.Rmd`, `index.Rmd` and `01-intro.qmd`")
           }
         }
-      } else { message("This will be filled in later with branch specific grabbing of slides.")} #check AI for Decision Makers branches 
-    }#end for loop
+        
+        if (sum(intro_data != "") > 1) { #if blank data, don't check it
+        
+          if(sum(grepl("topics_covered", intro_data)) >= 1){ #some data not on main yet
+            concepts_lines <- grep("topics_covered", intro_data)
+            concepts_data <- str_replace(intro_data[concepts_lines+find_line_of_interest(intro_data, concept_lines)], first_url_replacement, "")
+            df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
+          } else {df$concepts_slide[i] <- NA_character_}
+        
+          if(sum(grepl("learning_objectives", intro_data)) >= 1){ #some data not on main yet
+            lo_lines <- grep("learning_objectives", intro_data)
+            lo_data <- str_replace(intro_data[lo_lines+find_line_of_interest(intro_data, lo_lines)], first_url_replacement, "")
+            df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
+          } else(df$lo_slide[i] <- NA_character_)
+        
+          if(sum(grepl("for_individuals_who", intro_data)) >=1){ #some data not on main yet
+            for_lines <- grep("for_individuals_who", intro_data)
+            for_data <- str_replace(intro_data[for_lines+find_line_of_interest(intro_data, for_lines)], first_url_replacement, "")
+            df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
+          } else(df$for_slide[i] <- NA_character_)
+           
+          if(sum(grepl("prereqs", intro_data)) >= 1){ #some data not on main yet
+            prereq_lines <- grep("prereqs", intro_data)
+            prereq_data <- str_replace(intro_data[prereq_lines+find_line_of_interest(intro_data, prereq_lines)], first_url_replacement, "")
+            df$prereq_slide[i] <- str_replace(prereq_data, second_url_replacement, "")
+          } else{df$prereq_slide[i] <- NA_character_}
+        } #close if of making sure intro data has things to grep from
+      } else { 
+        message("This will be filled in later with branch and file specific grabbing of slides.") #check AI for Decision Makers branches, NIH specific files, Efficient specific files
+        #try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
+    
+        #if (class(try_urlIndex) != "try-error") {
+          #intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
+      
+          #try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
+      
+          #add in an if for LO link
+      } #end else looking at specific courses 
+    } #end for loop  
   } else { message("No relevant resources, so no data added")} #end if not at least one row
-  
   return(df)
 }
 
