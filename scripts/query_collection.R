@@ -393,11 +393,11 @@ for (page in 1:last) {
     get_slide_info()
     
 
-    full_repo_df <- rbind(full_repo_df, repo_df, fill = TRUE)
+    full_repo_df <- rbind(full_repo_df, repo_df)
 }
 
 full_repo_df <- full_repo_df %>%
-  add_rows_with_slides_AIDM() %>%
+  #add_rows_with_slides_AIDM() %>%
   tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
   mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-"), NA))) %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
