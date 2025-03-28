@@ -23,7 +23,7 @@ source("scripts/format-tables.R")
 ```{r}
 full_repo_df <- read_tsv(here("resources/collection.tsv"))
 full_repo_df$CurrentOrFuture = "Current"
-full_repo_df <- full_repo_df %>% filter(grepl(CourseName, ":"))
+full_repo_df <- full_repo_df %>% filter(!grepl(":", CourseName))
 ```
 ```{r}
 wrangled <- full_repo_df %>%
