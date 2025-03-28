@@ -251,7 +251,7 @@ make_branch_file_url <- function(base_url, filename, branch = "/main/"){
 
 add_rows_with_slides_AIDM <- function(df){
   base_url <- make_raw_content_url(df[which(df$CourseName == "AI for Decision Makers"),]$html_url)
-  to_bind_df <- data.frame(CourseName = c("AI for Decision Makers: Exploring AI Possibilities",
+  to_bind_df <- data.frame(CourseName = name = c("AI for Decision Makers: Exploring AI Possibilities",
                                           "AI for Decision Makers: Avoiding AI Harm",
                                           "AI for Decision Makers: Determining AI Needs",
                                           "AI for Decision Makers: Developing AI Policy"),
@@ -399,10 +399,10 @@ for (page in 1:last) {
 }
 
 full_repo_df <- full_repo_df %>%
-  add_rows_with_slides_AIDM() %>%
   tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
   mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-"), NA))) %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
+  add_rows_with_slides_AIDM() %>%
   rename(GithubLink = html_url) %>%
   rename(BookdownLink = homepage) #already available from the API calls, so don't need to extract it
 
