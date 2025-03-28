@@ -13,7 +13,7 @@ library(here)
 #' If the course is a future course, the second column of outputdf instead has an under construction icon.
 #' For the third and fourth columns of outputdf: we select the WebsiteDescription and BroadAudience columns. 
 #' 
-#' @param inputdf the input data frame or tibble
+#' @param inputdf the input data frame or tibble; expected to have columns CurrentOrFuture, BookdownLink, CourseraLink, LeanpubLink, GithubLink, CourseName, is_itn, hutch_funding, Concepts, BroadAudience, Category 
 #' @param current a boolean; if TRUE (default), works with current courses; if FALSE, works with future courses by filtering on values in the CurrentOrFuture column
 #' @param keep_category a boolean; if FALSE (default), it won't keep the Category or Concepts columns. If TRUE, the Category column is kept after Links but before WebsiteDescription and the Concepts column is kept at the end
 #' @return outputdf the formatted table 
@@ -48,35 +48,36 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
   
   outputdf %<>% 
     mutate(CourseName = paste0("<b>", CourseName, "</b>")) %>% #mutate the name to be bolded
-    mutate(CourseName = #add logos for funding and link to appropriate about pages
+    mutate(Funding = #add logos for funding and link to appropriate about pages
              case_when(
-               Funding == "ITN" ~ paste0(CourseName, '<br></br><a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"40\"></img></a>'),
-               Funding == "ITN; Hutch" ~ paste0(CourseName, '<br></br><a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"40\"></img></a><br></br>
-                                                  <a href =\"https://www.fredhutch.org/en/about/about-the-hutch.html"style="color:#0000FF\" target=\"_blank\"<div title =\"About Fred Hutch\"></div><img src=\"resources/images/fhlogo.png\" height=\"40\"></img><p class=\"image-name\">Fred Hutch</p></a>')
+               (is_itn == TRUE) & (hutch_funding == FALSE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"30\"></img></a>',
+               (is_itn == TRUE) & (hutch_funding == TRUE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"30\"></img></a><br></br>
+                                                  <a href =\"https://www.fredhutch.org/en/about/about-the-hutch.html"style="color:#0000FF\" target=\"_blank\"<div title =\"About Fred Hutch\"></div><img src=\"resources/images/FH_DaSL.png\" height=\"50\"></img></a>'
              )
     ) %>% #Make the concepts bulletted instead of separated by semi-colons
-    mutate(Concepts = paste0("- ", Concepts)) %>%
-    mutate(Concepts = str_replace_all(Concepts, ";", "<br></br>- ")) %>%
+    mutate(Concepts = paste0("• ", Concepts)) %>%
+    mutate(Concepts = str_replace_all(Concepts, ";", "<br>• ")) %>% #add a line break and the next bullet
+    mutate(Concepts = str_replace_all(Concepts, "-", " ")) %>% #replace the hyphens/dashes with a space; special cases are taken care of before rendering
     mutate(BroadAudience = str_replace_all(BroadAudience, ";", "<br></br>")) %>%
     #Replace the broad audiences with logos
-    mutate(BroadAudience = str_replace(BroadAudience, "Software developers", "<img src=\"resources/images/SoftwareDeveloper.png\" alt=\"Software developers\" height=\"40\"></img><p class=\"image-name\">Software developers</p>")) %>%
+    mutate(BroadAudience = str_replace(BroadAudience, "Software Developers", "<img src=\"resources/images/SoftwareDeveloper.png\" alt=\"Software Developers\" height=\"40\"></img><p class=\"image-name\">Software Developers</p>")) %>%
     mutate(BroadAudience = str_replace(BroadAudience, "Researchers", "<img src=\"resources/images/NewToDataScience.png\" alt =\"Researchers\" height=\"40\"></img><p class=\"image-name\">Researchers</p>")) %>%
     mutate(BroadAudience = str_replace(BroadAudience, "Leaders", "<img src=\"resources/images/leader_avataaars.png\" alt=\"Leaders\" height=\"40\"></img><p class=\"image-name\">Leaders</p>")) %>%
     #Replace the categories with logos
-    mutate(Category = str_replace(Category, "Software Development", "<img src=\"resources/images/keyboard-1405.png\" alt=\"Software development\" height=\"20\"></img><p class=\"image-name\">Software development</p>")) %>%
-    mutate(Category = str_replace(Category, "Best Practices", "<img src=\"resources/images/golden-cup-7825.png\" alt=\"Best practices\" height=\"20\"></img><p class=\"image-name\">Best practices</p>")) %>%
-    mutate(Category = str_replace(Category, "Tools & Resources", "<img src=\"resources/images/tool-box-9520.png\" alt=\"Fundamentals, tools, & resources\" height=\"20\"></img><p class=\"image-name\">Fundamentals, tools & resources</p>"))
+    mutate(Category = str_replace(Category, "Software Development", "<img src=\"resources/images/keyboard-1405.png\" alt=\"Software Development\" height=\"20\"></img><p class=\"image-name\">Software Development</p>")) %>%
+    mutate(Category = str_replace(Category, "Best Practices", "<img src=\"resources/images/golden-cup-7825.png\" alt=\"Best Practices\" height=\"20\"></img><p class=\"image-name\">Best Practices</p>")) %>%
+    mutate(Category = str_replace(Category, "Tools & Resources", "<img src=\"resources/images/tool-box-9520.png\" alt=\"Fundamentals, Tools, & Resources\" height=\"20\"></img><p class=\"image-name\">Fundamentals, Tools, & Resources</p>"))
   
   
   if ((keep_category) & (current)) { #select appropriate columns 
-    outputdf %<>% select(c(CourseName, BroadAudience, Links, WebsiteDescription, Category, Concepts)) %>%
-      `colnames<-`(c("Course Name", "Broad Audience", "Relevant Links", "Description", "Category", "Concepts Discussed"))
+    outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Category, Concepts)) %>%
+      `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"))
   } else if ((keep_category) & !(current)){
-    outputdf %<>% select(c(CourseName, BroadAudience, Links, WebsiteDescription, Category)) %>%
-      `colnames<-`(c("Course Name", "Broad Audience", "Relevant Links", "Description", "Category"))
+    outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Category)) %>%
+      `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Category"))
   } else{
-    outputdf %<>% select(c(CourseName, BroadAudience, Links, WebsiteDescription, Concepts)) %>%
-      `colnames<-`(c("Course Name", "Broad Audience", "Relevant Links", "Description", "Concepts Discussed"))
+    outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Concepts)) %>%
+      `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Concepts Discussed"))
   }
   return(outputdf)
 }
@@ -116,6 +117,7 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
                        "$(this.api().table().header()).css({'backgroundColor': '#3f546f'});",
                        "$(this.api().table().header()).css({'color': '#fff'});",
                        "}"))
-    )
+    ) %>%
+    DT::formatStyle(columns = c(1), fontSize = '12pt') #set the title column to a higher text size
   return(output_table)
 }
