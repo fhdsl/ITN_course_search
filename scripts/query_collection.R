@@ -86,7 +86,7 @@ get_book_info <- function(df){
           extracted_string <- str_extract(coursera_data, url_pattern)
           if (length(extracted_string) > 1){
             df$CourseraLink[i] <- extracted_string[grep("coursera", extracted_string)]
-          } else {df$CourseraLink[i] <- extracted_string}}
+          } else {df$CourseraLink[i] <- extracted_string}
         } else { df$CourseraLink[i] <- NA_character_ }
 
         if(sum(grepl("Leanpub", index_data)) == 1){
