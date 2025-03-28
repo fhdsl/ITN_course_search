@@ -198,7 +198,7 @@ get_slide_info <- function(df){
         
           if(sum(grepl("topics_covered", intro_data)) >= 1){ #some data not on main yet
             concepts_lines <- grep("topics_covered", intro_data)
-            concepts_data <- str_replace(intro_data[concepts_lines+find_line_of_interest(intro_data, concept_lines)], first_url_replacement, "")
+            concepts_data <- str_replace(intro_data[concepts_lines+find_line_of_interest(intro_data, concepts_lines)], first_url_replacement, "")
             df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
           } else {df$concepts_slide[i] <- NA_character_}
         
