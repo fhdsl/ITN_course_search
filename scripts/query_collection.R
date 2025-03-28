@@ -248,6 +248,7 @@ make_branch_file_url <- function(base_url, filename, branch = "/main/"){
 }
 
 add_rows_with_slides_AIDM <- function(df){
+  base_url <- make_raw_content_url(df[which(df$CourseName == "AI for Decision Makers"),]$html_url)
   to_bind_df <- data.frame(CourseName = c("AI for Decision Makers: Exploring AI Possibilities",
                                           "AI for Decision Makers: Avoiding AI Harm",
                                           "AI for Decision Makers: Determining AI Needs",
