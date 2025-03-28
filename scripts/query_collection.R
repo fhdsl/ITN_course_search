@@ -297,7 +297,7 @@ add_rows_with_slides_AIDM <- function(df){
   #Developing AI Policy:
   ## To fill in
     
-  df <- rbind(df, to_bind_df, fill = TRUE)
+  df <- dplyr::bind_rows(df, to_bind_df)
   return(df)
 }
 
