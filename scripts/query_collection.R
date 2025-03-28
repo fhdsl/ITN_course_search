@@ -221,10 +221,10 @@ get_slide_info <- function(df){
           df$prereq_slide[i] <- NA_character_
         } else { #NIH for Data Sharing course
           try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
-          try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
+          try_urlLO <- try(readlines(paste0(base_url, "/main/Learning_objectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
           
           if((class(try_urlIndex) != "try-error") & (class(try_urlLO) != "try-error")){
-            intro_data <- c(readLines(paste0(base_url, "/main/index.Rmd")), readlines(paste0(base_url, "/main/LearningObjectives.Rmd")))
+            intro_data <- c(readLines(paste0(base_url, "/main/index.Rmd")), readlines(paste0(base_url, "/main/Learning_objectives.Rmd")))
             df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
             df$lo_slide[i] <- extract_slide_url("learning_objectives", intro_data)
             df$for_slide[i] <- extract_slide_url("for_individuals_who", intro_data)
@@ -393,7 +393,7 @@ for (page in 1:last) {
     get_slide_info()
     
 
-    full_repo_df <- rbind(full_repo_df, repo_df)
+    full_repo_df <- rbind(full_repo_df, repo_df, fill = TRUE)
 }
 
 full_repo_df <- full_repo_df %>%
