@@ -28,6 +28,20 @@ opt_parser <- optparse::OptionParser(option_list = option_list)
 opt <- optparse::parse_args(opt_parser)
 git_pat <- opt$git_pat
 
+#the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
+get_linkOI <- function(relevant_data, pattern_to_search, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
+  if(sum(grepl(pattern_to_search, relevant_data)) >= 1){
+    relevant_lines <- grep(pattern_to_search, relevant_data)
+    data_of_interest <- relevant_data[relevant_lines][grepl("https", relevant_data[relevant_lines])] #select only lines with a URL ... word may be mentioned without a URL
+    extracted_string <- unlist(str_extract_all(data_of_interest, url_pattern))
+    if (length(extracted_string) > 1){
+      return(extracted_string[grep(tolower(pattern_to_search), extracted_string)]) #multiple URLs, selecting relevant one
+    } else if (length(extracted_string) == 1){
+      return(extracted_string)
+    } else { return(NA_character_)} #empty link (e.g., commented out in the code)
+  } else { return(NA_character_) } #pattern wasn't found in data
+}
+
 # ----------- Function to get book info -------------
 
 get_book_info <- function(df){
@@ -70,25 +84,10 @@ get_book_info <- function(df){
         print(CourseName)
 
         # Get Available Course Format Links
-        url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
         
-        if(sum(grepl("Coursera", index_data)) >= 1){
-          coursera_lines <- grep("Coursera", index_data)
-          coursera_data <- index_data[coursera_lines][grepl("https", index_data[coursera_lines])]
-          extracted_string <- unlist(str_extract_all(coursera_data, url_pattern))
-          if (length(extracted_string) > 1){
-            df$CourseraLink[i] <- extracted_string[grep("coursera", extracted_string)]
-          } else {df$CourseraLink[i] <- extracted_string}
-        } else { df$CourseraLink[i] <- NA_character_ }
-
-        if(sum(grepl("Leanpub", index_data)) == 1){
-          leanpub_lines <- grep("Leanpub", index_data)
-          leanpub_data <- index_data[leanpub_lines]
-          extracted_string <- unlist(str_extract_all(leanpub_data, url_pattern))
-          if (length(extracted_string) >1){
-            df$LeanpubLink[i] <- extracted_string[grep("leanpub", extracted_string)]
-          } else {df$LeanpubLink[i] <- extracted_string}
-        } else { df$LeanpubLink[i] <- NA_character_ }
+        df$CourseraLink[i] <- get_linkOI("Coursera", index_data)
+        df$LeanpubLink[i] <- get_linkOI("Leanpub", index_data)
+        
       } else { #if try-error for `index.Rmd`, assume quarto course
         # Determine if the _quarto.yml file can be read
         try_url_quartoTitle <- try(readLines(paste0(base_url, "/main/_quarto.yml")), silent = TRUE)
@@ -113,19 +112,8 @@ get_book_info <- function(df){
           index_qmd_data <- readLines(paste0(base_url, "/main/index.qmd"))
 
           # Get Available Course Format Links
-          url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
-
-          if(sum(grepl("Coursera", index_qmd_data)) >= 1){
-            coursera_lines <- grep("Coursera", index_qmd_data)
-            coursera_data <- index_qmd_data[coursera_lines][grepl("https", index_qmd_data[coursera_lines])]
-            df$CourseraLink[i] <- str_extract(coursera_data, url_pattern)
-          } else { df$CourseraLink[i] <- NA_character_ }
-
-          if(sum(grepl("Leanpub", index_qmd_data)) == 1){
-            leanpub_lines <- grep("Leanpub", index_qmd_data)
-            leanpub_data <- index_qmd_data[leanpub_lines]
-            df$LeanpubLink[i] <- str_extract(leanpub_data, url_pattern)
-          } else { df$LeanpubLink[i] <- NA_character_ }
+         df$CourseraLink[i] <- get_linkOI("Coursera", index_qmd_data)
+         df$LeanpubLink[i] <- get_linkOI("Leanpub", index_qmd_data)
 
         } else {
           message("No available course information added to this last chunk after checking `index.Rmd` and `index.qmd`")
