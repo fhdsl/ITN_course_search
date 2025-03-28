@@ -390,13 +390,14 @@ for (page in 1:last) {
     mutate(launch_date = str_to_title(str_replace(launch_date, pattern = "(.{3})(.*)", replacement = "\\1 \\2"))) %>%
 
     get_book_info() %>%
-    get_slide_info() %>%
-    add_rows_with_slides_AIDM()
+    get_slide_info()
+    
 
     full_repo_df <- rbind(full_repo_df, repo_df)
 }
 
 full_repo_df <- full_repo_df %>%
+  add_rows_with_slides_AIDM() %>%
   tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
   mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-"), NA))) %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
