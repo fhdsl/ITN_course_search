@@ -28,6 +28,13 @@ opt_parser <- optparse::OptionParser(option_list = option_list)
 opt <- optparse::parse_args(opt_parser)
 git_pat <- opt$git_pat
 
+
+make_raw_content_url <- function(github_link){
+  return(str_replace(github_link,
+                      "github.com",
+                      "raw.githubusercontent.com"))
+}
+
 #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
 get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
   if(sum(grepl(pattern_to_search, relevant_data)) >= 1){
@@ -52,11 +59,9 @@ get_book_info <- function(df){
   
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
+      
       # Make raw content url
-      base_url <-
-        str_replace(df[i,]$html_url,
-                    "github.com",
-                    "raw.githubusercontent.com")
+      base_url <- make_raw_content_url(df[i,]$html_url)
 
       # Determine if the index.Rmd file can be read
       try_url <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE)
@@ -132,12 +137,22 @@ find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement
   
   return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
+
+extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
+  if(sum(grepl(tag_of_interest, char_vec)) >= 1){ #some data not on main yet
+    relevant_lines <- grep(tag_of_interest, char_vec)
+    data_of_interest <- str_replace(char_vec[relevant_lines+find_line_of_interest(char_vec, relevant_lines)], first_url_replacement, "")
+    return(str_replace(data_of_interest, second_url_replacement, ""))
+  } else {return(NA_character_)}
+}
+
+make_branch_file_url <- function(base_url, filename, branch = "/main/"){
+  return(paste0(base_url, "/refs/heads/", branch, filename))
+}
+
 # -------- Function to get slide URL info ----------
 
 get_slide_info <- function(df){
-  
-  first_url_replacement <- 'ottrpal::include_slide\\(\"'
-  second_url_replacement <- '\"\\)'
   
   df$concepts_slide <- ""
   df$lo_slide <- ""
@@ -146,13 +161,10 @@ get_slide_info <- function(df){
   
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
+      # Make raw content url
+      base_url <- make_raw_content_url(df[i,]$html_url)
       if (!(df$CourseName[i] %in% c("AI for Decision Makers", "Data Management and Sharing for NIH Proposals", "AI for Efficient Programming"))){
-        # Make raw content url
-        base_url <-
-          str_replace(df[i,]$html_url,
-                      "github.com",
-                      "raw.githubusercontent.com")
-      
+        
         # Determine if the index.Rmd file can be read
         try_url <- try(readLines(paste0(base_url, "/main/01-intro.Rmd")), silent = TRUE)
       
@@ -166,46 +178,104 @@ get_slide_info <- function(df){
             intro_data <- readlines(paste0(base_url, "/main/01-intro.qmd"))
           } else {
             intro_data <- ""
-            message("No available course information added to this last chunk after checking `01-intro.Rmd`, `index.Rmd` and `01-intro.qmd`")
+            message("No available course information added to this last chunk after checking `01-intro.Rmd` and `01-intro.qmd`")
           }
         }
         
         if (sum(intro_data != "") > 1) { #if blank data, don't check it
         
-          if(sum(grepl("topics_covered", intro_data)) >= 1){ #some data not on main yet
-            concepts_lines <- grep("topics_covered", intro_data)
-            concepts_data <- str_replace(intro_data[concepts_lines+find_line_of_interest(intro_data, concepts_lines)], first_url_replacement, "")
-            df$concepts_slide[i] <- str_replace(concepts_data, second_url_replacement, "")
-          } else {df$concepts_slide[i] <- NA_character_}
-        
-          if(sum(grepl("learning_objectives", intro_data)) >= 1){ #some data not on main yet
-            lo_lines <- grep("learning_objectives", intro_data)
-            lo_data <- str_replace(intro_data[lo_lines+find_line_of_interest(intro_data, lo_lines)], first_url_replacement, "")
-            df$lo_slide[i] <- str_replace(lo_data, second_url_replacement, "")
-          } else(df$lo_slide[i] <- NA_character_)
-        
-          if(sum(grepl("for_individuals_who", intro_data)) >=1){ #some data not on main yet
-            for_lines <- grep("for_individuals_who", intro_data)
-            for_data <- str_replace(intro_data[for_lines+find_line_of_interest(intro_data, for_lines)], first_url_replacement, "")
-            df$for_slide[i] <- str_replace(for_data, second_url_replacement, "")
-          } else(df$for_slide[i] <- NA_character_)
+          df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
+          df$lo_slide[i] <- extract_slide_url("learning_objectives", intro_data)
+          df$for_slide[i] <- extract_slide_url("for_individuals_who", intro_data)
+          df$prereq_slide[i] <- extract_slide_url("prereqs", intro_data)
            
-          if(sum(grepl("prereqs", intro_data)) >= 1){ #some data not on main yet
-            prereq_lines <- grep("prereqs", intro_data)
-            prereq_data <- str_replace(intro_data[prereq_lines+find_line_of_interest(intro_data, prereq_lines)], first_url_replacement, "")
-            df$prereq_slide[i] <- str_replace(prereq_data, second_url_replacement, "")
-          } else{df$prereq_slide[i] <- NA_character_}
         } #close if of making sure intro data has things to grep from
       } else { 
         message("This will be filled in later with branch and file specific grabbing of slides.") #check AI for Decision Makers branches, NIH specific files, Efficient specific files
-        #try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
-    
-        #if (class(try_urlIndex) != "try-error") {
-          #intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
-      
-          #try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
-      
-          #add in an if for LO link
+        if(df$CourseName[i] == "AI for Decision Makers"){
+          
+          lo_slide_urls <- for_slide_urls <- concept_slide_urls <- list("Exploring AI Possibilities" = "",
+                                                                         "Avoiding AI Harm" = "",
+                                                                        "Determining AI Needs" = "",
+                                                                        "Developing AI Policy" = "")
+          df$prereq_slide[i] <- NA_character_
+     
+          
+          #Exploring AI Possibilities: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ah/add-slides/01a-AI_Possibilities-intro.Rmd
+          branch_file1 <- make_branch_file_url(base_url, "01a-AI_Possibilities-intro.Rmd", branch = "ah/add-slides/")
+          try_AI_url1 <- try(readlines(branch_file1), silent = TRUE)
+          
+          if(class(try_AI_url1) != "try-error") {
+            intro_data <- readlines(branch_file1)
+            lo_slide_urls[[1]] <- extract_slide_url("learning_objectives", intro_data)
+            for_slide_urls[[1]] <- extract_slide_url("for_individuals_who", intro_data)
+            concept_slide_urls[[1]] <- extract_slide_url("topics_covered", intro_data)
+          } else{
+            lo_slide_urls[[1]] <- NA_character_
+            for_slide_urls[[1]] <- NA_character_
+            concept_slide_urls[[1]] <- NA_character_
+          }
+        
+          #Avoiding AI Harm: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/cw_add_slides/02a-Avoiding_Harm-intro.Rmd
+          branch_file2 <- make_branch_file_url(base_url, "02a-Avoiding_Harm-intro.Rmd", branch = "cw_add_slides/")
+          try_AI_url2 <- try(readlines(branch_file2), silent = TRUE)
+          
+          if(class(try_AI_url2) != "try-error") {
+            intro_data <- readlines(branch_file2)
+            lo_slide_urls[[2]] <- extract_slide_url("learning_objectives", intro_data)
+            for_slide_urls[[2]] <- extract_slide_url("for_individuals_who", intro_data)
+            concept_slide_urls[[2]] <- extract_slide_url("topics_covered", intro_data)
+          } else{
+            lo_slide_urls[[2]] <- NA_character_
+            for_slide_urls[[2]] <- NA_character_
+            concept_slide_urls[[2]] <- NA_character_
+          }
+          
+          #Determining AI Needs:
+          ## To fill in
+          
+          #Developing AI Policy:
+          ## To fill in
+          
+          df$concepts_slide[i] <- concept_slide_urls
+          df$for_slide[i] <- for_slide_urls
+          df$lo_slide[i] <- lo_slide_urls
+          
+        } else if (df$CourseName[i] == "AI for Efficient Programming"){
+        
+          try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
+          
+          if (class(try_urlIndex) != "try-error") {
+            intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
+            df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
+            df$lo_slide[i] <- extract_slide_url("learning_objectives", intro_data)
+            df$for_slide[i] <- extract_slide_url("for_individuals_who", intro_data)
+            df$prereq_slide[i] <- extract_slide_url("prereqs", intro_data)
+          } else {
+            message(paste0("No slide data found for ", df$CourseName[i]))
+            df$concepts_slide[i] <- NA_character_
+            df$lo_slide[i] <- NA_character_
+            df$for_slide[i] <- NA_character_
+            df$prereq_slide[i] <- NA_character_
+          }
+        } else { #NIH for Data Sharing course
+          try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
+          try_urlLO <- try(readlines(paste0(base_url, "/main/LearningObjectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
+          
+          if((class(try_urlIndex) != "try-error") & (class(try_urlLO) != "try-error")){
+            intro_data <- c(readLines(paste0(base_url, "/main/index.Rmd")), readlines(paste0(base_url, "/main/LearningObjectives.Rmd")))
+            df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
+            df$lo_slide[i] <- extract_slide_url("learning_objectives", intro_data)
+            df$for_slide[i] <- extract_slide_url("for_individuals_who", intro_data)
+            df$prereq_slide[i] <- extract_slide_url("prereqs", intro_data)
+          } else {
+            message(paste0("No slide data found for ", df$CourseName[i]))
+            df$concepts_slide[i] <- NA_character_
+            df$lo_slide[i] <- NA_character_
+            df$for_slide[i] <- NA_character_
+            df$prereq_slide[i] <- NA_character_
+          } 
+        } #end the if else if and else chain for the specific coursers
       } #end else looking at specific courses 
     } #end for loop  
   } else { message("No relevant resources, so no data added")} #end if not at least one row
