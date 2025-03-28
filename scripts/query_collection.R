@@ -29,7 +29,7 @@ opt <- optparse::parse_args(opt_parser)
 git_pat <- opt$git_pat
 
 #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
-get_linkOI <- function(relevant_data, pattern_to_search, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
+get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
   if(sum(grepl(pattern_to_search, relevant_data)) >= 1){
     relevant_lines <- grep(pattern_to_search, relevant_data)
     data_of_interest <- relevant_data[relevant_lines][grepl("https", relevant_data[relevant_lines])] #select only lines with a URL ... word may be mentioned without a URL
@@ -299,8 +299,8 @@ for (page in 1:last) {
     mutate(hutch_funding = str_detect(topics, "hutch-course")) %>%
     mutate(launch_date = topics) %>%
     tidyr::separate_longer_delim(launch_date, delim = ", ") %>%
-    filter(!str_detect(launch_date, "launchdate-")) %>%
-    mutate(launch_date = str_replace(launch_date, "launchdate-", "")) %>%
+    filter(str_detect(launch_date, "launched-")) %>%
+    mutate(launch_date = str_replace(launch_date, "launched-", "")) %>%
     mutate(launch_date = str_to_title(str_replace(launch_date, pattern = "(.{3})(.*)", replacement = "\\1 \\2"))) %>%
 
     get_book_info() %>%
