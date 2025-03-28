@@ -258,9 +258,10 @@ add_rows_with_slides_AIDM <- function(df){
                            lo_slide = c("", "", "", ""),
                            for_slide = c("", "", "", ""),
                            concepts_slide = c("", "", "", ""),
-                           prereq_slide = NA_character_,
-                           name = CourseName
-                            )
+                           prereq_slide = NA_character_
+                          )
+  
+  to_bind_df$name <- to_bind_df$CourseName
     
   #Exploring AI Possibilities: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ah/add-slides/01a-AI_Possibilities-intro.Rmd
   branch_file1 <- make_branch_file_url(base_url, "01a-AI_Possibilities-intro.Rmd", branch = "ah/add-slides/")
