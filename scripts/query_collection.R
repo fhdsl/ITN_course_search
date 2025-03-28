@@ -169,10 +169,12 @@ get_slide_info <- function(df){
         if (class(try_url) != "try-error") {
           intro_data <- readLines(paste0(base_url, "/main/01-intro.Rmd"))
         } else { #if 01-intro.Rmd doesn't exist
-          try_urlQmd <- try(readlines(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
-            
+          #try_urlQmd <- try(readlLnes(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
+          try_urlQmd <- try(readLines(make_branch_file_url(base_url, "01-intro.qmd", branch = "kweav-patch-1/")), silent = TRUE)
+          
           if (class(try_urlQmd) != "try-error") {
-            intro_data <- readlines(paste0(base_url, "/main/01-intro.qmd"))
+            #intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
+            intro_data <- readLines(make_branch_file_url(base_url, "01-intro.qmd", branch = "kweav-patch-1/"))
           } else {
             intro_data <- ""
             message("No available course information added to this last chunk after checking `01-intro.Rmd` and `01-intro.qmd`")
@@ -261,10 +263,10 @@ add_rows_with_slides_AIDM <- function(df){
     
   #Exploring AI Possibilities: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ah/add-slides/01a-AI_Possibilities-intro.Rmd
   branch_file1 <- make_branch_file_url(base_url, "01a-AI_Possibilities-intro.Rmd", branch = "ah/add-slides/")
-  try_AI_url1 <- try(readlines(branch_file1), silent = TRUE)
+  try_AI_url1 <- try(readLines(branch_file1), silent = TRUE)
     
   if(class(try_AI_url1) != "try-error") {
-    intro_data <- readlines(branch_file1)
+    intro_data <- readLines(branch_file1)
     to_bind_df[1,]$lo_slide <- extract_slide_url("learning_objectives", intro_data)
     to_bind_df[1,]$for_slide <- extract_slide_url("for_individuals_who", intro_data)
     to_bind_df[1,]$concepts_slide <- extract_slide_url("topics_covered", intro_data)
@@ -276,10 +278,10 @@ add_rows_with_slides_AIDM <- function(df){
     
   #Avoiding AI Harm: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/cw_add_slides/02a-Avoiding_Harm-intro.Rmd
   branch_file2 <- make_branch_file_url(base_url, "02a-Avoiding_Harm-intro.Rmd", branch = "cw_add_slides/")
-  try_AI_url2 <- try(readlines(branch_file2), silent = TRUE)
+  try_AI_url2 <- try(readLines(branch_file2), silent = TRUE)
   
   if(class(try_AI_url2) != "try-error") {
-    intro_data <- readlines(branch_file2)
+    intro_data <- readLines(branch_file2)
     to_bind_df[2,]$lo_slide <- extract_slide_url("learning_objectives", intro_data)
     to_bind_df[2,]$for_slide <- extract_slide_url("for_individuals_who", intro_data)
     to_bind_df[2,]$concepts_slide <- extract_slide_url("topics_covered", intro_data)
