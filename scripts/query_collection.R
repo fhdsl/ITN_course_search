@@ -251,14 +251,15 @@ make_branch_file_url <- function(base_url, filename, branch = "/main/"){
 
 add_rows_with_slides_AIDM <- function(df){
   base_url <- make_raw_content_url(df[which(df$CourseName == "AI for Decision Makers"),]$html_url)
-  to_bind_df <- data.frame(CourseName = name = c("AI for Decision Makers: Exploring AI Possibilities",
+  to_bind_df <- data.frame(CourseName = c("AI for Decision Makers: Exploring AI Possibilities",
                                           "AI for Decision Makers: Avoiding AI Harm",
                                           "AI for Decision Makers: Determining AI Needs",
                                           "AI for Decision Makers: Developing AI Policy"),
-                            lo_slide = c("", "", "", ""),
-                            for_slide = c("", "", "", ""),
-                            concepts_slide = c("", "", "", ""),
-                            prereq_slide = NA_character_
+                           lo_slide = c("", "", "", ""),
+                           for_slide = c("", "", "", ""),
+                           concepts_slide = c("", "", "", ""),
+                           prereq_slide = NA_character_,
+                           name = CourseName
                             )
     
   #Exploring AI Possibilities: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ah/add-slides/01a-AI_Possibilities-intro.Rmd
