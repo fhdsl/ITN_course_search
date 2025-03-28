@@ -33,7 +33,6 @@ git_pat <- opt$git_pat
 get_book_info <- function(df){
   # Create dummy columns
   df$CourseName <- ""
-  df$BookdownLink <- ""
   df$CourseraLink <- ""
   df$LeanpubLink <- ""
   
@@ -71,19 +70,11 @@ get_book_info <- function(df){
         # Get Available Course Format Links
         ## NIH has everything on the same line, soooooo need to handle that -- can I do a specific grep on str_extract? Imagine it's grabbing every URL, right??!
         url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
-        if(sum(grepl("Bookdown website", index_data)) >= 1){
-          bookdown_lines <- grep("Bookdown website", index_data)
-          bookdown_data <- index_data[bookdown_lines]
-          extracted_string <- str_extract(bookdown_data, url_pattern)
-          if (length(extracted_string) > 1){
-            df$BookdownLink[i] <- extracted_string[grep("hutchdatascience|jhudatascience", extracted_string)]
-          } else { df$BookdownLink[i] <- extracted_string}
-        } else { df$BookdownLink[i] <- NA_character_ }
-
+        
         if(sum(grepl("Coursera", index_data)) >= 1){
           coursera_lines <- grep("Coursera", index_data)
           coursera_data <- index_data[coursera_lines][grepl("https", index_data[coursera_lines])]
-          extracted_string <- str_extract(coursera_data, url_pattern)
+          extracted_string <- unlist(str_extract_all(coursera_data, url_pattern))
           if (length(extracted_string) > 1){
             df$CourseraLink[i] <- extracted_string[grep("coursera", extracted_string)]
           } else {df$CourseraLink[i] <- extracted_string}
@@ -92,7 +83,7 @@ get_book_info <- function(df){
         if(sum(grepl("Leanpub", index_data)) == 1){
           leanpub_lines <- grep("Leanpub", index_data)
           leanpub_data <- index_data[leanpub_lines]
-          extracted_string <- str_extract(leanpub_data, url_pattern)
+          extracted_string <- unlist(str_extract_all(leanpub_data, url_pattern))
           if (length(extracted_string) >1){
             df$LeanpubLink[i] <- extracted_string[grep("leanpub", extracted_string)]
           } else {df$LeanpubLink[i] <- extracted_string}
@@ -122,11 +113,6 @@ get_book_info <- function(df){
 
           # Get Available Course Format Links
           url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))" #the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
-          if(sum(grepl("Bookdown website", index_qmd_data)) >= 1){
-            bookdown_lines <- grep("Bookdown website", index_qmd_data)
-            bookdown_data <- index_qmd_data[bookdown_lines]
-            df$BookdownLink[i] <- str_extract(bookdown_data, url_pattern)
-          } else {df$BookdownLink[i] <- NA_character_ }
 
           if(sum(grepl("Coursera", index_qmd_data)) >= 1){
             coursera_lines <- grep("Coursera", index_qmd_data)
@@ -322,6 +308,11 @@ for (page in 1:last) {
            ) %>%
     tidyr::unite(col = "Category", starts_with("cat_"), sep=";", na.rm = TRUE) %>%
     mutate(hutch_funding = str_detect(topics, "hutch-course")) %>%
+    mutate(launch_date = topics) %>%
+    tidyr::separate_longer_delim(launch_date, delim = ", ") %>%
+    filter(!str_detect(launch_date, "launchdate-")) %>%
+    mutate(launch_date = str_replace(launch_date, "launchdate-", "")) %>%
+    mutate(launch_date = str_to_title(str_replace(launch_date, pattern = "(.{3})(.*)", replacement = "\\1 \\2"))) %>%
 
     get_book_info() %>%
     get_slide_info()
@@ -331,9 +322,10 @@ for (page in 1:last) {
 
 full_repo_df <- full_repo_df %>%
   tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
-  mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course"), NA))) %>%
+  mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-"), NA))) %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
-  rename(GithubLink = html_url)
+  rename(GithubLink = html_url) %>%
+  rename(BookdownLink = homepage) #already available from the API calls, so don't need to extract it
 
 # ---------- Save the collection ---------
 
