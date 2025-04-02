@@ -172,7 +172,7 @@ get_slide_info <- function(df){
           try_urlQmd <- try(readlLnes(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
           
           if (class(try_urlQmd) != "try-error") {
-            #intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
+            intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
             intro_data <- readLines(make_branch_file_url(base_url, "01-intro.qmd", branch = "kweav-patch-1/"))
           } else {
             intro_data <- ""
