@@ -173,7 +173,6 @@ get_slide_info <- function(df){
           
           if (class(try_urlQmd) != "try-error") {
             intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
-            intro_data <- readLines(make_branch_file_url(base_url, "01-intro.qmd", branch = "kweav-patch-1/"))
           } else {
             intro_data <- ""
             message("No available course information added to this last chunk after checking `01-intro.Rmd` and `01-intro.qmd`")
