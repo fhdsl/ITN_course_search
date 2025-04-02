@@ -169,8 +169,7 @@ get_slide_info <- function(df){
         if (class(try_url) != "try-error") {
           intro_data <- readLines(paste0(base_url, "/main/01-intro.Rmd"))
         } else { #if 01-intro.Rmd doesn't exist
-          #try_urlQmd <- try(readlLnes(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
-          try_urlQmd <- try(readLines(make_branch_file_url(base_url, "01-intro.qmd", branch = "kweav-patch-1/")), silent = TRUE)
+          try_urlQmd <- try(readlLnes(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
           
           if (class(try_urlQmd) != "try-error") {
             #intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
