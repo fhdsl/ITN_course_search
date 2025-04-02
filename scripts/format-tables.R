@@ -6,7 +6,7 @@ library(DT)
 library(here)
 
 #' Format the tibble/table to bold names, link links, add icons, and rearrange/select columns
-#' 
+#'
 #' @description This function uses the CourseName, Funding, CurrentOrFuture, GithubLink, BookdownLink, CourseraLink, and LeanpubLink columns in order to make the first two columns
 #' of the outputdf. For the first column of outputdf: CourseName input column value is bolded and icons are added below the name to denote the funding source(s) based on the values in the Funding input column.
 #' For the second column of outputdf: If the course is a current course, GithubLink, BookdownLink, CourseraLink, and LeanpubLink are linked to corresponding icons. If either CourseraLink or LeanpubLink are NA values, then those icons/links are not added
@@ -16,8 +16,8 @@ library(here)
 #' @param inputdf the input data frame or tibble; expected to have columns CurrentOrFuture, BookdownLink, CourseraLink, LeanpubLink, GithubLink, CourseName, is_itn, hutch_funding, Concepts, BroadAudience, Category 
 #' @param current a boolean; if TRUE (default), works with current courses; if FALSE, works with future courses by filtering on values in the CurrentOrFuture column
 #' @param keep_category a boolean; if FALSE (default), it won't keep the Category or Concepts columns. If TRUE, the Category column is kept after Links but before WebsiteDescription and the Concepts column is kept at the end
-#' @return outputdf the formatted table 
- 
+#' @return outputdf the formatted table
+
 
 prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
   if (current){
@@ -45,8 +45,8 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
       filter(CurrentOrFuture == "Future") %>% #select just future classes
       mutate(Links = '<img src="resources/images/underconstruction.png" height="40"></img>')
   }
-  
-  outputdf %<>% 
+
+  outputdf %<>%
     mutate(CourseName = paste0("<b>", CourseName, "</b>")) %>% #mutate the name to be bolded
     mutate(Funding = #add logos for funding and link to appropriate about pages
              case_when(
@@ -84,16 +84,16 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
 
 
 #' A function to setup the DT datatable
-#' 
+#'
 #' @description
 #' A short description...
-#' 
-#' 
+#'
+#'
 #' @param inputdf input dataframe or tibble to be displayed with the DT library
 #' @param some_caption a caption describing the table
-#' 
+#'
 #' @return output_table the DT datatable ready to display version of the inputdf
-#' 
+#'
 
 setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
   if (is.null(columnDefsListOfLists)){
@@ -120,4 +120,82 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
     ) %>%
     DT::formatStyle(columns = c(1), fontSize = '12pt') #set the title column to a higher text size
   return(output_table)
+}
+
+
+#' Programmatically write Rmd for each course
+#'
+#'
+#'
+
+write_Rmd <- function(courseROI){
+
+  # Rmd Header information
+  cat(paste0('---\ntitle: "', courseROI$CourseName, '"\noutput: html_document\n---\n\n'))
+
+  # Rmd styling information
+  cat('<style type = "text/css">\n\tbody{\n\ttext-align: justify;\n\ttext-justify: inter-word;\n}\n</style>\n\n<style>\n\tpre{\n\t\tborder: 0;\n\t}\n</style>\n```{r include=FALSE}\nknitr::opts_chunk$set(comment=NA)\n```\n\n')
+
+  # import ottrpal
+
+  cat('```{r, echo=FALSE, results=\'hide\',message=FALSE,warning=FALSE}\n\nlibrary(ottrpal)\n\n```')
+
+  # About the course info
+
+  cat(paste0('## About this course\n\n```{r echo=FALSE,message=FALSE, warning=FALSE,results = \'asis\'}\ncat(courseROI$WebsiteDescription)\n```\n\nThis course is one of our **', courseROI$Category, '** Courses.\n\n'))
+
+  # For individuals who info
+
+  cat(paste0('## For individuals who\n\n```{r echo=FALSE,message=FALSE,warning=FALSE,out.width="100%"}\nottrpal::include_slide(courseROI$ForIndividualsWhoSlideLink\n```\n\nWe particularly recommend this course for those who are **', str_replace(courseROI$BroadAudience, "; ", "** or **"), '**\n\n'))
+
+  if (!is.na(str_match(courseROI$BroadAudience, "Researchers")) | !is.na(str_match(courseROI$BroadAudience, "New to data science"))){
+    cat('![Researchers](resources/images/NewToDataScience.png){width=10% height=10%}\n\n')
+  }
+
+  if (!is.na(str_match(courseROI$BroadAudience, "New to data science"))){
+    cat('![Software Developer](resources/images/SoftwareDeveloper.png){width=10% height=10%}\n\n')
+  }
+
+  if (!is.na(str_match(courseROI$BroadAudience, "Leaders"))){
+    cat('![Leader](resources/images/leaders.png){width=10% height=10%}\n\n')
+  }
+
+  # For Concepts Discussed Info
+
+  cat('## Concepts Discussed\n\n```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}\nottrpal::include_slide(courseROI$ConceptsDiscussedSlideLink)\n```\n\n')
+
+  # For Learning Objectives Info
+
+  cat('## Learning Objectives\n\n```{r echo=FALSE,message=FALSE,warning=FALSE,out.width="100%"}\nottrpal::include_slide(courseROI$LOSlideLink)\n```\n\n')
+
+  # Prerequisites info if applicable
+
+  if (!is.na(courseROI$PrereqsLink)){
+    cat('## Prerequisites\n\n```{r echo=FALSE,message=FALSE,warning=FALSE,out.width="100%"}\nottrpal::include_slide(courseROI$PrereqsLink\n```\n\n')
+  }
+
+  # Course formats info
+
+  cat('## Available course formats to access this course\n\nThis course is available in the following formats:\n\n- [on our bookdown website](`r courseROI$BookdownLink`) (easy to access, free, & self-guided/no quizzes)\n')
+
+  if (!is.na(courseROI$CourseraLink)){
+    cat('- [on Coursera](`r courseROI$CourseraLink`) (completion comes with certification; not free unless institutional login available)\n')
+  }
+
+  if (!is.na(courseROI$LeanpubLink)){
+    cat('- [on Leanpub](`r courseROI$LeanpubLink`) (completion comes with certification; free access)\n')
+  }
+
+  cat('- [GitHub source material](`r courseROI$GithubLink`)\n\n')
+
+  # Funding info
+
+  cat('## Funding\n\n[![ITCR](resources/images/ITCRLogo.png){width=10% height=10%}](https://itcr.cancer.gov/)')
+
+  if (!is.na(str_match(courseROI$Funding, "Hutch"))){
+    cat('[!Fred Hutch Cancer Center](resources/images/fhlogo.png){width=10% height=10%}](https://www.fredhutch.org/en/about/about-the-hutch.html)')
+  }
+
+  # Need to make a function that wraps this function in a writeLines(), giving it each course row to create a new Rmd (that will be rendered by OTTR)
+
 }
