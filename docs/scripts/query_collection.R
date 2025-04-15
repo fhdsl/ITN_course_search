@@ -56,10 +56,10 @@ get_book_info <- function(df){
   df$CourseName <- ""
   df$CourseraLink <- ""
   df$LeanpubLink <- ""
-
+  
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
-
+      
       # Make raw content url
       base_url <- make_raw_content_url(df[i,]$html_url)
 
@@ -85,14 +85,14 @@ get_book_info <- function(df){
 
         # Append
         df$CourseName[i] <- CourseName
-
+        
         print(CourseName)
 
         # Get Available Course Format Links
-
+        
         df$CourseraLink[i] <- get_linkOI("Coursera", index_data)
         df$LeanpubLink[i] <- get_linkOI("Leanpub", index_data)
-
+        
       } else { #if try-error for `index.Rmd`, assume quarto course
         # Determine if the _quarto.yml file can be read
         try_url_quartoTitle <- try(readLines(paste0(base_url, "/main/_quarto.yml")), silent = TRUE)
@@ -134,7 +134,7 @@ find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement
   data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
   str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
   str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
-
+  
   return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
 
@@ -149,28 +149,28 @@ extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement =
 # -------- Function to get slide URL info ----------
 
 get_slide_info <- function(df){
-
+  
   df$concepts_slide <- ""
   df$lo_slide <- ""
   df$for_slide <- ""
   df$prereq_slide <- ""
-
+  
   if (nrow(df) >=1){
     for (i in 1:nrow(df)) {
       # Make raw content url
       message(paste0("Slides for ", df$CourseName[i]))
       base_url <- make_raw_content_url(df[i,]$html_url)
       if (!(df$CourseName[i] %in% c("AI for Decision Makers", "Data Management and Sharing for NIH Proposals", "AI for Efficient Programming"))){
-
+        
         # Determine if the index.Rmd file can be read
         try_url <- try(readLines(paste0(base_url, "/main/01-intro.Rmd")), silent = TRUE)
-
+      
         # If try was ok, continue reading index file -- we'll get slide URLs from these
         if (class(try_url) != "try-error") {
           intro_data <- readLines(paste0(base_url, "/main/01-intro.Rmd"))
         } else { #if 01-intro.Rmd doesn't exist
           try_urlQmd <- try(readlLnes(paste0(base_url, "/main/01-intro.qmd")), silent = TRUE) #try 01-intro.qmd (for Containers course)
-         
+          
           if (class(try_urlQmd) != "try-error") {
             intro_data <- readLines(paste0(base_url, "/main/01-intro.qmd"))
           } else {
@@ -178,28 +178,28 @@ get_slide_info <- function(df){
             message("No available course information added to this last chunk after checking `01-intro.Rmd` and `01-intro.qmd`")
           }
         }
-
+        
         if (sum(intro_data != "") > 1) { #if blank data, don't check it
-
+        
           df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
           df$lo_slide[i] <- extract_slide_url("learning_objectives", intro_data)
           df$for_slide[i] <- extract_slide_url("for_individuals_who", intro_data)
           df$prereq_slide[i] <- extract_slide_url("prereqs", intro_data)
-
+           
         } else {
           df$concepts_slide[i] <- NA_character_
           df$lo_slide[i] <- NA_character_
           df$for_slide[i] <- NA_character_
           df$prereq_slide[i] <- NA_character_
-
+          
           }#close if of making sure intro data has things to grep from
-      } else {
+      } else { 
         message("Employing alternative checking methods")
         #check NIH specific files, Efficient specific files
         if (df$CourseName[i] == "AI for Efficient Programming"){
-
+        
           try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
-
+          
           if (class(try_urlIndex) != "try-error") {
             intro_data <- readLines(paste0(base_url, "/main/index.Rmd"))
             df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
@@ -222,7 +222,7 @@ get_slide_info <- function(df){
         } else { #NIH for Data Sharing course
           try_urlIndex <- try(readLines(paste0(base_url, "/main/index.Rmd")), silent = TRUE) #try index.Rmd
           try_urlLO <- try(readLines(paste0(base_url, "/main/Learning_objectives.Rmd")), silent = TRUE) #try LearningObjectives.Rmd
-
+          
           if((class(try_urlIndex) != "try-error") & (class(try_urlLO) != "try-error")){
             intro_data <- c(readLines(paste0(base_url, "/main/index.Rmd")), readLines(paste0(base_url, "/main/Learning_objectives.Rmd")))
             df$concepts_slide[i] <- extract_slide_url("topics_covered" , intro_data)
@@ -235,34 +235,16 @@ get_slide_info <- function(df){
             df$lo_slide[i] <- NA_character_
             df$for_slide[i] <- NA_character_
             df$prereq_slide[i] <- NA_character_
-          }
+          } 
         } #end the if else if and else chain for the specific coursers
-      } #end else looking at specific courses
-    } #end for loop
+      } #end else looking at specific courses 
+    } #end for loop  
   } else { message("No relevant resources, so no data added")} #end if not at least one row
   return(df)
 }
 
 make_branch_file_url <- function(base_url, filename, branch = "/main/"){
   return(paste0(base_url, "/refs/heads/", branch, filename))
-}
-
-try_and_add_branch <- function(base_url, i, subcourseName, branch_name, to_bind_df){
-  branch_file <- make_branch_file_url(base_url, paste0("0", i, "a-", subcourseName, "-intro.Rmd"), branch = branch_name)
-  try_AI_url <- try(readLines(branch_file), silent = TRUE)
-
-  if(class(try_AI_url) != "try-error"){
-    intro_data <- readLines(branch_file)
-    to_bind_df[i,]$lo_slide <- extract_slide_url("learning_objectives", intro_data)
-    to_bind_df[i,]$for_slide <- extract_slide_url("for_individuals_who", intro_data)
-    to_bind_df[i,]$concepts_slide <- extract_slide_url("topics_covered", intro_data)
-  } else{
-    to_bind_df[i,]$lo_slide <- NA_character_
-    to_bind_df[i,]$for_slide <- NA_character_
-    to_bind_df[i,]$concepts_slide <- NA_character_
-  }
-
-  return(to_bind_df)
 }
 
 add_rows_with_slides_AIDM <- function(df){
@@ -276,21 +258,45 @@ add_rows_with_slides_AIDM <- function(df){
                            concepts_slide = c("", "", "", ""),
                            prereq_slide = NA_character_
                           )
-
+  
   to_bind_df$name <- to_bind_df$CourseName
-
+    
   #Exploring AI Possibilities: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ah/add-slides/01a-AI_Possibilities-intro.Rmd
-  to_bind_df <- try_and_add_branch(base_url, 1, "AI_Possibilities", "ah/add-slides/", to_bind_df)
-
+  branch_file1 <- make_branch_file_url(base_url, "01a-AI_Possibilities-intro.Rmd", branch = "ah/add-slides/")
+  try_AI_url1 <- try(readLines(branch_file1), silent = TRUE)
+    
+  if(class(try_AI_url1) != "try-error") {
+    intro_data <- readLines(branch_file1)
+    to_bind_df[1,]$lo_slide <- extract_slide_url("learning_objectives", intro_data)
+    to_bind_df[1,]$for_slide <- extract_slide_url("for_individuals_who", intro_data)
+    to_bind_df[1,]$concepts_slide <- extract_slide_url("topics_covered", intro_data)
+  } else{
+    to_bind_df[1,]$lo_slide <- NA_character_
+    to_bind_df[1,]$for_slide <- NA_character_
+    to_bind_df[1,]$concepts_slide <- NA_character_
+  }
+    
   #Avoiding AI Harm: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/cw_add_slides/02a-Avoiding_Harm-intro.Rmd
-  to_bind_df <- try_and_add_branch(base_url, 2, "Avoiding_Harm", "cw_add_slides/", to_bind_df)
-
-  #Determining AI Needs: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/ai_needs_slides/03a-Determining-AI-Needs-intro.Rmd
-  to_bind_df <- try_and_add_branch(base_url, 3, "Determining-AI-Needs", "ai_needs_slides/", to_bind_df)
-
-  #Developing AI Policy: https://raw.githubusercontent.com/fhdsl/AI_for_Decision_Makers/refs/heads/EMH-add-intro-to-policy-course/04a-AI_Policy-intro.Rmd
-  to_bind_df <- try_and_add_branch(base_url, 4, "AI_Policy", "EMH-add-intro-to-policy-course/", to_bind_df)
-
+  branch_file2 <- make_branch_file_url(base_url, "02a-Avoiding_Harm-intro.Rmd", branch = "cw_add_slides/")
+  try_AI_url2 <- try(readLines(branch_file2), silent = TRUE)
+  
+  if(class(try_AI_url2) != "try-error") {
+    intro_data <- readLines(branch_file2)
+    to_bind_df[2,]$lo_slide <- extract_slide_url("learning_objectives", intro_data)
+    to_bind_df[2,]$for_slide <- extract_slide_url("for_individuals_who", intro_data)
+    to_bind_df[2,]$concepts_slide <- extract_slide_url("topics_covered", intro_data)
+  } else{
+    to_bind_df[2,]$lo_slide <- NA_character_
+    to_bind_df[2,]$for_slide <- NA_character_
+    to_bind_df[2,]$concepts_slide <- NA_character_
+  }
+    
+  #Determining AI Needs:
+  ## To fill in
+    
+  #Developing AI Policy:
+  ## To fill in
+    
   df <- dplyr::bind_rows(df, to_bind_df)
   return(df)
 }
@@ -387,7 +393,7 @@ for (page in 1:last) {
 
     get_book_info() %>%
     get_slide_info()
-
+    
 
     full_repo_df <- rbind(full_repo_df, repo_df)
 }
