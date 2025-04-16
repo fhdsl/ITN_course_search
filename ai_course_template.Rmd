@@ -11,6 +11,7 @@ knitr::opts_chunk$set(
 
 ```{r}
 library(ottrpal)
+library(cow)
 library(readr)
 library(stringr)
 library(dplyr)
@@ -38,32 +39,32 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 
 ```{r}
 #Call the aboutCourse.Rmd
-ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
+cow::borrow_chapter(doc_path = "chunks/aboutCourse.md",
                         tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, which_main_course, "description", pastequotes = FALSE),
                         "{COURSE_CATEGORY}" = grab_data(course_info, which_main_course, "Category", pastequotes = FALSE)))
 ```
 
 ```{r}
 #Call the formatsFullCourse.md
-ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
                         tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, which_main_course, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" = grab_data(course_info, which_main_course, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, which_main_course, "CourseraLink"), "{LEANPUB_LINK}" = grab_data(course_info, which_main_course, "LeanpubLink")))
 ```
 
 ```{r}
 #Call the conceptsCourse.Rmd for sub course 1
-ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+cow::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
                         tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "concepts_slide")))
 ```
 
 ```{r}
 #Call the audienceCourse.Rmd for sub course 1
-ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_possibilities, "BroadAudience")))
 ```
 
 ```{r}
 #Call the loCourse.Rmd for each sub course 1
-ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "lo_slide")))
 ```
 
@@ -71,19 +72,19 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 ```{r}
 #Call the conceptsCourse.Rmd for sub course 2
-ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+cow::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
                         tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_harm, "concepts_slide")))
 ```
 
 ```{r}
 #Call the audienceCourse.Rmd for sub course 2
-ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_harm, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_harm, "BroadAudience")))
 ```
 
 ```{r}
 #Call the loCourse.Rmd for each sub course 2
-ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_harm, "lo_slide")))
 ```
 
@@ -91,38 +92,38 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 ```{r}
 #Call the conceptsCourse.Rmd for sub course 3
-ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+cow::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
                         tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_needs, "concepts_slide")))
 ```
 
 ```{r}
 #Call the audienceCourse.Rmd for sub course 3
-ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_needs, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_needs, "BroadAudience")))
 ```
 
 ```{r}
 #Call the loCourse.Rmd for each sub course 3
-ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_needs, "lo_slide")))
 ```
 <hr>
 
 ```{r}
 #Call the conceptsCourse.Rmd for sub course 4
-ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+cow::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
                         tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_policy, "concepts_slide")))
 ```
 
 ```{r}
 #Call the audienceCourse.Rmd for sub course 4
-ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_policy, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_policy, "BroadAudience")))
 ```
 
 ```{r}
 #Call the loCourse.Rmd for each sub course 4
-ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_policy, "lo_slide")))
 ```
 
@@ -130,6 +131,6 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 ```{r}
 #Call the overall funding with fundingFullCourse.Rmd
-ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+cow::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
                         tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
 ```
