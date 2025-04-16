@@ -1,0 +1,5 @@
+## Learning Objectives
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width = "100%"}
+ottrpal::include_slide({LO_SLIDE_LINK})
+```
