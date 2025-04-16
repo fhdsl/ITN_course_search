@@ -31,44 +31,44 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 
 ```{r}
 #Call the aboutCourse.md
-cow::borrow_chapter(doc_path = "chunks/aboutCourse.md",
+ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
                         tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category", pastequotes = FALSE)))
 ```
 
 ```{r}
 #Call the formatsFullCourse.Rmd
-cow::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
+ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
                         tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink"), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink")))
 ```
 
 ```{r}
 #Call the audienceCourse.Rmd
-cow::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience")))
 ```
 
 ```{r}
 #Call the prereqsCourse.Rmd if appropriate
 if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
-  cow::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
+  ottrpal::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
                           tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide")))
 }
 ```
 
 ```{r}
 #Call the conceptsCourse.Rmd
-cow::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
                         tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, params$row_number, "concepts_slide")))
 ```
 
 ```{r}
 #Call the loCourse.Rmd
-cow::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
 ```
 
 ```{r}
 #Call the fundingFullCourse.Rmd
-cow::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
                         tag_replacement = list("{hutch_funded}" = grab_data(course_info, params$row_number, "hutch_funding", pastequotes = FALSE)))
 ```
