@@ -9,36 +9,36 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
-```{r}
+```{r import_packages}
 library(here)
 library(tidyverse)
 library(DT)
 library(rmarkdown)
 ```
 
-```{r}
+```{r import_fxns}
 source("scripts/format-tables.R")
 #query collection should be run from the workflows
 ```
 
-```{r}
+```{r import_subset_data}
 full_repo_df <- read_tsv(here("resources/collection.tsv"))
 full_repo_df$CurrentOrFuture = "Current"
 full_repo_df <- full_repo_df %>% filter(!grepl(":", CourseName))
 ```
 
-```{r}
+```{r drive_single_pages, results='hide'}
 for (i in 1:nrow(full_repo_df)){
   courseOI <- full_repo_df$CourseName[i]
   if (courseOI != "AI for Decision Makers"){
-    rmarkdown::render("single_course_template.Rmd", output = paste0(full_repo_df$name[i], "_coursePage.html"), params = list(course_name = courseOI, row_number = i))
+    rmarkdown::render(input = "single_course_template.Rmd", output_file = paste0(full_repo_df$name[i], "_coursePage.html"), params = list(course_name = courseOI, row_number = i))
   } else{
-    rmarkdown::render("ai_course_template.Rmd", output = "AI_for_Decision_Makers_coursePage.html")
+    rmarkdown::render(input = "ai_course_template.Rmd", output_file = "AI_for_Decision_Makers_coursePage.html")
   }
 }
 ```
 
-```{r}
+```{r wrangle_data}
 wrangled <- full_repo_df %>%
   mutate(Concepts = str_to_title(Concepts),
          Concepts = str_replace_all(Concepts, "Ai", "AI"),
@@ -54,7 +54,7 @@ wrangled <- full_repo_df %>%
         )
 ```
 
-```{r}
+```{r prep_table}
 output_prep <- prep_table(wrangled, keep_category = TRUE) %>% mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
 output_table <- setup_table(output_prep, "Test Courses Table with Programmatic Querying",
                             columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4)),
@@ -67,7 +67,7 @@ output_table <- setup_table(output_prep, "Test Courses Table with Programmatic Q
                             ) #"Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"
 ```
 
-```{r}
+```{r display_table}
 output_table
 ```
 

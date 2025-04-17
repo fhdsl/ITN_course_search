@@ -1,7 +1,9 @@
 ## For individuals who
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
-ottrpal::include_slide({FOR_SLIDE_LINK})
+if ({FOR_SLIDE_LINK} != "NA"){
+  ottrpal::include_slide({FOR_SLIDE_LINK})
+}
 ```
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
