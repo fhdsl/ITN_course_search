@@ -17,7 +17,6 @@ library(ottrpal)
 library(readr)
 library(stringr)
 course_info <- read_tsv("resources/collection.tsv")
-print(params$course_name)
 ```
 
 ```{r fxn_to_extract_data}
