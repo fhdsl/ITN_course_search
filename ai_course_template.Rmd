@@ -40,7 +40,7 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 #Call the aboutCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
                         tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, which_main_course, "description", pastequotes = FALSE),
-                        "{COURSE_CATEGORY}" = grab_data(course_info, which_main_course, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date", pastequotes = FALSE)))
+                        "{COURSE_CATEGORY}" = grab_data(course_info, which_main_course, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, which_main_course, "launch_date", pastequotes = FALSE)))
 ```
 
 ```{r overall_formats}
