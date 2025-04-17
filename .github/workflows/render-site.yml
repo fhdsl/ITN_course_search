@@ -29,6 +29,8 @@ on:
       - _site.yml
       - resources/images/*.png
       - resources/images/favicon.ico
+    paths-ignore:
+      - '**_template.Rmd'
 
 jobs:
   yaml-check:
