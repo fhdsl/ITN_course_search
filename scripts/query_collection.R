@@ -3,13 +3,13 @@
 # Following the query_collection.R script developed by Ava Hoffman from the AnVIL_Collection:
 # https://github.com/fhdsl/AnVIL_Collection/blob/main/scripts/query_collection.R
 
-library(optparse)
-library(httr)
-library(jsonlite)
-library(dplyr)
-library(readr)
-library(tidyr)
-library(stringr)
+library(optparse) #need for option parsing
+library(httr) #need for API requests
+library(jsonlite) #need for fromJSON
+library(dplyr) #need for bind_rows
+library(readr) #need for write_tsv
+library(tidyr) #need for unite, separate_longer_delim, separate_wider_delim
+library(stringr) #need for str_detect and str_extract_all
 
 
 # -------- Get the GitHub Token -----------
@@ -28,6 +28,16 @@ opt_parser <- optparse::OptionParser(option_list = option_list)
 opt <- optparse::parse_args(opt_parser)
 git_pat <- opt$git_pat
 
+#' Construct the raw content base URL for a specific course on GitHub
+#'
+#' @description This function uses the Github Link column (named `html_url` when/how used in `get_book_info()`) info in order to construct the raw content base URL
+#' for a specific course. It does not include the end of the URL/a specific file.
+#'
+#' @param github_link Use the info from the github link column of the data for a course to switch the beginning of the link ("github.com") with the raw content part of the URL using str_replace from stringr
+#'
+#' @import stringr
+#'
+#' @return the base_url for raw content from GitHub after the str_replace action
 
 make_raw_content_url <- function(github_link){
   return(str_replace(github_link,
@@ -35,24 +45,58 @@ make_raw_content_url <- function(github_link){
                       "raw.githubusercontent.com"))
 }
 
-#the (?=//)) asserts that there is a parentheses immediately following the URL -- a noncapturing group
+#' Extract the URL of interest for available Coursera and Leanpub course formats using grep and str_extract_all
+#'
+#' This function searches the relevant data for a specific pattern (e.g, "Coursera") and if found identifies line index (multiple?) where it is found (using grep).
+#' If it is found more than once, that may be because it was mentioned without a URL, therefore we perform a grepl (returning TRUEs or FALSEs) to select specifically the line (from `relevant_lines`) where part of a url pattern is too
+#' We then use the `relevant_line` index containing the url of interest to subset the `relevant_data`
+#' And we use `str_extract_all` to extract all URLs in that line
+#' Sometimes with the data, multiple URLs may be on the same line, so in those cases we have to check how many URLs were extracted and re grep our pattern of interest to select the correct url.
+#'
+#' @param pattern_to_search the relevant pattern we're searching for (e.g., Coursera and Leanpub) whose link we want
+#' @param relevant_data the raw Rmd data from readLines
+#' @param url_pattern default is a regex pattern identified from stack overflow (https://stackoverflow.com/a/26498790) adding on a noncapturing group as explained in another stack overflow post (https://stackoverflow.com/a/3926546) `(?=//))` which asserts that there is a parentheses immediately following the URL
+#'
+#' @import stringr
+#'
+#' @return extracted_string the relevant, extracted URL (or NA_character_ if URL not available)
+#'
+
 get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
-  if(sum(grepl(pattern_to_search, relevant_data)) >= 1){
+  if(sum(grepl(pattern_to_search, relevant_data)) >= 1){ #pattern found at least once in data
     relevant_lines <- grep(pattern_to_search, relevant_data)
     data_of_interest <- relevant_data[relevant_lines][grepl("https", relevant_data[relevant_lines])] #select only lines with a URL ... word may be mentioned without a URL
     extracted_string <- unlist(str_extract_all(data_of_interest, url_pattern))
-    if (length(extracted_string) > 1){
-      return(extracted_string[grep(tolower(pattern_to_search), extracted_string)]) #multiple URLs, selecting relevant one
-    } else if (length(extracted_string) == 1){
+    if (length(extracted_string) > 1){ #more than one URL extracted
+      return(extracted_string[grep(tolower(pattern_to_search), extracted_string)]) #selecting relevant one
+    } else if (length(extracted_string) == 1){ #only one URL extracted
       return(extracted_string)
     } else { return(NA_character_)} #empty link (e.g., commented out in the code)
   } else { return(NA_character_) } #pattern wasn't found in data
 }
 
-# ----------- Function to get book info -------------
+# ----------- Function to get book info (Course Name, Coursera Link, Leanpub Link) -------------
+
+#' A function to traverse the GitHub queried data and extract book info (course name, coursera link, and leanpub link) for each course
+#'
+#' This function creates the relevant stand in columns and for each github repo,
+#' uses `make_raw_content_url()` with the `html_url` column to build the prefix of the raw content URL (`base_url`)
+#' Then it uses this base_url together with `index.Rmd` on the main branch to try to read the file. If that file is there and can be read,
+#' we read it in using `readLines()` and then goes about getting the course name from the book header
+#' using `grep` to find the lines with `---` that surround that header material
+#' and then using `grep` to find the line within that range of lines with the title info and does some wrangling to keep just the name.
+#' These course names are a polished version of the course names (with capitalization, without underscores, etc.)
+#' This follows the steps from the AnVIL Collection process.
+#' Then it uses `get_linkOI()` to extract the Coursera and Leanpub links.
+#' If trying the `index.Rmd` file wasn't successful, we assume it's a quarto course and so we check
+#' the _quarto.yml file for the course name and the index.qmd file for the course formats, adapting the steps above.
+#'
+#' @param df an input dataframe with the GitHub queried data
+#'
+#' @return df with 3 new columns (CourseName, CourseraLink, LeanpubLink) filled in with NAs or the relevant info
 
 get_book_info <- function(df){
-  # Create dummy columns
+  # Create stand in columns
   df$CourseName <- ""
   df$CourseraLink <- ""
   df$LeanpubLink <- ""
@@ -73,11 +117,11 @@ get_book_info <- function(df){
         # Get book metadata
         metadata_lines <- grep("---", index_data)
         book_metadata <-
-          index_data[(metadata_lines[1] + 1):(metadata_lines[2] - 1)]
+          index_data[(metadata_lines[1] + 1):(metadata_lines[2] - 1)] #grab the line directly after the first `---` and the line right before the second `---`
 
         # Extract title
         CourseName <-
-          book_metadata[grep("^title:",  book_metadata)]
+          book_metadata[grep("^title:",  book_metadata)] #may have a subtitle, so need `^` to find the title specifically
 
         # Strip extra characters
         CourseName <- str_replace(CourseName, 'title: \"', '')
