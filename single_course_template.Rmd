@@ -67,8 +67,10 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
 ```
 
-```{r course_funding}
+```{r course_funding, eval=FALSE}
 #Call the fundingFullCourse.Rmd
-ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
-                        tag_replacement = list("{hutch_funded}" = grab_data(course_info, params$row_number, "hutch_funding", pastequotes = FALSE)))
+if(params$row_number != "numeric"){
+  ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                          tag_replacement = list("{hutch_funded}" = grab_data(course_info, params$row_number, "hutch_funding", pastequotes = FALSE)))
+}
 ```
