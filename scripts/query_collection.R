@@ -178,25 +178,16 @@ get_book_info <- function(df){
 #' All courses have a relevant tag on the first line of the chunk. Most have the ottrpal::include_slide function on the line directly after this,
 #' but at least one has a blank line between these two elements. This function specifically is meant to identify if the first line has the ottrpal function or
 #' instead a blank line, returning a 1 or 2 respectively.
-#' Because of the more predictable nature of these code blocks and that the URLs aren't in markdown format, there isn't a lengthy regex URL pattern to match
-#' The first url replacement replaces the beginning `ottrpal::include_slide("` with "" and the second url replacement replaces the ending `")`
 #'
+#' @param char_vec this is a vector of characters from readLines
+#' @param line_with_tag this is the numeric index of the line/element in char_vec that has the tag of interest (e.g., "for_individuals_who")
 #'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#' @return 1 or 2, is it the first or second line in the chunk with the ottrpal function and slide link
 #'
 
-find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
-  data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
-  str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
-  str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
-
-  return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
+find_line_of_interest <- function(char_vec, line_with_tag){
+  data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)] #grab the first and second lines after the line with the tag
+  return(grep("include_slide", data_of_interest)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
 
 extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
