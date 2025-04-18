@@ -1,0 +1,25 @@
+```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+if ({COURSERA_LINK} == "NA"){
+  coursera_link <- "Not Available in this format"
+} else {
+  coursera_link <- {COURSERA_LINK}
+}
+
+if ({LEANPUB_LINK} == "NA"){
+  leanpub_link <- "Not Available in this format"
+} else {
+  leanpub_link <- {LEANPUB_LINK}
+}
+```
+
+## Course Formats
+
+| Book version (on a website)            |  Leanpub                                |      Coursera   |
+|:--------------------------------------:|:---------------------------------------:|:------------------------------------------:|
+| Free for learners<br>No login required | Free or fee<br>for learners             | Membership fee<br>for learners |
+| No<br>certification                    | Includes<br>certification of completion | Includes<br>certification of completion |
+| {BOOKDOWN_LINK} | `r leanpub_link`                   | `r coursera_link` |
+
+
+Our courses are open-source and source material can be accessed on GitHub: {GITHUB_LINK}

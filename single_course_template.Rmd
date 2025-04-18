@@ -1,0 +1,77 @@
+---
+title: "`r params$course_name`"
+output: html_document
+params:
+  course_name: character
+  row_number: numeric
+---
+
+```{r chunk_setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, results='asis'
+)
+```
+
+```{r load_packages_data}
+library(ottrpal)
+library(readr)
+library(stringr)
+course_info <- read_tsv("resources/collection.tsv")
+```
+
+```{r fxn_to_extract_data}
+#pastequotes argument is necessary because if a URL is going to be processed within an R code block, it needs to be within quotes (any slides getting included with `ottrpal::include_slide` or checked for availability (e.g., leanpub and coursera) or to split multiples within a variable (e.g., audience))
+grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
+  if(pastequotes){
+    return(paste0('"', df[row_number, column_name], '"'))
+  } else{
+    return(df[row_number, column_name])
+  }
+}
+```
+
+```{r course_about}
+#Call the aboutCourse.md
+ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
+                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date", pastequotes = FALSE)))
+```
+
+```{r course_formats}
+#Call the formatsFullCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
+                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink"), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink")))
+```
+
+```{r course_aud}
+#Call the audienceCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience")))
+```
+
+```{r course_prereqs}
+#Call the prereqsCourse.Rmd if appropriate
+if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
+  ottrpal::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
+                          tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide")))
+}
+```
+
+```{r course_concept}
+#Call the conceptsCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
+                        tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, params$row_number, "concepts_slide")))
+```
+
+```{r course_lo}
+#Call the loCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+                        tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
+```
+
+```{r course_funding}
+#Call the fundingFullCourse.Rmd
+if(params$row_number != "numeric"){ #default value, no actual data passed
+  ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                          tag_replacement = list("{hutch_funded}" = grab_data(course_info, params$row_number, "hutch_funding", pastequotes = FALSE)))
+}
+```

@@ -1,0 +1,136 @@
+---
+title: "AI for Decision Makers"
+output: html_document
+---
+
+```{r chunk_setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, message = FALSE, warning = FALSE, results='asis'
+)
+```
+
+```{r load_packages}
+library(ottrpal)
+library(readr)
+library(stringr)
+library(dplyr)
+course_info <- read_tsv("resources/collection.tsv")
+```
+
+```{r import_course_info}
+course_info <- course_info %>% dplyr::filter(grepl("AI for Decision Makers", CourseName))
+which_main_course <- which(!is.na(course_info$BookdownLink))
+which_possibilities <- which(str_detect(course_info$CourseName, "Possibilities"))
+which_harm <- which(str_detect(course_info$CourseName, "Harm"))
+which_needs <- which(str_detect(course_info$CourseName, "Needs"))
+which_policy <- which(str_detect(course_info$CourseName, "Policy"))
+```
+
+```{r fxn_to_extract_data}
+#pastequotes argument is necessary because if a URL is going to be processed within an R code block, it needs to be within quotes (any slides getting included with `ottrpal::include_slide` or checked for availability (e.g., leanpub and coursera) or to split multiples (e.g., audience))
+grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
+  if(pastequotes){
+    return(paste0('"', df[row_number, column_name], '"'))
+  } else{
+    return(df[row_number, column_name])
+  }
+}
+```
+
+```{r overall_about}
+#Call the aboutCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
+                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, which_main_course, "description", pastequotes = FALSE),
+                        "{COURSE_CATEGORY}" = grab_data(course_info, which_main_course, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, which_main_course, "launch_date", pastequotes = FALSE)))
+```
+
+```{r overall_formats}
+#Call the formatsFullCourse.md
+ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
+                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, which_main_course, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" = grab_data(course_info, which_main_course, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, which_main_course, "CourseraLink"), "{LEANPUB_LINK}" = grab_data(course_info, which_main_course, "LeanpubLink")))
+```
+
+```{r possibility_concept}
+#Call the conceptsCourse.Rmd for sub course 1
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+                        tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "concepts_slide")))
+```
+
+```{r possibility_aud}
+#Call the audienceCourse.Rmd for sub course 1
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_possibilities, "BroadAudience")))
+```
+
+```{r possibility_lo}
+#Call the loCourse.Rmd for each sub course 1
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+                        tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "lo_slide")))
+```
+
+<hr>
+
+```{r harm_concept}
+#Call the conceptsCourse.Rmd for sub course 2
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+                        tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_harm, "concepts_slide")))
+```
+
+```{r harm_aud}
+#Call the audienceCourse.Rmd for sub course 2
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_harm, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_harm, "BroadAudience")))
+```
+
+```{r harm_lo}
+#Call the loCourse.Rmd for each sub course 2
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+                        tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_harm, "lo_slide")))
+```
+
+<hr>
+
+```{r needs_concept}
+#Call the conceptsCourse.Rmd for sub course 3
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+                        tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_needs, "concepts_slide")))
+```
+
+```{r needs_aud}
+#Call the audienceCourse.Rmd for sub course 3
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_needs, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_needs, "BroadAudience")))
+```
+
+```{r needs_lo}
+#Call the loCourse.Rmd for each sub course 3
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+                        tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_needs, "lo_slide")))
+```
+<hr>
+
+```{r policy_concept}
+#Call the conceptsCourse.Rmd for sub course 4
+ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
+                        tag_replacement = list("{CONCEPTS_SLIDE_LINK}" = grab_data(course_info, which_policy, "concepts_slide")))
+```
+
+```{r policy_aud}
+#Call the audienceCourse.Rmd for sub course 4
+ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_policy, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_policy, "BroadAudience")))
+```
+
+```{r policy_lo}
+#Call the loCourse.Rmd for each sub course 4
+ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
+                        tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_policy, "lo_slide")))
+```
+
+<hr>
+
+```{r funding_info}
+#Call the overall funding with fundingFullCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                        tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
+```
