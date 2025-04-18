@@ -27,7 +27,7 @@ which_policy <- which(str_detect(course_info$CourseName, "Policy"))
 ```
 
 ```{r fxn_to_extract_data}
-grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
+grab_data <- function(df, row_number, column_name, pastequotes = FALSE){
   if(pastequotes){
     return(paste0('"', df[row_number, column_name], '"'))
   } else{
@@ -46,7 +46,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
 ```{r overall_formats}
 #Call the formatsFullCourse.md
 ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
-                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, which_main_course, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" = grab_data(course_info, which_main_course, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, which_main_course, "CourseraLink"), "{LEANPUB_LINK}" = grab_data(course_info, which_main_course, "LeanpubLink")))
+                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, which_main_course, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" = grab_data(course_info, which_main_course, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, which_main_course, "CourseraLink", pastequotes = TRUE), "{LEANPUB_LINK}" = grab_data(course_info, which_main_course, "LeanpubLink", pastequotes = TRUE)))
 ```
 
 ```{r possibility_concept}
@@ -58,7 +58,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ```{r possibility_aud}
 #Call the audienceCourse.Rmd for sub course 1
 ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
-                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_possibilities, "BroadAudience")))
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_possibilities, "BroadAudience", pastequotes = TRUE)))
 ```
 
 ```{r possibility_lo}
@@ -78,7 +78,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ```{r harm_aud}
 #Call the audienceCourse.Rmd for sub course 2
 ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
-                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_harm, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_harm, "BroadAudience")))
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_harm, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_harm, "BroadAudience", pastequotes = TRUE)))
 ```
 
 ```{r harm_lo}
@@ -98,7 +98,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ```{r needs_aud}
 #Call the audienceCourse.Rmd for sub course 3
 ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
-                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_needs, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_needs, "BroadAudience")))
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_needs, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_needs, "BroadAudience", pastequotes = TRUE)))
 ```
 
 ```{r needs_lo}
@@ -117,7 +117,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ```{r policy_aud}
 #Call the audienceCourse.Rmd for sub course 4
 ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
-                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_policy, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_policy, "BroadAudience")))
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, which_policy, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, which_policy, "BroadAudience", pastequotes = TRUE)))
 ```
 
 ```{r policy_lo}

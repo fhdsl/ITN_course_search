@@ -173,8 +173,25 @@ get_book_info <- function(df){
   return(df)
 }
 
+#' This function is meant to identify which line in a code chunk has the ottrpal::include_slide function
+#'
+#' All courses have a relevant tag on the first line of the chunk. Most have the ottrpal::include_slide function on the line directly after this,
+#' but at least one has a blank line between these two elements. This function specifically is meant to identify if the first line has the ottrpal function or
+#' instead a blank line, returning a 1 or 2 respectively.
+#' Because of the more predictable nature of these code blocks and that the URLs aren't in markdown format, there isn't a lengthy regex URL pattern to match
+#' The first url replacement replaces the beginning `ottrpal::include_slide("` with "" and the second url replacement replaces the ending `")`
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
+#'
 
-find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
+find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(', second_url_replacement = '\\)'){
   data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
   str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
   str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
@@ -182,7 +199,7 @@ find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement
   return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
 
-extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
+extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(', second_url_replacement = '\\)'){
   if(sum(grepl(tag_of_interest, char_vec)) >= 1){ #some data not on main yet
     relevant_lines <- grep(tag_of_interest, char_vec)
     data_of_interest <- str_replace(char_vec[relevant_lines+find_line_of_interest(char_vec, relevant_lines)], first_url_replacement, "")
@@ -339,6 +356,16 @@ add_rows_with_slides_AIDM <- function(df){
   return(df)
 }
 
+# Everything below here drives the process of querying GitHub
+# keeping the repos we want,
+# processing the topic tags from the repos,
+# getting the book info (course name, coursera link, and leanpub link)
+# getting the slide info for individual course pages (audience, concepts covered, learning objectives, etc.) (excluding AI for Decision Makers)
+# The steps above are done for each page of the GitHub API query results
+# after that, there's a full df for all the repos we want that undergoes a bit more wrangling to clean up the topics,
+# adds the AI for Decision Makers slides
+# and renames a few columns
+# finally saves the collection
 # --------- Set url and token ---------
 
 message(paste("Querying Github API..."))
@@ -442,7 +469,7 @@ full_repo_df <- full_repo_df %>%
   tidyr::unite("Concepts", starts_with("topics_"), sep=';', na.rm = TRUE) %>%
   add_rows_with_slides_AIDM() %>%
   rename(GithubLink = html_url) %>%
-  rename(BookdownLink = homepage) #already available from the API calls, so don't need to extract it
+  rename(BookdownLink = homepage) #already available from the API calls, so don't need to extract it in get_book_info, just renaming it
 
 # ---------- Save the collection ---------
 

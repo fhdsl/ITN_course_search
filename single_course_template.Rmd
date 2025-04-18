@@ -20,7 +20,7 @@ course_info <- read_tsv("resources/collection.tsv")
 ```
 
 ```{r fxn_to_extract_data}
-grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
+grab_data <- function(df, row_number, column_name, pastequotes = FALSE){
   if(pastequotes){
     return(paste0('"', df[row_number, column_name], '"'))
   } else{
@@ -38,13 +38,13 @@ ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
 ```{r course_formats}
 #Call the formatsFullCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
-                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink"), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink")))
+                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink", pastequotes = TRUE), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink", pastequotes = TRUE)))
 ```
 
 ```{r course_aud}
 #Call the audienceCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
-                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience")))
+                        tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience", pastequotes = TRUE)))
 ```
 
 ```{r course_prereqs}
