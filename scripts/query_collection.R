@@ -47,7 +47,7 @@ make_raw_content_url <- function(github_link){
 
 #' Extract the URL of interest for available Coursera and Leanpub course formats using grep and str_extract_all
 #'
-#' This function searches the relevant data for a specific pattern (e.g, "Coursera") and if found identifies line index (multiple?) where it is found (using grep).
+#' @description This function searches the relevant data for a specific pattern (e.g, "Coursera") and if found identifies line index (multiple?) where it is found (using grep).
 #' If it is found more than once, that may be because it was mentioned without a URL, therefore we perform a grepl (returning TRUEs or FALSEs) to select specifically the line (from `relevant_lines`) where part of a url pattern is too
 #' We then use the `relevant_line` index containing the url of interest to subset the `relevant_data`
 #' And we use `str_extract_all` to extract all URLs in that line
@@ -78,7 +78,7 @@ get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?
 
 #' A function to traverse the GitHub queried data and extract book info (course name, coursera link, and leanpub link) for each course
 #'
-#' This function creates the relevant stand in columns and is meant for batches of github repos, dealing with each github repo in the batch individually
+#' @description This function creates the relevant stand in columns and is meant for batches of github repos, dealing with each github repo in the batch individually
 #' uses `make_raw_content_url()` with the `html_url` column to build the prefix of the raw content URL (`base_url`)
 #' Then it uses this base_url together with `index.Rmd` on the main branch to try to read the file. If that file is there and can be read,
 #' we read it in using `readLines()` and then goes about getting the course name from the book header
@@ -176,7 +176,7 @@ get_book_info <- function(df){
 
 #' This function is meant to identify which line in a code chunk has the ottrpal::include_slide function
 #'
-#' All courses have a relevant tag on the first line of the chunk. Most have the ottrpal::include_slide function on the line directly after this,
+#' @description All courses have a relevant tag on the first line of the chunk. Most have the ottrpal::include_slide function on the line directly after this,
 #' but at least one has a blank line between these two elements. This function specifically is meant to identify if the first line has the ottrpal function or
 #' instead a blank line, returning a 1 or 2 respectively.
 #'
@@ -192,7 +192,7 @@ find_line_of_interest <- function(char_vec, line_with_tag){
 
 #' This function extracts the URL of a specific slide from an R code chunk
 #'
-#' All courses have a relevant tag on the first line of the chunk adding a visual/slide for audience, topics covered, learning objectives, or prereqs (if applicable)
+#' @description All courses have a relevant tag on the first line of the chunk adding a visual/slide for audience, topics covered, learning objectives, or prereqs (if applicable)
 #' This function uses grep with the relevant tag to find the chunk, `find_line_of_interest()`, and str_replace() to return the URL
 #'
 #' @param tag_of_interest a character used to tag the r code chunk and what we search to identify the code chunk (e.g., "for_individuals_who", "topics_covered", "learning_objectives" )
@@ -216,7 +216,7 @@ extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement =
 
 #' A function to traverse the GitHub queried data and extract visual/slide info (audience, concepts discussed, learning objectives, or prereqs if applicable) for each course
 #'
-#' This function parallels the get_book_info() function
+#' @description This function parallels the get_book_info() function
 #' This function creates the relevant stand in columns and is meant for batches of github repos, dealing with each github repo in the batch individually
 #' uses `make_raw_content_url()` with the `html_url` column to build the prefix of the raw content URL (`base_url`)
 #' If the course isn't one of 3 that uses less predictable ways to add this intro/background info ("AI for Decision Makers", "Data Management and Sharing for NIH Proposals", "AI for Efficient Programming")
@@ -327,7 +327,7 @@ get_slide_info <- function(df){
 
 #' This function constructs the full URL for accessing the raw content of a specific file on a branch
 #'
-#' The AI for Decision Makers course has the tagged R code chunks grabbing intro slides/visuals on non-main branches
+#' @description The AI for Decision Makers course has the tagged R code chunks grabbing intro slides/visuals on non-main branches
 #' so this function takes in the info about the branch name and file of interest to get the URL of accessing the raw content of that file
 #'
 #' @param base_url This is the base url that is constructed with `make_raw_content_url()`
@@ -370,7 +370,7 @@ try_and_add_branch <- function(base_url, i, subcourseName, branch_name, to_bind_
 
 #' This function drives making new rows to add to the overall dataframe for the AI subcourses
 #'
-#' create a new dataframe for the subcourse slides with matching column names as appropriate to the original df
+#' @description create a new dataframe for the subcourse slides with matching column names as appropriate to the original df
 #' For each subcourse use `try_and_add_branch()` to extract and store the slide info for each subcourse.
 #' bins the rows the of new dataframe to the overall dataframe and returns thats
 #'

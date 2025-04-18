@@ -85,15 +85,10 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
 
 #' A function to setup the DT datatable
 #'
-#' @description
-#' A short description...
-#'
-#'
 #' @param inputdf input dataframe or tibble to be displayed with the DT library
 #' @param some_caption a caption describing the table
 #'
 #' @return output_table the DT datatable ready to display version of the inputdf
-#'
 
 setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
   if (is.null(columnDefsListOfLists)){
@@ -107,7 +102,7 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
       escape = FALSE,
       caption = some_caption,
       filter = "top",
-      options = list(scrollX = TRUE, autoWidth = TRUE, pageLength = 10,
+      options = list(scrollX = TRUE, autoWidth = TRUE, pageLength = 15,
                      scrollCollapse = TRUE, fillContainer = TRUE,
                      order = (list(0, 'asc')),
                      columnDefs = columnDefsListOfLists,

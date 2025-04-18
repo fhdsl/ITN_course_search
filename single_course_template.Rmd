@@ -20,6 +20,7 @@ course_info <- read_tsv("resources/collection.tsv")
 ```
 
 ```{r fxn_to_extract_data}
+#pastequotes argument is necessary because if a URL is going to be processed within an R code block, it needs to be within quotes (any slides getting included with `ottrpal::include_slide` or checked for availability (e.g., leanpub and coursera) or to split multiples within a variable (e.g., audience))
 grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
   if(pastequotes){
     return(paste0('"', df[row_number, column_name], '"'))
@@ -69,7 +70,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 ```{r course_funding}
 #Call the fundingFullCourse.Rmd
-if(params$row_number != "numeric"){
+if(params$row_number != "numeric"){ #default value, no actual data passed
   ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
                           tag_replacement = list("{hutch_funded}" = grab_data(course_info, params$row_number, "hutch_funding", pastequotes = FALSE)))
 }
