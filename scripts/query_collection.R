@@ -191,7 +191,7 @@ get_book_info <- function(df){
 #'
 #'
 
-find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(', second_url_replacement = '\\)'){
+find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
   data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)]
   str_replace_doi <- str_replace(data_of_interest, first_url_replacement, "")
   str_replace_doi <- str_replace(str_replace_doi, second_url_replacement, "")
@@ -199,7 +199,7 @@ find_line_of_interest <- function(char_vec, line_with_tag, first_url_replacement
   return(grep("http", str_replace_doi)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
 
-extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(', second_url_replacement = '\\)'){
+extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
   if(sum(grepl(tag_of_interest, char_vec)) >= 1){ #some data not on main yet
     relevant_lines <- grep(tag_of_interest, char_vec)
     data_of_interest <- str_replace(char_vec[relevant_lines+find_line_of_interest(char_vec, relevant_lines)], first_url_replacement, "")
