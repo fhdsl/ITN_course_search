@@ -9,7 +9,7 @@ library(jsonlite) #need for fromJSON
 library(dplyr) #need for bind_rows
 library(readr) #need for write_tsv
 library(tidyr) #need for unite, separate_longer_delim, separate_wider_delim
-library(stringr) #need for str_detect and str_extract_all
+library(stringr) #need for str_detect and str_extract_all and str_replace
 
 
 # -------- Get the GitHub Token -----------
@@ -60,7 +60,6 @@ make_raw_content_url <- function(github_link){
 #' @import stringr
 #'
 #' @return extracted_string the relevant, extracted URL (or NA_character_ if URL not available)
-#'
 
 get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+(?=\\))"){
   if(sum(grepl(pattern_to_search, relevant_data)) >= 1){ #pattern found at least once in data
@@ -79,7 +78,7 @@ get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?
 
 #' A function to traverse the GitHub queried data and extract book info (course name, coursera link, and leanpub link) for each course
 #'
-#' This function creates the relevant stand in columns and for each github repo,
+#' This function creates the relevant stand in columns and is meant for batches of github repos, dealing with each github repo in the batch individually
 #' uses `make_raw_content_url()` with the `html_url` column to build the prefix of the raw content URL (`base_url`)
 #' Then it uses this base_url together with `index.Rmd` on the main branch to try to read the file. If that file is there and can be read,
 #' we read it in using `readLines()` and then goes about getting the course name from the book header
@@ -92,6 +91,8 @@ get_linkOI <- function(pattern_to_search, relevant_data, url_pattern = "http[s]?
 #' the _quarto.yml file for the course name and the index.qmd file for the course formats, adapting the steps above.
 #'
 #' @param df an input dataframe with the GitHub queried data
+#'
+#' @import stringr
 #'
 #' @return df with 3 new columns (CourseName, CourseraLink, LeanpubLink) filled in with NAs or the relevant info
 
@@ -183,15 +184,28 @@ get_book_info <- function(df){
 #' @param line_with_tag this is the numeric index of the line/element in char_vec that has the tag of interest (e.g., "for_individuals_who")
 #'
 #' @return 1 or 2, is it the first or second line in the chunk with the ottrpal function and slide link
-#'
 
 find_line_of_interest <- function(char_vec, line_with_tag){
   data_of_interest <- char_vec[(line_with_tag+1):(line_with_tag+2)] #grab the first and second lines after the line with the tag
   return(grep("include_slide", data_of_interest)) #should return a 1 or 2, expecting 1 for nearly every course expect for Computing for Cancer Informatics
 }
 
+#' This function extracts the URL of a specific slide from an R code chunk
+#'
+#' All courses have a relevant tag on the first line of the chunk adding a visual/slide for audience, topics covered, learning objectives, or prereqs (if applicable)
+#' This function uses grep with the relevant tag to find the chunk, `find_line_of_interest()`, and str_replace() to return the URL
+#'
+#' @param tag_of_interest a character used to tag the r code chunk and what we search to identify the code chunk (e.g., "for_individuals_who", "topics_covered", "learning_objectives" )
+#' @param char_vec this is a vector of characters from readLines
+#' @param first_url_replacement default is 'ottrpal::include_slide("' (with escapes "\\", "\" as necessary), string will be replaced with ""
+#' @param second_url_replacement default is '")' (with escapes "\", "\\" as necessary), string will be replaced with ""
+#'
+#' @import stringr
+#'
+#' @return the slide URL
+
 extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement = 'ottrpal::include_slide\\(\"', second_url_replacement = '\"\\)'){
-  if(sum(grepl(tag_of_interest, char_vec)) >= 1){ #some data not on main yet
+  if(sum(grepl(tag_of_interest, char_vec)) >= 1){ #if data not available
     relevant_lines <- grep(tag_of_interest, char_vec)
     data_of_interest <- str_replace(char_vec[relevant_lines+find_line_of_interest(char_vec, relevant_lines)], first_url_replacement, "")
     return(str_replace(data_of_interest, second_url_replacement, ""))
@@ -199,6 +213,22 @@ extract_slide_url <- function(tag_of_interest, char_vec, first_url_replacement =
 }
 
 # -------- Function to get slide URL info ----------
+
+#' A function to traverse the GitHub queried data and extract visual/slide info (audience, concepts discussed, learning objectives, or prereqs if applicable) for each course
+#'
+#' This function parallels the get_book_info() function
+#' This function creates the relevant stand in columns and is meant for batches of github repos, dealing with each github repo in the batch individually
+#' uses `make_raw_content_url()` with the `html_url` column to build the prefix of the raw content URL (`base_url`)
+#' If the course isn't one of 3 that uses less predictable ways to add this intro/background info ("AI for Decision Makers", "Data Management and Sharing for NIH Proposals", "AI for Efficient Programming")
+#' Then it uses this base_url together with `01-intro.Rmd` on the main branch to try to read the file. If that file is there and can be read,
+#' we read it in using `readLines()` and then goes about getting the slide URLs with extract_slide_url()
+#' If trying the `index.Rmd` file wasn't successful, we assume it's a quarto course and so we check `01-intro.qmd`
+#' For the 3 courses listed above, this function uses alternative approaches to check specific files for Data Management and Sharing and AI for Efficient Programming.
+#' We use a completely different function after all the batches have been processed to add the slide URLs (in new rows) for AI for Decision Makers (add_rows_with_slides_AIDM())
+#'
+#' @param df an input dataframe with the GitHub queried data
+#'
+#' @return df with 4 new columns (concepts_slide, lo_slide, for_slide, prereq_slide) filled in with NAs or the relevant info
 
 get_slide_info <- function(df){
 
@@ -295,9 +325,30 @@ get_slide_info <- function(df){
   return(df)
 }
 
+#' This function constructs the full URL for accessing the raw content of a specific file on a branch
+#'
+#' The AI for Decision Makers course has the tagged R code chunks grabbing intro slides/visuals on non-main branches
+#' so this function takes in the info about the branch name and file of interest to get the URL of accessing the raw content of that file
+#'
+#' @param base_url This is the base url that is constructed with `make_raw_content_url()`
+#' @param filename The name of the file we want to access
+#' @param branch The name of the branch that we want to access
+#'
+#' @return the full URL for a specific file on a branch
+
 make_branch_file_url <- function(base_url, filename, branch = "/main/"){
   return(paste0(base_url, "/refs/heads/", branch, filename))
 }
+
+#' This function tries to read the file on a specific branch and drives extracting the URLs and adding them to the input df
+#'
+#' @param base_url This is the base url that is constructed with `make_raw_content_url()`
+#' @param i which row/which course index (the courses are already numbered, and these numbers are part of the file names)
+#' @param subcourseName the subcourse name is also part of the overall file name
+#' @param branch_name the name of the branch that the updated file with tags of interest is on
+#' @param to_bind_df the dataframe where the info about these AI subcourses is being stored with the course index being aligned with the subcourse filename/number
+#'
+#' @return to_bind_df with the specific row (i) filled out
 
 try_and_add_branch <- function(base_url, i, subcourseName, branch_name, to_bind_df){
   branch_file <- make_branch_file_url(base_url, paste0("0", i, "a-", subcourseName, "-intro.Rmd"), branch = branch_name)
@@ -316,6 +367,18 @@ try_and_add_branch <- function(base_url, i, subcourseName, branch_name, to_bind_
 
   return(to_bind_df)
 }
+
+#' This function drives making new rows to add to the overall dataframe for the AI subcourses
+#'
+#' create a new dataframe for the subcourse slides with matching column names as appropriate to the original df
+#' For each subcourse use `try_and_add_branch()` to extract and store the slide info for each subcourse.
+#' bins the rows the of new dataframe to the overall dataframe and returns thats
+#'
+#' @param df the overall dataframe with the processed Github API query info
+#'
+#' @import dplyr
+#'
+#' @return df with four new rows for the AI for Decision Makers subcourses and their intro slides/visual info
 
 add_rows_with_slides_AIDM <- function(df){
   base_url <- make_raw_content_url(df[which(df$CourseName == "AI for Decision Makers"),]$html_url)
@@ -453,6 +516,10 @@ for (page in 1:last) {
 
     full_repo_df <- rbind(full_repo_df, repo_df)
 }
+
+#batch processing of the github API results is above like the example from AnVIL collection
+#below, once they've all been processed to extract itn courses, category, audience, funding, launch date, course name, available course formats, and intro slide/visual URLs
+#then we clean up the topics column and create concepts and add the intro slide/visual information for the AI for Decision Makers subcourses and rename a couple of columns
 
 full_repo_df <- full_repo_df %>%
   tidyr::separate_wider_delim(topics, delim=", ", names_sep = "_", too_few = "align_start") %>%
