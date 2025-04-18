@@ -6,18 +6,18 @@ library(DT)
 library(here)
 
 #' Format the tibble/table to bold names, link links, add icons, and rearrange/select columns
-#' 
+#'
 #' @description This function uses the CourseName, Funding, CurrentOrFuture, GithubLink, BookdownLink, CourseraLink, and LeanpubLink columns in order to make the first two columns
 #' of the outputdf. For the first column of outputdf: CourseName input column value is bolded and icons are added below the name to denote the funding source(s) based on the values in the Funding input column.
 #' For the second column of outputdf: If the course is a current course, GithubLink, BookdownLink, CourseraLink, and LeanpubLink are linked to corresponding icons. If either CourseraLink or LeanpubLink are NA values, then those icons/links are not added
 #' If the course is a future course, the second column of outputdf instead has an under construction icon.
-#' For the third and fourth columns of outputdf: we select the WebsiteDescription and BroadAudience columns. 
-#' 
-#' @param inputdf the input data frame or tibble; expected to have columns CurrentOrFuture, BookdownLink, CourseraLink, LeanpubLink, GithubLink, CourseName, is_itn, hutch_funding, Concepts, BroadAudience, Category 
+#' For the third and fourth columns of outputdf: we select the WebsiteDescription and BroadAudience columns.
+#'
+#' @param inputdf the input data frame or tibble; expected to have columns CurrentOrFuture, BookdownLink, CourseraLink, LeanpubLink, GithubLink, CourseName, is_itn, hutch_funding, Concepts, BroadAudience, Category
 #' @param current a boolean; if TRUE (default), works with current courses; if FALSE, works with future courses by filtering on values in the CurrentOrFuture column
 #' @param keep_category a boolean; if FALSE (default), it won't keep the Category or Concepts columns. If TRUE, the Category column is kept after Links but before WebsiteDescription and the Concepts column is kept at the end
-#' @return outputdf the formatted table 
- 
+#' @return outputdf the formatted table
+
 
 prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
   if (current){
@@ -45,9 +45,9 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
       filter(CurrentOrFuture == "Future") %>% #select just future classes
       mutate(Links = '<img src="resources/images/underconstruction.png" height="40"></img>')
   }
-  
-  outputdf %<>% 
-    mutate(CourseName = paste0("<b>", CourseName, "</b>")) %>% #mutate the name to be bolded
+
+  outputdf %<>%
+    mutate(CourseName = paste0('<a href="', name, '_coursePage.html" target="_blank"><b>', CourseName, '</b></a>')) %>% #mutate the name to be bolded and link to the single course page with more information
     mutate(Funding = #add logos for funding and link to appropriate about pages
              case_when(
                (is_itn == TRUE) & (hutch_funding == FALSE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"30\"></img></a>',
@@ -67,9 +67,9 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     mutate(Category = str_replace(Category, "Software Development", "<img src=\"resources/images/keyboard-1405.png\" alt=\"Software Development\" height=\"20\"></img><p class=\"image-name\">Software Development</p>")) %>%
     mutate(Category = str_replace(Category, "Best Practices", "<img src=\"resources/images/golden-cup-7825.png\" alt=\"Best Practices\" height=\"20\"></img><p class=\"image-name\">Best Practices</p>")) %>%
     mutate(Category = str_replace(Category, "Tools & Resources", "<img src=\"resources/images/tool-box-9520.png\" alt=\"Fundamentals, Tools, & Resources\" height=\"20\"></img><p class=\"image-name\">Fundamentals, Tools, & Resources</p>"))
-  
-  
-  if ((keep_category) & (current)) { #select appropriate columns 
+
+
+  if ((keep_category) & (current)) { #select appropriate columns
     outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Category, Concepts)) %>%
       `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"))
   } else if ((keep_category) & !(current)){
@@ -84,16 +84,11 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
 
 
 #' A function to setup the DT datatable
-#' 
-#' @description
-#' A short description...
-#' 
-#' 
+#'
 #' @param inputdf input dataframe or tibble to be displayed with the DT library
 #' @param some_caption a caption describing the table
-#' 
+#'
 #' @return output_table the DT datatable ready to display version of the inputdf
-#' 
 
 setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
   if (is.null(columnDefsListOfLists)){
@@ -107,7 +102,7 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
       escape = FALSE,
       caption = some_caption,
       filter = "top",
-      options = list(scrollX = TRUE, autoWidth = TRUE, pageLength = 10,
+      options = list(scrollX = TRUE, autoWidth = TRUE, pageLength = 15,
                      scrollCollapse = TRUE, fillContainer = TRUE,
                      order = (list(0, 'asc')),
                      columnDefs = columnDefsListOfLists,

@@ -1,0 +1,25 @@
+```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+if ("https://www.coursera.org/learn/nih-data-sharing/" == "NA"){
+  coursera_link <- "Not Available in this format"
+} else {
+  coursera_link <- "https://www.coursera.org/learn/nih-data-sharing/"
+}
+
+if ("https://leanpub.com/courses/fredhutch/nih_data_sharing" == "NA"){
+  leanpub_link <- "Not Available in this format"
+} else {
+  leanpub_link <- "https://leanpub.com/courses/fredhutch/nih_data_sharing"
+}
+```
+
+## Course Formats
+
+| Book version (on a website)            |  Leanpub                                |      Coursera   |
+|:--------------------------------------:|:---------------------------------------:|:------------------------------------------:|
+| Free for learners<br>No login required | Free or fee<br>for learners             | Membership fee<br>for learners |
+| No<br>certification                    | Includes<br>certification of completion | Includes<br>certification of completion |
+| https://hutchdatascience.org/NIH_Data_Sharing/ | `r leanpub_link`                   | `r coursera_link` |
+
+
+Our courses are open-source and source material can be accessed on GitHub: https://github.com/fhdsl/NIH_Data_Sharing

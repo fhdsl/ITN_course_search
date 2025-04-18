@@ -1,0 +1,7 @@
+## Concepts Discussed
+
+```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
+if ("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g1784801ac8b_42_0" != "NA"){
+  ottrpal::include_slide("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g1784801ac8b_42_0")
+}
+```

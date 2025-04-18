@@ -1,0 +1,15 @@
+## Necessary Pre-Requisites
+
+<!--
+Put this in some sort of box to bring attention to it
+-->
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+if ("https://docs.google.com/presentation/d/1x0Cnk2Wcsg8HYkmXnXo_0PxmYCxAwzVrUQzb8DUDvTA/edit#slide=id.g101867ebdaa_18_0" != "NA"){
+  ottrpal::include_slide("https://docs.google.com/presentation/d/1x0Cnk2Wcsg8HYkmXnXo_0PxmYCxAwzVrUQzb8DUDvTA/edit#slide=id.g101867ebdaa_18_0")
+}
+```
+
+<!--
+Is there a way to link to the pre-req course here with the info we have?
+-->

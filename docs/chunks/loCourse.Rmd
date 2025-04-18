@@ -1,0 +1,7 @@
+## Learning Objectives
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width = "100%"}
+if ({LO_SLIDE_LINK} != "NA"){
+  ottrpal::include_slide({LO_SLIDE_LINK})
+}
+```
