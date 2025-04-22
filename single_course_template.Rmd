@@ -1,6 +1,11 @@
 ---
 title: "`r params$course_name`"
-output: html_document
+output:
+  html_document:
+    number_sections: false
+    includes:
+      in_header: resources/itn_favicon.html
+css: styles.css
 params:
   course_name: character
   row_number: numeric
@@ -35,6 +40,8 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
                         tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date", pastequotes = FALSE)))
 ```
+
+
 
 ```{r course_formats}
 #Call the formatsFullCourse.Rmd
