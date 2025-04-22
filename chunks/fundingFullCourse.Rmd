@@ -1,13 +1,16 @@
-<!-- no header needed -->
 
-<!--
-Center these logos
--->
+<hr>
 
-[![ITCR](resources/images/ITCRLogo.png){width=10% height=10%}](https://itcr.cancer.gov)
+<center> 
+
+This course was funded by:
+<br>
+[![ITCR](resources/images/ITCRLogo.png){width=10% height=20%}](https://itcr.cancer.gov)
 
 ```{r echo=FALSE, warning = FALSE, message = FALSE, results='asis'}
 if ({hutch_funded} == TRUE){
   cat("[![Fred Hutch Cancer Center](resources/images/FH_DaSL.png){width=10% height=10%}](https://www.fredhutch.org/en/about/about-the-hutch.html)")
 }
 ```
+
+</center>
