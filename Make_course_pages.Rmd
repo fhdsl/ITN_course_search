@@ -1,7 +1,4 @@
 ---
-title: "Testing Programmatic Retrieval of Data"
-author: "Kate Isaac"
-date: "2025-03-14"
 output: html_document
 ---
 
@@ -56,7 +53,7 @@ wrangled <- full_repo_df %>%
 
 ```{r prep_table}
 output_prep <- prep_table(wrangled, keep_category = TRUE) %>% mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
-output_table <- setup_table(output_prep, "Test Courses Table with Programmatic Querying",
+output_table <- setup_table(output_prep, "Type in key words to find courses relevant for you.",
                             columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4)),
                                                          list(className = "dt-left", targets = c(3,5)),
                                                          list(width = '240px', targets = c(3)),
