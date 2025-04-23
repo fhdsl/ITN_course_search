@@ -3,4 +3,4 @@
 {COURSE_DESCRIPTION}
 
 
-This course was launched on {COURSE_LAUNCH}.
+This course was launched {COURSE_LAUNCH}.
