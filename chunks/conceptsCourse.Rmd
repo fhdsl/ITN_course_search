@@ -3,8 +3,12 @@
 
 ### Concepts Discussed
 
+<center>
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="80%"}
 if ({CONCEPTS_SLIDE_LINK} != "NA"){
   ottrpal::include_slide({CONCEPTS_SLIDE_LINK})
 }
 ```
+
+</center>
