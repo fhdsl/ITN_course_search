@@ -1,7 +1,8 @@
 ---
-title: "AI for Decision Makers"
 output: html_document
 ---
+
+# AI for Decision Makers {.tabset .tabset-fade}
 
 ```{r chunk_setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -44,11 +45,15 @@ ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
                         "{COURSE_CATEGORY}" = grab_data(course_info, which_main_course, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, which_main_course, "launch_date", pastequotes = FALSE)))
 ```
 
+
 ```{r overall_formats}
 #Call the formatsFullCourse.md
 ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
                         tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, which_main_course, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" = grab_data(course_info, which_main_course, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, which_main_course, "CourseraLink"), "{LEANPUB_LINK}" = grab_data(course_info, which_main_course, "LeanpubLink")))
 ```
+
+
+## AI Possibilities 
 
 ```{r possibility_concept}
 #Call the conceptsCourse.Rmd for sub course 1
@@ -70,6 +75,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 <hr>
 
+## Avoiding AI Harm
+
 ```{r harm_concept}
 #Call the conceptsCourse.Rmd for sub course 2
 ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
@@ -90,6 +97,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 <hr>
 
+## Determining AI Needs
+
 ```{r needs_concept}
 #Call the conceptsCourse.Rmd for sub course 3
 ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
@@ -109,6 +118,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 ```
 <hr>
 
+## AI Policy
+
 ```{r policy_concept}
 #Call the conceptsCourse.Rmd for sub course 4
 ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",    
@@ -127,7 +138,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_policy, "lo_slide")))
 ```
 
-<hr>
+
 
 ```{r funding_info}
 #Call the overall funding with fundingFullCourse.Rmd

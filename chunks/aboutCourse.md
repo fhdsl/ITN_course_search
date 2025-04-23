@@ -1,4 +1,4 @@
-## About this course
+
 
 {COURSE_DESCRIPTION}
 

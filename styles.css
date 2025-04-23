@@ -5,6 +5,153 @@ hr {
 }
 
 
+/*------------- making images with shadows---------------- */
+
+
+.image_shad{
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+
+/*------------ buttons for links ---------------------- */
+
+.book_button {
+    border-radius: 8px;
+    border: 1px solid #black;
+    background: #414487FF;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 200px;
+}
+
+
+.leanpub_button {
+    border-radius: 8px;
+    border: 1px solid #black;
+    background: green;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 200px;
+}
+
+.coursera_button {
+    border-radius: 8px;
+    border: 1px solid #black;
+    background: #e1ad01;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 200px;
+}
+
+.feedback_button {
+    border-radius: 8px;
+    border: 1px solid #black;
+    background: #D3D3D3;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 200px;
+}
+
+.github_button {
+    border-radius: 8px;
+    border: 1px solid #black;
+    background: #D3D3D3;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 200px;
+}
+
+.trapezoid {
+  width: 130px;
+  text-align: center;
+  height: 15; 
+  position: relative;
+  border-right: 50px solid transparent;
+  border-bottom: 50px solid #dbdbdb;
+  border-left: 50px solid transparent;
+  box-sizing: content-box;
+}
+.trapezoid span { 
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 5%;
+  color: #fff;
+}
+
+/*------------- button link text color---------------- */
+
+
+.book_button a:link{
+    color: #fff;
+}
+
+.leanpub_button a:link{
+    color: #fff;
+}
+
+.coursera_button a:link{
+    color: #000000;
+}
+
+.feedback_button a:link{
+    color: #000000;
+}
+
+/*------------- visited link button text color---------------- */
+
+
+.book_button a:visited{
+    color: #fff;
+}
+
+.leanpub_button a:visited{
+    color: #fff;
+}
+
+.coursera_button a:visited{
+    color: #000000;
+}
+
+.feedback_button a:visited{
+    color: #000000;
+}
+
 /* To add some space below the navigation bar */
 
  body {

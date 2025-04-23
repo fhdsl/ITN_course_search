@@ -1,4 +1,7 @@
-## Concepts Discussed
+
+<hr>
+
+### Concepts Discussed
 
 ```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
 if ({CONCEPTS_SLIDE_LINK} != "NA"){

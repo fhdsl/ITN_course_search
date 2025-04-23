@@ -1,3 +1,4 @@
+
 ```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
 if ({COURSERA_LINK} == "NA"){
@@ -13,13 +14,31 @@ if ({LEANPUB_LINK} == "NA"){
 }
 ```
 
-## Course Formats
-
-| Book version (on a website)            |  Leanpub                                |      Coursera   |
-|:--------------------------------------:|:---------------------------------------:|:------------------------------------------:|
-| Free for learners<br>No login required | Free or fee<br>for learners             | Membership fee<br>for learners |
-| No<br>certification                    | Includes<br>certification of completion | Includes<br>certification of completion |
-| {BOOKDOWN_LINK} | `r leanpub_link`                   | `r coursera_link` |
 
 
-Our courses are open-source and source material can be accessed on GitHub: {GITHUB_LINK}
+<div class = "book_button">
+[Click to access book <br> (no login required)]({BOOKDOWN_LINK})<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+<div class = "leanpub_button">
+[Click to take course for a certificate (for free!)](`r leanpub_link` )
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+<div class = "coursera_button">
+[Click to take course on Coursera](`r coursera_link`)
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+
+<div class = "feedback_button">
+[Click to provide feedback](https://forms.gle/hc8Xt3Y2Znjb6M4Y7)
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+
+<br>
+
+Our courses are open-source and all materials used to create the course are available:  <div class = "feedback_button">
+[Materials on GitHub  ]({GITHUB_LINK}) <img src="resources/images/github.png" style=" width: 10%" >
+</div>
