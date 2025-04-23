@@ -3,7 +3,7 @@
 
 <center> 
 
-This course was funded by:
+This work was funded by:
 <br>
 [![ITCR](resources/images/ITCRLogo.png){width=10% height=20%}](https://itcr.cancer.gov)
 
