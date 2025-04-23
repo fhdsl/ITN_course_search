@@ -55,6 +55,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience")))
 ```
 
+
+
 ```{r course_prereqs}
 #Call the prereqsCourse.Rmd if appropriate
 if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
@@ -62,6 +64,8 @@ if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
                           tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide")))
 }
 ```
+
+<hr>
 
 ```{r course_concept}
 #Call the conceptsCourse.Rmd
@@ -74,6 +78,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
 ```
+
+<hr>
 
 ```{r course_funding}
 #Call the fundingFullCourse.Rmd
