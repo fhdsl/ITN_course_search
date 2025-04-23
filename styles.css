@@ -189,4 +189,23 @@ hr {
   background-color: RoyalBlue;
 }
 
+/* Warning box */
+
+div.warning{
+  border: 4px #e0471c;
+  border-style: solid;
+  padding: 1em;
+  margin: 1em 0;
+  padding-left: 100px;
+  background-size: 70px;
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  min-height: 120px;
+  width: 300px;
+  background-color: #e8ebee;
+}
+
+div.warning{
+  background-image: url("./resources/images/warning.png");
+}
 
