@@ -1,5 +1,5 @@
 ---
-title: "`r params$course_name`"
+title: "**`r params$course_name`**"
 output:
   html_document:
     number_sections: false

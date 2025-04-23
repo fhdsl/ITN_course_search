@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-# AI for Decision Makers {.tabset .tabset-fade}
+# **AI for Decision Makers** {.tabset .tabset-fade}
 
 ```{r chunk_setup, include=FALSE}
 knitr::opts_chunk$set(
