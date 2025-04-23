@@ -2,7 +2,7 @@
 
 ### Intended Audience
 
-<div class = "img_shad">
+
 ```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="70%"}
 if ({FOR_SLIDE_LINK} != "NA"){
   ottrpal::include_slide({FOR_SLIDE_LINK})
