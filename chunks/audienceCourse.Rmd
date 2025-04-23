@@ -3,7 +3,7 @@
 ### Intended Audience
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="70%"}
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="80%"}
 if ({FOR_SLIDE_LINK} != "NA"){
   ottrpal::include_slide({FOR_SLIDE_LINK})
 }
