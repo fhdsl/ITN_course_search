@@ -39,6 +39,4 @@ if ({LEANPUB_LINK} == "NA"){
 
 <br>
 
-Our courses are open-source and all materials used to create the course are available:  <div class = "feedback_button">
-[Materials on GitHub  ]({GITHUB_LINK}) <img src="resources/images/github.png" style=" width: 10%" >
-</div>
+Our courses are open-source and all materials used to create the course are available here: {GITHUB_LINK}
