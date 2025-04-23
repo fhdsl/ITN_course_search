@@ -11,7 +11,7 @@ if ({FOR_SLIDE_LINK} != "NA"){
 
 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+```{r echo=FALSE, eval = FALSE, message=FALSE, warning=FALSE, results='asis'}
 phrase_start <- "We particularly recommend this course for those who are "
 if (str_detect({COURSE_AUDIENCE}, ';')){
   audiences <- unlist(strsplit({COURSE_AUDIENCE}, ';'))

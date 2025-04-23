@@ -1,9 +1,9 @@
 
-<hr>
+
 
 ### Concepts Discussed
 
-```{r echo=FALSE,message=FALSE,warning=FALSE, out.width = "100%"}
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="90%"}
 if ({CONCEPTS_SLIDE_LINK} != "NA"){
   ottrpal::include_slide({CONCEPTS_SLIDE_LINK})
 }
