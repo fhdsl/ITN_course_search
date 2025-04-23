@@ -71,17 +71,17 @@ output_table <- setup_table(output_prep, "Test Courses Table with Programmatic Q
 output_table
 ```
 
-This is the URL that the Hutch logo goes to: https://www.fredhutch.org/en/about/about-the-hutch.html
+<!-- This is the URL that the Hutch logo goes to: https://www.fredhutch.org/en/about/about-the-hutch.html -->
 
-This is the URL that the ITCR logo goes to: https://itcr.cancer.gov
+<!-- This is the URL that the ITCR logo goes to: https://itcr.cancer.gov -->
 
-And these are the column justifications and sizes I've got set right now
+<!-- And these are the column justifications and sizes I've got set right now -->
 
-| Column Name        | Location | Justified | Width         |
-| :----------------: | :------: | :-------: | :-----------: |
-| Course Name        | 0        | Center    | Not Specified |
-| Funding            | 1        | Center    | 80px          |
-| Broad Audience     | 2        | Center    | 75px          |
-| Description        | 3        | Left      | 240px         |
-| Category           | 4        | Center    | 75px          |
-| Concepts Discussed | 5        | Left      | 145px         |
+<!-- | Column Name        | Location | Justified | Width         | -->
+<!-- | :----------------: | :------: | :-------: | :-----------: | -->
+<!-- | Course Name        | 0        | Center    | Not Specified | -->
+<!-- | Funding            | 1        | Center    | 80px          | -->
+<!-- | Broad Audience     | 2        | Center    | 75px          | -->
+<!-- | Description        | 3        | Left      | 240px         | -->
+<!-- | Category           | 4        | Center    | 75px          | -->
+<!-- | Concepts Discussed | 5        | Left      | 145px         | -->
