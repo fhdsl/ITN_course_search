@@ -17,7 +17,7 @@ The table only includes repositories that meet the following criteria:
 - `scripts/query_collection.R`: gathers information (audience, funding, topics, etc.) about ITN courses from their GitHub repos
 - `resources/collection.tsv`: where the collection from `query_collection.R` is stored.
 - `scripts/format-tables.R`: functions to wrangle course data and format course table
-- `Make_course_pages.Rmd`: drives building each course specific html page and the overall course table
+- `index.Rmd`: drives building each course specific html page and the overall course table
 - `chunks/*Rmd` or `chunks/#.md`: chunks that we'll borrow using `ottrpal::borrow_chapter` (from the `base_ottr:dev` container specified in `config_automation.yml`) and fill in {SPECIFIC INFO} for course (following the example of our cheatsheets repo)
   - about: `aboutCourse.md` with "{COURSE_DESCRIPTION}", "{COURSE_CATEGORY}", and "{COURSE_LAUNCH}" to be filled in
   - audience: `audienceCourse.Rmd` with "{FOR_SLIDE_LINK}" and "{COURSE_AUDIENCE}" to be filled in
@@ -26,6 +26,6 @@ The table only includes repositories that meet the following criteria:
   - LOs: `loCourse.Rmd` with "{LO_SLIDE_LINK}" to be filled in
   - concepts discussed: `conceptsCourse.Rmd`
 - `*_template.Rmd`: the template for driving course specific pages.
-  - `single_course_template.Rmd`: one for general courses
-  - `ai_course_template.Rmd`: for AI for Decision Makers
+  - `single_course_template.Rmd`: layout for building general course pages
+  - `ai_course_template.Rmd`: layout for AI for Decision Makers course page
 - `*_coursePage.html`: the output course specific html pages
