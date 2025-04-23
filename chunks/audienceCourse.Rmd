@@ -25,7 +25,7 @@ if (str_detect({COURSE_AUDIENCE}, ';')){
 }
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+```{r echo=FALSE, eval = FALSE, message=FALSE, warning=FALSE, results='asis'}
 
 if(str_detect({COURSE_AUDIENCE}, "Software Developers")){
   cat("![Software Developers](resources/images/SoftwareDeveloper.png){width=10% height=10%}")
