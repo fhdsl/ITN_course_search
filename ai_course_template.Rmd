@@ -60,7 +60,7 @@ Click on the titles of the mini courses to learn more about each course:
 
 <br>
 
-## Exploring AI Possibilities 
+## **Exploring AI Possibilities** 
 
 ```{r possibility_concept}
 #Call the conceptsCourse.Rmd for sub course 1
@@ -82,7 +82,13 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 <hr>
 
-## Avoiding AI Harm
+```{r funding_info1}
+#Call the overall funding with fundingFullCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                        tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
+```
+
+## **Avoiding AI Harm**
 
 ```{r harm_concept}
 #Call the conceptsCourse.Rmd for sub course 2
@@ -104,7 +110,13 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
 
 <hr>
 
-## Determining AI Needs
+```{r funding_info2}
+#Call the overall funding with fundingFullCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                        tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
+```
+
+## **Determining AI Needs**
 
 ```{r needs_concept}
 #Call the conceptsCourse.Rmd for sub course 3
@@ -123,9 +135,16 @@ ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
 ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_needs, "lo_slide")))
 ```
+
 <hr>
 
-## Developing AI Policy
+```{r funding_info3}
+#Call the overall funding with fundingFullCourse.Rmd
+ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
+                        tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
+```
+
+## **Developing AI Policy**
 
 ```{r policy_concept}
 #Call the conceptsCourse.Rmd for sub course 4
@@ -145,9 +164,9 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_policy, "lo_slide")))
 ```
 
-## Funding
 
-```{r funding_info}
+
+```{r funding_info4}
 #Call the overall funding with fundingFullCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/fundingFullCourse.Rmd",
                         tag_replacement = list("{hutch_funded}" = grab_data(course_info, which_main_course, "hutch_funding", pastequotes = FALSE)))
