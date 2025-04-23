@@ -79,7 +79,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
 ```
 
-<hr>
+
 
 ```{r course_funding}
 #Call the fundingFullCourse.Rmd

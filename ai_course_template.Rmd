@@ -80,7 +80,6 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_possibilities, "lo_slide")))
 ```
 
-<hr>
 
 ```{r funding_info1}
 #Call the overall funding with fundingFullCourse.Rmd
@@ -108,7 +107,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_harm, "lo_slide")))
 ```
 
-<hr>
+
 
 ```{r funding_info2}
 #Call the overall funding with fundingFullCourse.Rmd
@@ -136,7 +135,6 @@ ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, which_needs, "lo_slide")))
 ```
 
-<hr>
 
 ```{r funding_info3}
 #Call the overall funding with fundingFullCourse.Rmd
