@@ -53,10 +53,13 @@ wrangled <- full_repo_df %>%
 
 ```{r prep_table}
 output_prep <- prep_table(wrangled, keep_category = TRUE) %>% mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
+
+# See scripts/format-tables.R to see the function setup_table() for formatting details of the tables
+
 output_table <- setup_table(output_prep, "Type in key words to find courses relevant for you.",
                             columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4)),
                                                          list(className = "dt-left", targets = c(3,5)), #Description and concepts
-                                                         list(width = '240px', targets = c(3)), #Description
+                                                         list(width = '200px', targets = c(3)), #Description
                                                          list(width = '80px', targets = c(1)), # Funding
                                                          list(width = "75px", targets = c(2,4)), # Audience and Category
                                                          list(width = "145px", targets = c(5)) # Concepts
@@ -67,6 +70,7 @@ output_table <- setup_table(output_prep, "Type in key words to find courses rele
 ```{r display_table}
 output_table
 ```
+
 
 <!-- This is the URL that the Hutch logo goes to: https://www.fredhutch.org/en/about/about-the-hutch.html -->
 
