@@ -38,7 +38,7 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 ```{r course_about}
 #Call the aboutCourse.md
 ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
-                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date", pastequotes = FALSE)))
+                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category"), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date",  pastequotes = FALSE)))
 ```
 
 
@@ -46,7 +46,14 @@ ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
 ```{r course_formats}
 #Call the formatsFullCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
-                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink"), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink")))
+                        tag_replacement = list(
+"{BOOKDOWN_LINK}" = 
+  grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE),
+"{GITHUB_LINK}" =  
+grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = 
+grab_data(course_info, params$row_number, "CourseraLink"), 
+"{LEANPUB_LINK}" =  
+  grab_data(course_info, params$row_number, "LeanpubLink")))
 ```
 
 
