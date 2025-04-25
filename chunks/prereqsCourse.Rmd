@@ -18,6 +18,8 @@ if ({PREREQ_SLIDE_LINK} != "NA"){
 }
 ```
 
+</center>
+
 <br>
 
 ```{r}
@@ -34,7 +36,7 @@ if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<span sty
 }
 ```
 
-</center>
+
 
 
 <!--
