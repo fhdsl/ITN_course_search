@@ -219,3 +219,14 @@ div.warning{
   background-image: url("./resources/images/warning.png");
 }
 
+div.blackbox{
+  padding: 1em;
+  margin: 1em 0;
+  min-height: 120px;
+  border: 4px #000000;
+  border-style: solid;
+  outline: 5px solid #ffb808;
+  width: 400px;
+  font-size: 14.0pt;
+  font-weight: bold;
+}
