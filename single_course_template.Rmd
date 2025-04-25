@@ -54,7 +54,7 @@ ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
 #Call the prereqsCourse.Rmd if appropriate
 if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
   ottrpal::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
-                          tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide")))
+                          tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide"), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink")))
 }
 ```
 
