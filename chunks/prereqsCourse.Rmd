@@ -24,12 +24,13 @@ if ({PREREQ_SLIDE_LINK} != "NA"){
 
 # if the advanced course past link in a span with larger font in html to intro course
 if (str_detect({GITHUB_LINK}, pattern = "Adv_Reproducibility")){
-  cat('<span style="font-size:18.0pt">Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatic.)</span>')
-  }
+  cat('<span style="font-size:18.0pt">Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics).</span>')
+}
+
 
 # if the actions or containers course past link in a span with larger font in html to intro and advanced course
 
-if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<span style="font-size:18.0pt">Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatic) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</span>')
+if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<span style="font-size:18.0pt">Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</span>')
 }
 ```
 
