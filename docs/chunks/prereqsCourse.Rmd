@@ -1,0 +1,15 @@
+## Necessary Pre-Requisites
+
+<!--
+Put this in some sort of box to bring attention to it
+-->
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+if ({PREREQ_SLIDE_LINK} != "NA"){
+  ottrpal::include_slide({PREREQ_SLIDE_LINK})
+}
+```
+
+<!--
+Is there a way to link to the pre-req course here with the info we have?
+-->

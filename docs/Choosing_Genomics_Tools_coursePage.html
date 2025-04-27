@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Choosing Genomics Tools</title>
+
+<script src="site_libs/header-attrs-2.25/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="shortcut icon" href="resources/images/favicon.ico" />
+ <!--- go to https://favicon.io/favicon-converter/ to upload an image to make a new favicon.io. You will need to replace the current favicon.io image with the one in the downloaded directory from the website. The current image is in the resources/images/ directory --->
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Choosing Genomics Tools</h1>
+
+</div>
+
+
+<div id="about-this-course" class="section level2">
+<h2>About this course</h2>
+<p>Based on their genomic data types and goals, this course will help
+learners find educational resources and tools to help them process and
+interpret data.</p>
+<p>This course is one of our <strong>Tools &amp; Resources</strong>
+courses.</p>
+<p>This course was launched on Aug 2023.</p>
+</div>
+<div id="course-formats" class="section level2">
+<h2>Course Formats</h2>
+<table>
+<colgroup>
+<col width="32%" />
+<col width="32%" />
+<col width="35%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Book version (on a website)</th>
+<th align="center">Leanpub</th>
+<th align="center">Coursera</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">Free for learners<br>No login required</td>
+<td align="center">Free or fee<br>for learners</td>
+<td align="center">Membership fee<br>for learners</td>
+</tr>
+<tr class="even">
+<td align="center">No<br>certification</td>
+<td align="center">Includes<br>certification of completion</td>
+<td align="center">Includes<br>certification of completion</td>
+</tr>
+<tr class="odd">
+<td align="center"><a
+href="http://hutchdatascience.org/Choosing_Genomics_Tools/"
+class="uri">http://hutchdatascience.org/Choosing_Genomics_Tools/</a></td>
+<td align="center"><a
+href="https://leanpub.com/courses/fredhutch/choosing-genomics-tools"
+class="uri">https://leanpub.com/courses/fredhutch/choosing-genomics-tools</a></td>
+<td align="center"><a
+href="https://www.coursera.org/specializations/researchers-guide-to-omic-data/"
+class="uri">https://www.coursera.org/specializations/researchers-guide-to-omic-data/</a></td>
+</tr>
+</tbody>
+</table>
+<p>Our courses are open-source and source material can be accessed on
+GitHub: <a href="https://github.com/fhdsl/Choosing_Genomics_Tools"
+class="uri">https://github.com/fhdsl/Choosing_Genomics_Tools</a></p>
+</div>
+<div id="for-individuals-who" class="section level2">
+<h2>For individuals who</h2>
+<p><img src="Choosing_Genomics_Tools_coursePage_files/figure-html/1YwxXy2rnUgbx_7B7ENH9wpDX-j6JpJz6lGVzOkjo0qY_g116525eff64_0_96.png" width="100%" /></p>
+<p>We particularly recommend this course for those who are
+<strong>Researchers</strong>.</p>
+<div class="float">
+<img src="resources/images/NewToDataScience.png"
+style="width:10.0%;height:10.0%" alt="Researchers" />
+<div class="figcaption">Researchers</div>
+</div>
+</div>
+<div id="concepts-discussed" class="section level2">
+<h2>Concepts Discussed</h2>
+<p><img src="Choosing_Genomics_Tools_coursePage_files/figure-html/1YwxXy2rnUgbx_7B7ENH9wpDX-j6JpJz6lGVzOkjo0qY_g11db7c97851_0_143.png" width="100%" /></p>
+</div>
+<div id="learning-objectives" class="section level2">
+<h2>Learning Objectives</h2>
+<p><img src="Choosing_Genomics_Tools_coursePage_files/figure-html/1YwxXy2rnUgbx_7B7ENH9wpDX-j6JpJz6lGVzOkjo0qY_gd422c5de97_0_10.png" width="100%" /></p>
+<!-- no header needed -->
+<!--
+Center these logos
+-->
+<p><a href="https://itcr.cancer.gov"><img
+src="resources/images/ITCRLogo.png" style="width:10.0%;height:10.0%"
+alt="ITCR" /></a></p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
