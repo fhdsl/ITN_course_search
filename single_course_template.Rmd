@@ -1,6 +1,11 @@
 ---
-title: "`r params$course_name`"
-output: html_document
+title: "**`r params$course_name`**"
+output:
+  html_document:
+    number_sections: false
+    includes:
+      in_header: resources/itn_favicon.html
+css: styles.css
 params:
   course_name: character
   row_number: numeric
@@ -33,13 +38,31 @@ grab_data <- function(df, row_number, column_name, pastequotes = TRUE){
 ```{r course_about}
 #Call the aboutCourse.md
 ottrpal::borrow_chapter(doc_path = "chunks/aboutCourse.md",
-                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category", pastequotes = FALSE), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date", pastequotes = FALSE)))
+                        tag_replacement = list("{COURSE_DESCRIPTION}" = grab_data(course_info, params$row_number, "description", pastequotes = FALSE), "{COURSE_CATEGORY}" = grab_data(course_info, params$row_number, "Category"), "{COURSE_LAUNCH}" = grab_data(course_info, params$row_number, "launch_date",  pastequotes = FALSE)))
 ```
+
+
 
 ```{r course_formats}
 #Call the formatsFullCourse.Rmd
 ottrpal::borrow_chapter(doc_path = "chunks/formatsFullCourse.Rmd",
-                        tag_replacement = list("{BOOKDOWN_LINK}" = grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = grab_data(course_info, params$row_number, "CourseraLink"), "{LEANPUB_LINK}" =  grab_data(course_info, params$row_number, "LeanpubLink")))
+                        tag_replacement = list(
+"{BOOKDOWN_LINK}" = 
+  grab_data(course_info, params$row_number, "BookdownLink", pastequotes = FALSE),
+"{GITHUB_LINK}" =  
+grab_data(course_info, params$row_number, "GithubLink", pastequotes = FALSE), "{COURSERA_LINK}" = 
+grab_data(course_info, params$row_number, "CourseraLink"), 
+"{LEANPUB_LINK}" =  
+  grab_data(course_info, params$row_number, "LeanpubLink")))
+```
+
+
+```{r course_prereqs}
+#Call the prereqsCourse.Rmd if appropriate
+if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
+  ottrpal::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
+                          tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide"), "{GITHUB_LINK}" =  grab_data(course_info, params$row_number, "GithubLink")))
+}
 ```
 
 ```{r course_aud}
@@ -48,13 +71,11 @@ ottrpal::borrow_chapter(doc_path = "chunks/audienceCourse.Rmd",
                         tag_replacement = list("{FOR_SLIDE_LINK}" = grab_data(course_info, params$row_number, "for_slide"), "{COURSE_AUDIENCE}" = grab_data(course_info, params$row_number, "BroadAudience")))
 ```
 
-```{r course_prereqs}
-#Call the prereqsCourse.Rmd if appropriate
-if (!(grab_data(course_info, params$row_number, "prereq_slide") == '"NA"')){
-  ottrpal::borrow_chapter(doc_path = "chunks/prereqsCourse.Rmd",
-                          tag_replacement = list("{PREREQ_SLIDE_LINK}" = grab_data(course_info, params$row_number, "prereq_slide")))
-}
-```
+
+
+
+
+<hr>
 
 ```{r course_concept}
 #Call the conceptsCourse.Rmd
@@ -67,6 +88,8 @@ ottrpal::borrow_chapter(doc_path = "chunks/conceptsCourse.Rmd",
 ottrpal::borrow_chapter(doc_path = "chunks/loCourse.Rmd",
                         tag_replacement = list("{LO_SLIDE_LINK}" = grab_data(course_info, params$row_number, "lo_slide")))
 ```
+
+
 
 ```{r course_funding}
 #Call the fundingFullCourse.Rmd

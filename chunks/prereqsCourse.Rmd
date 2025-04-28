@@ -1,15 +1,39 @@
-## Necessary Pre-Requisites
 
-<!--
-Put this in some sort of box to bring attention to it
--->
+<hr>
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
+### Necessary Pre-Requisites
+
+
+<center>
+
+:::warning
+There are required prerequisites for this course!
+:::
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis', out.width="80%"}
 if ({PREREQ_SLIDE_LINK} != "NA"){
   ottrpal::include_slide({PREREQ_SLIDE_LINK})
 }
 ```
 
-<!--
-Is there a way to link to the pre-req course here with the info we have?
--->
+
+
+<br>
+
+```{r}
+
+# if the advanced course past link in a span with larger font in html to intro course
+if (str_detect({GITHUB_LINK}, pattern = "Adv_Reproducibility")){
+  cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics).</div>')
+}
+
+
+# if the actions or containers course past link in a span with larger font in html to intro and advanced course
+
+if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</div>')
+}
+```
+
+</center>
+
+<br>

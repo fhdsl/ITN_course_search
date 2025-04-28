@@ -17,15 +17,16 @@ The table only includes repositories that meet the following criteria:
 - `scripts/query_collection.R`: gathers information (audience, funding, topics, etc.) about ITN courses from their GitHub repos
 - `resources/collection.tsv`: where the collection from `query_collection.R` is stored.
 - `scripts/format-tables.R`: functions to wrangle course data and format course table
-- `testProgrammatic.Rmd`: drives building each course specific html page and the overall course table
-- `chunks/*Rmd` or `chunks/#.md`: chunks that we'll borrow using `ottrpal::borrow_chapter` (from the `base_ottr:dev` container specified in `config_automation.yml`) and fill in {SPECIFIC INFO} for course (following the example of our cheatsheets repo)
-  - about: `aboutCourse.md` with "{COURSE_DESCRIPTION}", "{COURSE_CATEGORY}", and "{COURSE_LAUNCH}" to be filled in
-  - audience: `audienceCourse.Rmd` with "{FOR_SLIDE_LINK}" and "{COURSE_AUDIENCE}" to be filled in
+- `index.Rmd`: drives building each course specific html page and the overall course table
+- `chunks/*Rmd` or `chunks/#.md`: chunks that we'll borrow using `ottrpal::borrow_chapter` (from the `base_ottr:dev` container specified in `config_automation.yml`) and fill in {SPECIFIC INFO} for course (following the example of our cheatsheets repo). Because of this approach, a chunk will only inherit specific information if we pass it as a tag replacement. In other words, not every piece of information in each row/about a specific course will be available to the chunks, only the information we specify as a tag replacement).
+  - about: `aboutCourse.md` with "{COURSE_DESCRIPTION}", "{COURSE_CATEGORY}", and "{COURSE_LAUNCH}" to be provided/replaced
+  - audience: `audienceCourse.Rmd` with "{FOR_SLIDE_LINK}" and "{COURSE_AUDIENCE}" to be provided/replaced
   - format: `formatFullCourse.Rmd` with "{BOOKDOWN_LINK}", "{GITHUB_LINK}", "{COURSERA_LINK}", and "{LEANPUB_LINK}" to be filled in
   - funding: `fundingFullCourse.Rmd` with "{hutch_funded}" to be filled in
-  - LOs: `loCourse.Rmd` with "{LO_SLIDE_LINK}" to be filled in
-  - concepts discussed: `conceptsCourse.Rmd`
+  - LOs: `loCourse.Rmd` with "{LO_SLIDE_LINK}" to be provided/replaced
+  - concepts discussed: `conceptsCourse.Rmd` with "{CONCEPTS_SLIDE_LINK}" tag to be provided/replaced
+  - pre-requisites: `prereqsCourse.Rmd` with "{PREREQ_SLIDE_LINK}" and "{GITHUB_LINK}" tags to be provided/replaced
 - `*_template.Rmd`: the template for driving course specific pages.
-  - `single_course_template.Rmd`: one for general courses
-  - `ai_course_template.Rmd`: for AI for Decision Makers
+  - `single_course_template.Rmd`: layout for building general course pages
+  - `ai_course_template.Rmd`: layout for AI for Decision Makers course page
 - `*_coursePage.html`: the output course specific html pages
