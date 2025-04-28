@@ -23,7 +23,7 @@ The table only includes repositories that meet the following criteria:
   - audience: `audienceCourse.Rmd` with "{FOR_SLIDE_LINK}" and "{COURSE_AUDIENCE}" to be provided/replaced
   - format: `formatFullCourse.Rmd` with "{BOOKDOWN_LINK}", "{GITHUB_LINK}", "{COURSERA_LINK}", and "{LEANPUB_LINK}" to be filled in
   - funding: `fundingFullCourse.Rmd` with "{hutch_funded}" to be filled in
-  - LOs: `loCourse.Rmd` with "{LO_SLIDE_LINK}" to be filled in
+  - LOs: `loCourse.Rmd` with "{LO_SLIDE_LINK}" to be provided/replaced
   - concepts discussed: `conceptsCourse.Rmd`
 - `*_template.Rmd`: the template for driving course specific pages.
   - `single_course_template.Rmd`: layout for building general course pages
