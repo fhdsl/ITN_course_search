@@ -19,7 +19,7 @@ The table only includes repositories that meet the following criteria:
 - `scripts/format-tables.R`: functions to wrangle course data and format course table
 - `index.Rmd`: drives building each course specific html page and the overall course table
 - `chunks/*Rmd` or `chunks/#.md`: chunks that we'll borrow using `ottrpal::borrow_chapter` (from the `base_ottr:dev` container specified in `config_automation.yml`) and fill in {SPECIFIC INFO} for course (following the example of our cheatsheets repo)
-  - about: `aboutCourse.md` with "{COURSE_DESCRIPTION}", "{COURSE_CATEGORY}", and "{COURSE_LAUNCH}" to be filled in
+  - about: `aboutCourse.md` with "{COURSE_DESCRIPTION}", "{COURSE_CATEGORY}", and "{COURSE_LAUNCH}" to be provided/replaced
   - audience: `audienceCourse.Rmd` with "{FOR_SLIDE_LINK}" and "{COURSE_AUDIENCE}" to be provided/replaced
   - format: `formatFullCourse.Rmd` with "{BOOKDOWN_LINK}", "{GITHUB_LINK}", "{COURSERA_LINK}", and "{LEANPUB_LINK}" to be filled in
   - funding: `fundingFullCourse.Rmd` with "{hutch_funded}" to be filled in
