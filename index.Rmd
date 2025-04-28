@@ -83,6 +83,6 @@ output_table
 <!-- | Course Name        | 0        | Center    | Not Specified | -->
 <!-- | Funding            | 1        | Center    | 80px          | -->
 <!-- | Broad Audience     | 2        | Center    | 75px          | -->
-<!-- | Description        | 3        | Left      | 240px         | -->
+<!-- | Description        | 3        | Left      | 190px         | -->
 <!-- | Category           | 4        | Center    | 75px          | -->
 <!-- | Concepts Discussed | 5        | Left      | 145px         | -->
