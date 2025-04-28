@@ -1,36 +1,44 @@
-## For individuals who
+<hr>
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="100%"}
-if ("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g225dc533c12_1_0" != "NA"){
-  ottrpal::include_slide("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g225dc533c12_1_0")
+### Intended Audience
+
+<center>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width="80%"}
+if ("NA" != "NA"){
+  ottrpal::include_slide("NA")
 }
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+
+
+```{r echo=FALSE, eval = FALSE, message=FALSE, warning=FALSE, results='asis'}
 phrase_start <- "We particularly recommend this course for those who are "
-if (str_detect("Leaders", ';')){
-  audiences <- unlist(strsplit("Leaders", ';'))
+if (str_detect("NA", ';')){
+  audiences <- unlist(strsplit("NA", ';'))
   if (length(audiences) == 2){
     cat(paste0(phrase_start, "**", audiences[1], "** or **", audiences[2], "**."))
   } else if (length(audiences == 3)){
     cat(paste0(phrase_start, "**", audiences[1], "**, " , "**", audiences[2], "**, or **", audiences[3], "**."))
   }
 } else{
-  cat(paste0(phrase_start, "**", "Leaders", "**."))
+  cat(paste0(phrase_start, "**", "NA", "**."))
 }
 ```
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis'}
+```{r echo=FALSE, eval = FALSE, message=FALSE, warning=FALSE, results='asis'}
 
-if(str_detect("Leaders", "Software Developers")){
+if(str_detect("NA", "Software Developers")){
   cat("![Software Developers](resources/images/SoftwareDeveloper.png){width=10% height=10%}")
 }
 
-if(str_detect("Leaders", "Researchers")){
+if(str_detect("NA", "Researchers")){
   cat("![Researchers](resources/images/NewToDataScience.png){width=10% height=10%}")
 }
 
-if(str_detect("Leaders", "Leaders")){
+if(str_detect("NA", "Leaders")){
   cat("![Leaders](resources/images/leader_avataaars.png){width=10% height=10%}")
 }
 ```
+
+</center>

@@ -1,25 +1,41 @@
+
+
+<div class = "book_button">
+[Click to access book <br> (no login required)]({BOOKDOWN_LINK})<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+
 ```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
-if ({COURSERA_LINK} == "NA"){
-  coursera_link <- "Not Available in this format"
-} else {
-  coursera_link <- {COURSERA_LINK}
+# data coming in from {LEANPUB_LINK} and {COURSERA_LINK} has quotes
+
+leanpub_link <- {LEANPUB_LINK}
+
+if (leanpub_link != "NA"){
+  cat('<div class = "leanpub_button">
+[Click to take course for a certificate (for free!)](',leanpub_link,')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
 }
 
-if ({LEANPUB_LINK} == "NA"){
-  leanpub_link <- "Not Available in this format"
-} else {
-  leanpub_link <- {LEANPUB_LINK}
+coursera_link <- {COURSERA_LINK}
+
+if (coursera_link != "NA"){
+cat('<div class = "coursera_button">
+[Click to take course on Coursera](', coursera_link, ')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
 }
+
 ```
 
-## Course Formats
 
-| Book version (on a website)            |  Leanpub                                |      Coursera   |
-|:--------------------------------------:|:---------------------------------------:|:------------------------------------------:|
-| Free for learners<br>No login required | Free or fee<br>for learners             | Membership fee<br>for learners |
-| No<br>certification                    | Includes<br>certification of completion | Includes<br>certification of completion |
-| {BOOKDOWN_LINK} | `r leanpub_link`                   | `r coursera_link` |
+<div class = "feedback_button">
+[Click to provide feedback](https://forms.gle/hc8Xt3Y2Znjb6M4Y7)
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
 
 
-Our courses are open-source and source material can be accessed on GitHub: {GITHUB_LINK}
+<br>
+
+Our courses are open-source and all materials used to create the course are available here: {GITHUB_LINK}

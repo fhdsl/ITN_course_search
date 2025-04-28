@@ -1,7 +1,13 @@
-## Learning Objectives
+<hr>
 
-```{r echo=FALSE, message=FALSE, warning=FALSE, out.width = "100%"}
-if ("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g31db2eb8741_0_4" != "NA"){
-  ottrpal::include_slide("https://docs.google.com/presentation/d/1luFoDzF6aDJEebbL6iWoJ_s8s9nQnaWLL5jghbmWdak/edit#slide=id.g31db2eb8741_0_4")
+### Learning Objectives
+
+<center>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width = "80%"}
+if ("NA" != "NA"){
+  ottrpal::include_slide("NA")
 }
 ```
+
+</center>

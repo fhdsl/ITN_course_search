@@ -1,25 +1,41 @@
+
+
+<div class = "book_button">
+NA
+</div>
+
+
 ```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
 
-if ("https://www.coursera.org/learn/nih-data-sharing/" == "NA"){
-  coursera_link <- "Not Available in this format"
-} else {
-  coursera_link <- "https://www.coursera.org/learn/nih-data-sharing/"
+# data coming in from "NA" and "NA" has quotes
+
+leanpub_link <- "NA"
+
+if (leanpub_link != "NA"){
+  cat('<div class = "leanpub_button">
+[Click to take course for a certificate (for free!)](',leanpub_link,')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
 }
 
-if ("https://leanpub.com/courses/fredhutch/nih_data_sharing" == "NA"){
-  leanpub_link <- "Not Available in this format"
-} else {
-  leanpub_link <- "https://leanpub.com/courses/fredhutch/nih_data_sharing"
+coursera_link <- "NA"
+
+if (coursera_link != "NA"){
+cat('<div class = "coursera_button">
+[Click to take course on Coursera](', coursera_link, ')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
 }
+
 ```
 
-## Course Formats
 
-| Book version (on a website)            |  Leanpub                                |      Coursera   |
-|:--------------------------------------:|:---------------------------------------:|:------------------------------------------:|
-| Free for learners<br>No login required | Free or fee<br>for learners             | Membership fee<br>for learners |
-| No<br>certification                    | Includes<br>certification of completion | Includes<br>certification of completion |
-| https://hutchdatascience.org/NIH_Data_Sharing/ | `r leanpub_link`                   | `r coursera_link` |
+<div class = "feedback_button">
+[Click to provide feedback](https://forms.gle/hc8Xt3Y2Znjb6M4Y7)
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
 
 
-Our courses are open-source and source material can be accessed on GitHub: https://github.com/fhdsl/NIH_Data_Sharing
+<br>
+
+NA
