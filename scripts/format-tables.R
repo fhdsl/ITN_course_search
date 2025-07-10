@@ -57,7 +57,7 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     ) %>% #Make the concepts bulletted instead of separated by semi-colons
     mutate(Concepts = paste0("• ", Concepts)) %>%
     mutate(Concepts = str_replace_all(Concepts, ";", "<br>• ")) %>% #add a line break and the next bullet
-    mutate(Concepts = str_replace_all(Concepts, "-", " ")) %>% #replace the hyphens/dashes with a space; special cases are taken care of before rendering
+    mutate(Concepts = str_replace_all(Concepts, "-", " ")) %>% #replace the hyphens/dashes with a space; special cases/substitutions are taken care of before rendering within index.Rmd
     mutate(BroadAudience = str_replace_all(BroadAudience, ";", "<br></br>")) %>%
     #Replace the broad audiences with logos
     mutate(BroadAudience = str_replace(BroadAudience, "Software Developers", "<img src=\"resources/images/SoftwareDeveloper.png\" alt=\"Software Developers\" height=\"40\"></img><p class=\"image-name\">Software Developers</p>")) %>%
