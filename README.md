@@ -12,6 +12,25 @@ The table only includes repositories that meet the following criteria:
 - Have "itn" and "course" as part of the tags (e.g., "itn-course", or "itn" and "course") (`str_detect(topics, "itn")` & `str_detect(topics, "course")`)
 - Aren't template per the tags (`!str_detect(topics, "template ")` -- using a space because we want repos with tags of "templates" if the repo is providing templates)
 
+### Interested in adding a course to the table?
+
+- Make sure the above required criteria are met (public, homepage, description, itn-course tag, isn't a template)
+- Verify that the title is in the index.Rmd (or _quarto.yml for quarto book) file, following the convention of being listed between `---` with `title:` at the front of the line with the title
+- Verify that available course formats are listed in index.Rmd (or index.qmd for quarto book) file, specifically for Coursera and Leanpub if applicable
+- Verify that the `01-intro.Rmd` file has identifiers for code blocks grabbing relevant google slide images. If it's not that file, you'll need to edit the `get_slide_info()` function within the `query_collection.R` file.
+  - LOs: `learning_objectives`
+  - Audience: `for_individuals_who`
+  - Topics covered: `topics_covered`
+  - Pre-reqs (if applicable): `prereqs`
+- Add repo tags for audience (at least one of the following):
+  - `audience-software-developers`
+  - `audience-researchers`
+  - `audience-leaders`
+- Add repo tags for category (only one of the following):
+  - `category-best-practices`
+  - `category-software-dev`
+  - `category-fundamentals-tools-resources`
+
 ## Important files
 
 - `scripts/query_collection.R`: gathers information (audience, funding, topics, etc.) about ITN courses from their GitHub repos
