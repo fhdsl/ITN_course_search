@@ -11,10 +11,11 @@ The table only includes repositories that meet the following criteria:
 - Have a description listed
 - Have "itn" and "course" as part of the tags (e.g., "itn-course", or "itn" and "course") (`str_detect(topics, "itn")` & `str_detect(topics, "course")`)
 - Aren't template per the tags (`!str_detect(topics, "template ")` -- using a space because we want repos with tags of "templates" if the repo is providing templates)
+- Has a tag for launch date specified by `launched-monYEAR` (e.g., `launched-aug2025` or `launched-dec2023`)
 
 ### Interested in adding a course to the table?
 
-- Make sure the above required criteria are met (public, homepage, description, itn-course tag, isn't a template)
+- Make sure the above required criteria are met (public, homepage, description, itn-course tag, isn't a template, launch date tag)
 - Verify that the title is in the index.Rmd (or _quarto.yml for quarto book) file, following the convention of being listed between `---` with `title:` at the front of the line with the title
 - Verify that available course formats are listed in index.Rmd (or index.qmd for quarto book) file, specifically for Coursera and Leanpub if applicable
 - Verify that the `01-intro.Rmd` file has identifiers for code blocks grabbing relevant google slide images. If it's not that file, you'll need to edit the `get_slide_info()` function within the `query_collection.R` file.
