@@ -11,8 +11,8 @@ There are required prerequisites for this course!
 :::
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, results='asis', out.width="80%"}
-if ("https://docs.google.com/presentation/d/1x0Cnk2Wcsg8HYkmXnXo_0PxmYCxAwzVrUQzb8DUDvTA/edit#slide=id.g101867ebdaa_18_0" != "NA"){
-  ottrpal::include_slide("https://docs.google.com/presentation/d/1x0Cnk2Wcsg8HYkmXnXo_0PxmYCxAwzVrUQzb8DUDvTA/edit#slide=id.g101867ebdaa_18_0")
+if ("https://docs.google.com/presentation/d/1ExTZsKDHKM0fIi0_tB80qd8cHvqjEDyNJp-OsnvZ19o/edit?slide=id.g366a6ed3497_0_211#slide=id.g366a6ed3497_0_211" != "NA"){
+  ottrpal::include_slide("https://docs.google.com/presentation/d/1ExTZsKDHKM0fIi0_tB80qd8cHvqjEDyNJp-OsnvZ19o/edit?slide=id.g366a6ed3497_0_211#slide=id.g366a6ed3497_0_211")
 }
 ```
 
@@ -23,14 +23,14 @@ if ("https://docs.google.com/presentation/d/1x0Cnk2Wcsg8HYkmXnXo_0PxmYCxAwzVrUQz
 ```{r}
 
 # if the advanced course past link in a span with larger font in html to intro course
-if (str_detect("https://github.com/fhdsl/Containers_for_Scientists", pattern = "Adv_Reproducibility")){
+if (str_detect("https://github.com/fhdsl/reproducibility_capstone", pattern = "Adv_Reproducibility")){
   cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics).</div>')
 }
 
 
 # if the actions or containers course past link in a span with larger font in html to intro and advanced course
 
-if (str_detect("https://github.com/fhdsl/Containers_for_Scientists", pattern = "Automation|Containers")){cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</div>')
+if (str_detect("https://github.com/fhdsl/reproducibility_capstone", pattern = "Automation|Containers")){cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</div>')
 }
 ```
 
