@@ -1,0 +1,41 @@
+
+
+<div class = "book_button">
+NA
+</div>
+
+
+```{r echo=FALSE,message=FALSE,warning=FALSE, results='asis'}
+
+# data coming in from "NA" and "NA" has quotes
+
+leanpub_link <- "NA"
+
+if (leanpub_link != "NA"){
+  cat('<div class = "leanpub_button">
+[Click to take course for a certificate (for free!)](',leanpub_link,')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
+}
+
+coursera_link <- "NA"
+
+if (coursera_link != "NA"){
+cat('<div class = "coursera_button">
+[Click to take course on Coursera](', coursera_link, ')
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>')
+}
+
+```
+
+
+<div class = "feedback_button">
+[Click to provide feedback](https://forms.gle/hc8Xt3Y2Znjb6M4Y7)
+<img src="resources/images/itcr_arrow.png" style=" width: 10%" >
+</div>
+
+
+<br>
+
+NA
