@@ -22,16 +22,22 @@ if ({PREREQ_SLIDE_LINK} != "NA"){
 
 ```{r}
 
-# if the advanced course past link in a span with larger font in html to intro course
+# if the advanced course paste link in a span with larger font in html to intro course
 if (str_detect({GITHUB_LINK}, pattern = "Adv_Reproducibility")){
   cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics).</div>')
 }
 
 
-# if the actions or containers course past link in a span with larger font in html to intro and advanced course
+# if the actions or containers course paste link in a span with larger font in html to intro and advanced course
 
 if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) and our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics).</div>')
 }
+
+# if the capstone course, paste link in a span with larger font in html to intro, advanced, actions, and containers courses
+if (str_detec({GITHUB_LINK}, pattern = "capstone")){
+  cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics), our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics), our [GitHub Automation for Scientists Course](https://hutchdatascience.org/GitHub_Automation_for_Scientists/), and our [Containers for Scientists Course](https://hutchdatascience.org/Containers_for_Scientists/).</div>')
+}
+
 ```
 
 </center>
