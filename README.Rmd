@@ -25,21 +25,26 @@ ITN_course_search uses the Github API to gather jhudsl and fhdsl organization re
 The table only includes repositories that meet the following **required** criteria:
 
 1. Repository within the `jhudsl` or `fhdsl` organizations
+1. Public repository
 1. Have a homepage listed
 1. Have a description listed
 1. Have "itn" and "course" as part of the repository tags (e.g., "itn-course", or "itn" and "course") (`str_detect(topics, "itn")` & `str_detect(topics, "course")`)
 1. Aren't template per the tags (`!str_detect(topics, "template ")` -- using a space because we want repos with tags of "templates" if the repo is providing templates, e.g., [the Overleaf/LaTex Course](https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles))
 1. Has a repository tag for launch date specified by `launched-monYEAR` (e.g., `launched-aug2025` or `launched-dec2023`)
 
-```{r, echo=FALSE, fig.alt="Shows the seven required criteria for including a course in the search table using the Overleaf course GitHub page as an example"}
+```{r, echo=FALSE, fig.alt="Shows the seven required criteria for including a course in the search table using the Overleaf course GitHub page as an example", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.p#slide=id.p")
 ```
 
-### Interested in adding a course to the table?
+## Interested in adding a course to the table?
+
+At the moment, to add a course to the table, either wait for the repo to fetch the collection data, or open a PR with a trivial change. A later PR will add a way to manually trigger the workflow but this is not available yet.
 
 - [ ] Make sure the above required criteria (1-7) are met (jhudsl/fhdsl organization, public, homepage, description, itn-course tag, isn't a template, launch date tag).
 
-#### Course title specification
+Make sure the rest of the information for the table (e.g., title, access links/available course formats, etc.) is specified (where and how) the query procedure expects (explained below).
+
+### Course title specification
 
 Course title specification is **within the course material files**, usually the `index.Rmd` (or `_quarto.yml` for quarto book) file.
 
@@ -47,53 +52,71 @@ Course title specification is **within the course material files**, usually the 
   - For Rmarkdown courses, need to follow the convention of being listed between `---` with `title:` at the front of the line
   - [Quarto books just replaces `title: ` to extract the title.](https://github.com/fhdsl/ITN_course_search/blob/e389cbd43d2923649e5422c17189d53a812bfb13/scripts/query_collection.R#L149)
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.alt = "Rmarkdown courses specify the title in the index.Rmd file in the area between 3 dashes. The code looks for title with a colon at the beginning of the line to distinguish it from the subtitlet", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles/blob/main/index.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_63#slide=id.g371dc0bfdb3_0_63")
 ```
 
-```{r, echo=FALSE}
+Note that the query procedure looks for an `index.Rmd` file first, and if it doesn't find one in the repository, it then assumes it could be a quarto course and looks for the `_quarto.yml` file next automatically. 
+
+```{r, echo=FALSE, fig.alt = "A quarto course will have the title specified in the _quarto.yml file and replaces the title colon and space with nothing to extract the title.", fig.link = "https://github.com/fhdsl/Containers_for_Scientists/blob/main/_quarto.yml"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_69#slide=id.g371dc0bfdb3_0_69")
 ```
 
-#### Available course formats specification
+### Available course formats specification
 
 Available course formats specification is **within the course material files**, usually the `index.Rmd` (or `index.qmd` for quarto book) file.
 
 - [ ] Verify that available course formats are listed in `index.Rmd` (or `index.qmd` for quarto book) file, specifically for Coursera and Leanpub if applicable. (The GitHub source material and GitHub pages homepage information for the course table will be taken from the API call rather than this information, but it's good practice to have both included within this chunk too)
 
-```{r, echo=FALSE, fig.alt = "Available Course Formats are listed in the index.Rmd file for the Overleaf course as an example for Rmarkdown courses"}
+```{r, echo=FALSE, fig.alt = "Available Course Formats are listed in the index.Rmd file for the Overleaf course as an example for Rmarkdown courses", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles/blob/main/index.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_86#slide=id.g371dc0bfdb3_0_86")
 ```
 
-```{r, echo = FALSE, fig.alt = "Available Course Formats are listed in the index.qmd file for the example quarto book from the Containers for Scientists example course"}
+Note that the query procedure looks for an `index.Rmd` file first, and if it doesn't find one in the repository, it then assumes it could be a quarto course and looks for the `index.qmd` file next automatically.
+
+```{r, echo = FALSE, fig.alt = "Available Course Formats are listed in the index.qmd file for the example quarto book from the Containers for Scientists example course", fig.link = "https://github.com/fhdsl/Containers_for_Scientists/blob/main/index.qmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_81#slide=id.g371dc0bfdb3_0_81")
 ```
 
 <details><summary>What the code is looking for exactly</summary>
 
-```{r echo=FALSE, fig.alt = "Available course formats do not need to be listed or enumerated in a bulleted or ordered list in order for the process to extract the information as seen with the NIH for Data Sharing course"}
+Because the `get_linkOI()` function is set up to find line(s) with the course format "pattern" (e.g., "Coursera" or "Leanpub"), then extract all URLs from those lines, and then subset to the relevant URL if needed (again using the "pattern"), these available course formats do not need to be in an ordered, bulleted, or enumerated list. They could all be mentioned in a notice box or paragraph. As long as the line with the link says "Coursera" or "Leanpub", this process will find and extract the relevant links. 
+
+```{r echo=FALSE, fig.alt = "Available course formats do not need to be listed or enumerated in a bulleted or ordered list in order for the process to extract the information as seen with the NIH for Data Sharing course", fig.link = "https://github.com/fhdsl/NIH_Data_Sharing/blob/main/index.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_91#slide=id.g371dc0bfdb3_0_91")
 ```
 
 </details>
 
-#### Necessary background information and learning objectives specification
+### Necessary background information and learning objectives specification
 
 Necessary background information and learning objectives are typically specified as images (Google Slides grabbed with `ottrpal::include_slide()` function) **within the course material files**, usually the `01-intro.Rmd` (or `01-intro.qmd` for quarto book) file. The code blocks where these are specified need to have specific identifiers.
 
-- [ ] Verify that the `01-intro.Rmd` (or `01-intro.qmd` file for quarto courses, [ex: Containers for Scientists](https://github.com/fhdsl/Containers_for_Scientists/blob/main/01-intro.qmd)) file has identifiers for code blocks grabbing relevant google slide images. If it's not that file, you'll need to edit the `get_slide_info()` function within the `query_collection.R` file.
+- [ ] Verify that the `01-intro.Rmd` (or `01-intro.qmd` file for quarto courses, [ex: Containers for Scientists](https://github.com/fhdsl/Containers_for_Scientists/blob/main/01-intro.qmd)) file has identifiers for code blocks grabbing relevant google slide images. 
   - LOs: `learning_objectives`
   - Audience: `for_individuals_who`
   - Topics covered: `topics_covered`
   - Pre-reqs (if applicable): `prereqs`
 
-```{r, echo=FALSE, fig.alt = "Example of learning objectives, audience, and topics covered code blocks from the Overleaf Course"}
+
+<details><summary>What the code is looking for exactly</summary>
+
+The code in the `get_slide_info()` function within the `query_collection.R` file looks for these code block identifiers exactly
+
+Note that the query procedure first checks the course name to make sure it's not part of a special set of courses that don't follow the usual convention/location for this information. If the course isn't in that list, the procedure checks for the `01-intro.Rmd` file first and if that file isn't found it assumes it could be a quarto course and looks for `01-intro.qmd` automatically next. 
+
+</details>
+
+
+```{r, echo=FALSE, fig.alt = "Example of learning objectives, audience, and topics covered code blocks from the Overleaf Course", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles/blob/main/01-intro.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_42#slide=id.g371dc0bfdb3_0_42")
 ```
 
-```{r, echo=FALSE, fig.alt = "Example of a prereqs code block from the GitHub Automation for Scientists Course"}
+```{r, echo=FALSE, fig.alt = "Example of a prereqs code block from the GitHub Automation for Scientists Course", fig.link = "https://github.com/fhdsl/Github_Automation_for_Scientists/blob/main/01-intro.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_54#slide=id.g371dc0bfdb3_0_54")
 ```
+
+If a different file contains the information, you'll need to edit the `get_slide_info()` function within the `query_collection.R` file.
 
 <details><summary>Examples where these blocks aren't in the expected files include</summary>
 
@@ -107,30 +130,76 @@ If your course's introductory material isn't located within the expected `01-int
 
 </details>
 
-####
+### Audience specification 
 
-- Add repo tags for audience (at least one of the following):
+Audience specification is **not within the course material files** but instead **is within the repository settings**
+
+- [ ] Add repo tags for audience (at least one of the following):
   - `audience-software-developers`
   - `audience-researchers`
   - `audience-leaders`
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.alt = "Audience tags are specified in the repository settings and can be any combination of the choices", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_16#slide=id.g371dc0bfdb3_0_16")
 ```
 
-- Add repo tags for category (only one of the following):
+<details><summary>What the code is looking for exactly</summary>
+
+[The code in the `query_collection.R` file that traverses the pages of the GitHub API request results looks for these tags exactly.](https://github.com/fhdsl/ITN_course_search/blob/e389cbd43d2923649e5422c17189d53a812bfb13/scripts/query_collection.R#L490-L496)
+
+</details>
+
+### Category specification
+
+Category specification is **not within the course material files** but instead **is within the repository settings**
+
+- [ ] Add repo tags for category (only one of the following):
   - `category-best-practices`
   - `category-software-dev`
   - `category-fundamentals-tools-resources`
   - `category-hands-on-practice`
 
-  ```{r, echo=FALSE}
+```{r, echo=FALSE, fig.alt = "Category tags are specified in the repository settings and should be only one of the choices. ", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_35#slide=id.g371dc0bfdb3_0_35")
-  ```
+```
 
 <details><summary>What the code is looking for exactly</summary>
 
+[The code in the `query_collection.R` file that traverses the pages of the GitHub API request results either looks for these tags exactly (which is the case for `category-software-dev` and `category-best-practices`), or it looks for the prefix (`category-fundamentals-` rather than the full `category-fundamentals-tools-resources` and `category-hands-on-` rather than the full `category-hands-on-practice`).](https://github.com/fhdsl/ITN_course_search/blob/8facb2d4ec0a9beca5612a3277457881a2e9bcee/scripts/query_collection.R#L498-L506)
+
 </details>
+
+### Funding
+
+All courses with an `itn-course` or just `itn` tag are assumed to be ITN funded. Add a `hutch-course` topic tag to the repo if it was Hutch funded and should include Hutch branding as well. 
+
+### Cleaning up topic tags for display in the table
+
+The `query_collection.R` file does NOT clean the topic tags data. Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the colleciton following querying) and (2) replacing hyphens with a space. Special cases or substitions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk. 
+
+Within that chunk ...
+
+1. Use title case on the concepts with the `str_to_title()` function because the repo topic tags are all lower case.
+2. Ai --> AI (for the AI for Efficient Programming and AI for Decision Makers courses)
+3. Ci-Cd --> Continuous Integration/Continuous Deployment (for the Containers for Scientists Course)
+4. Nih --> NIH (for the Data Management and Sharing for NIH Proposals course)
+5. Hipaa --> HIPAA (for the Ethical Data Handling for Cancer Research course)
+6. Llm --> LLM (for the AI for Efficient Programming course)
+7. Phi --> (PHI) (for the Ethical Data Handling for Cancer Research course)
+8. Pii --> (PII) (for the Ethical Data Handling for Cancer Research course)
+9. Arxiv --> ArXiv (for the Overleaf and LaTeX course)
+10. Latex --> LaTeX (for the Overleaf and LaTeX course)
+11. And --> & (space saving, used for the Choosing Genomics Tools course )
+12. Iv --> IV (for the Containers for Scientists course which we called Reproducibility Series IV)
+13. Iii --> III (for the GitHub Automation for Scientists course which we called Reproducibility Series III)
+14. Ii --> II (for the Adv Reproducibility course which we called Reproducibility Series II)
+
+Add any additional specific changes to the topic tags for cleaning within that chunk going forward.
+
+
+### Adding icons 
+
+Audience (column is `BroadAudience`), course categories (column is `Category`), and funding (column is `Funding`) information adds icons to the data while building the tables. This is done within the `prep_table()` function of the `format-tables.R` file. If you are editing or adding a category to any of these, you will need to update those `mutate` steps there.  
 
 ## Important files
 

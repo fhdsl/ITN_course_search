@@ -46,7 +46,7 @@ wrangled <- full_repo_df %>%
          Concepts = str_replace_all(Concepts, "Phi", "(PHI)"),
          Concepts = str_replace_all(Concepts, "Pii", "(PII)"),
          Concepts = str_replace_all(Concepts, "Arxiv", "ArXiv"),
-         Concepts = str_replace_all(Concepts, "Latex", "LaTex"),
+         Concepts = str_replace_all(Concepts, "Latex", "LaTeX"),
          Concepts = str_replace_all(Concepts, "And", "&"),
          Concepts = str_replace_all(Concepts, "Iv", "IV"),
          Concepts = str_replace_all(Concepts, "Iii", "III"),
