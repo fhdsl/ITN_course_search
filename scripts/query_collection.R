@@ -500,7 +500,9 @@ for (page in 1:last) {
            cat_sd = case_when(str_detect(topics, "category-software-dev") ~ "Software Development",
                               !str_detect(topics, "category-software-dev") ~ NA_character_),
            cat_bp = case_when(str_detect(topics, "category-best-practices") ~ "Best Practices",
-                              !str_detect(topics, "category-best-practices") ~ NA_character_)
+                              !str_detect(topics, "category-best-practices") ~ NA_character_),
+           cat_hop = case_when(str_detect(topics, "category-hands-on-") ~ "Hands-on Practice",
+                               !str_detect(topics, "category-hands-on-") ~ NA_character_)
            ) %>%
     tidyr::unite(col = "Category", starts_with("cat_"), sep=";", na.rm = TRUE) %>%
     mutate(hutch_funding = str_detect(topics, "hutch-course")) %>%
