@@ -29,6 +29,7 @@ on:
       - _site.yml
       - resources/images/*.png
       - resources/images/favicon.ico
+      - resources/collection.tsv
 
 jobs:
   yaml-check:
@@ -53,7 +54,6 @@ jobs:
     uses: ./.github/workflows/build-collection.yml
     with:
       render-type: 'main'
-      repository: $GITHUB_REPOSITORY
     secrets:
       gh_pat: ${{ secrets.GH_PAT }}
 
