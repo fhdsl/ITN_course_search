@@ -52,7 +52,6 @@ jobs:
     uses: ./.github/workflows/build-collection.yml
     with:
       render-type: 'preview'
-      repository: $GITHUB_REPOSITORY
     secrets:
       gh_pat: ${{ secrets.GH_PAT }}
 
