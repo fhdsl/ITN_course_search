@@ -1,0 +1,13 @@
+<hr>
+
+### Learning Objectives
+
+<center>
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, out.width = "80%"}
+if ("NA" != "NA"){
+  ottrpal::include_slide("NA")
+}
+```
+
+</center>
