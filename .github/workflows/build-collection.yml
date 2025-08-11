@@ -2,14 +2,21 @@
 name: Build Collection
 
 on:
+  workflow_dispatch:
+    inputs:
+      render-type:
+        description: 'main or preview rendering'
+        required: true
+        type: string
+        default: 'main'
+    secrets:
+      gh_pat:
+        required: true
   workflow_call:
     inputs:
       render-type:
         required: true
         type: string
-      repository:
-        type: string
-        required: true
     secrets:
       gh_pat:
         required: true
