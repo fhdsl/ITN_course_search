@@ -151,7 +151,7 @@ ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ru
 
 ### Category specification
 
-Category specification is **not within the course material files** but instead **is within the repository settings**
+Category specification is **not within the course material files** but instead **is within the repository settings**.
 
 - [ ] Add repo tags for category (only one of the following):
   - `category-best-practices`
