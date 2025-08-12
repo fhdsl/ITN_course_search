@@ -35,7 +35,11 @@ if (str_detect({GITHUB_LINK}, pattern = "Automation|Containers")){cat('<div clas
 
 # if the capstone course, paste link in a span with larger font in html to intro, advanced, actions, and containers courses
 if (str_detect({GITHUB_LINK}, pattern = "capstone")){
-  cat('<div class = blackbox>Please check out our [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics), our [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics), our [GitHub Automation for Scientists Course](https://hutchdatascience.org/GitHub_Automation_for_Scientists/), and our [Containers for Scientists Course](https://hutchdatascience.org/Containers_for_Scientists/).</div>')
+  cat('<div class = blackbox>Please check out our prerequisite courses: 
+<br> - [Introduction to Reproducibility Course](https://jhudatascience.org/Reproducibility_in_Cancer_Informatics) 
+<br> - [Advanced Reproducibility Course](https://jhudatascience.org/Adv_Reproducibility_in_Cancer_Informatics)
+ <br> -[GitHub Automation for Scientists Course](https://hutchdatascience.org/GitHub_Automation_for_Scientists/)
+ <br> -[Containers for Scientists Course](https://hutchdatascience.org/Containers_for_Scientists/).</div>')
 }
 
 ```
