@@ -26,7 +26,7 @@ The table only includes repositories that meet the following
     `str_detect(topics, "course")`)
 6.  Aren’t template per the tags (`!str_detect(topics, "template ")` –
     using a space because we want repos with tags of “templates” if the
-    repo is providing templates, e.g., [the Overleaf/LaTex
+    repo is providing templates, e.g., [the Overleaf/LaTeX
     Course](https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles))
 7.  Has a repository tag for launch date specified by `launched-monYEAR`
     (e.g., `launched-aug2025` or `launched-dec2023`)
@@ -249,10 +249,10 @@ The `query_collection.R` file does NOT clean the topic tags data. Very
 minimal cleaning is done within the `prep_table()` function within the
 `format-tables.R` script. This minimal cleaning includes (1) inserting a
 line break and a bullet point in place of every semicolon (which
-separates the topic tags in the colleciton following querying) and (2)
-replacing hyphens with a space. Special cases or substitions of cleaning
-are handled within `index.Rmd` of this ITN\_course\_search repo,
-specifically in the `wrangle_data` code chunk.
+separates the topic tags in the collection following querying) and (2)
+replacing hyphens with a space. Special cases or substitutions of
+cleaning are handled within `index.Rmd` of this ITN\_course\_search
+repo, specifically in the `wrangle_data` code chunk.
 
 Within that chunk …
 

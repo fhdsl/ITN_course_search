@@ -29,7 +29,7 @@ The table only includes repositories that meet the following **required** criter
 1. Have a homepage listed
 1. Have a description listed
 1. Have "itn" and "course" as part of the repository tags (e.g., "itn-course", or "itn" and "course") (`str_detect(topics, "itn")` & `str_detect(topics, "course")`)
-1. Aren't template per the tags (`!str_detect(topics, "template ")` -- using a space because we want repos with tags of "templates" if the repo is providing templates, e.g., [the Overleaf/LaTex Course](https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles))
+1. Aren't template per the tags (`!str_detect(topics, "template ")` -- using a space because we want repos with tags of "templates" if the repo is providing templates, e.g., [the Overleaf/LaTeX Course](https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles))
 1. Has a repository tag for launch date specified by `launched-monYEAR` (e.g., `launched-aug2025` or `launched-dec2023`)
 
 ```{r, echo=FALSE, fig.alt="Shows the seven required criteria for including a course in the search table using the Overleaf course GitHub page as an example", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles"}
@@ -175,7 +175,7 @@ All courses with an `itn-course` or just `itn` tag are assumed to be ITN funded.
 
 ### Cleaning up topic tags for display in the table
 
-The `query_collection.R` file does NOT clean the topic tags data. Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the colleciton following querying) and (2) replacing hyphens with a space. Special cases or substitions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk. 
+The `query_collection.R` file does NOT clean the topic tags data. Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the collection following querying) and (2) replacing hyphens with a space. Special cases or substitutions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk. 
 
 Within that chunk ...
 
