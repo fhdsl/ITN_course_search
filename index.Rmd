@@ -68,8 +68,7 @@ output_table <- setup_table(output_prep, "Type in key words to find courses rele
                                                          list(width = "65px", targets = c(4)), # Category
                                                          list(width = "145px", targets = c(5)) # Concepts
                                                         )
-                            ) %>%
-                            DT::formatStyle(columns = c(2,4), fontSize = '8pt') #specify text size for image name in Audience and category columns hopefully
+                            )
 ```
 
 ```{r display_table}
@@ -85,9 +84,11 @@ output_table
 
 <!-- | Column Name        | Location | Justified | Width         | Font size     |-->
 <!-- | :----------------: | :------: | :-------: | :-----------: | :------------:|-->
-<!-- | Course Name        | 0        | Center    | Not Specified | 12            |-->
+<!-- | Course Name        | 0        | Center    | Not Specified | 12pt          |-->
 <!-- | Funding            | 1        | Center    | 80px          | Not Specified |-->
-<!-- | Broad Audience     | 2        | Center    | 80px          | 8             |-->
+<!-- | Broad Audience     | 2        | Center    | 80px          | 10px          |-->
 <!-- | Description        | 3        | Left      | 190px         | Not Specified |-->
-<!-- | Category           | 4        | Center    | 65px          | 8             |-->
+<!-- | Category           | 4        | Center    | 65px          | 10px          |-->
 <!-- | Concepts Discussed | 5        | Left      | 145px         | Not Specified |-->
+
+Font sizes are specified in the format-tables.R file (for Course Name column) and the styles.css file (for Broad Audience and Category columns)
