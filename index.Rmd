@@ -65,7 +65,7 @@ output_table <- setup_table(output_prep, "Type in key words to find courses rele
                                                          list(width = '190px', targets = c(3)), #Description
                                                          list(width = '80px', targets = c(1)), # Funding
                                                          list(width = "80px", targets = c(2)), # Audience 
-                                                         list(width = "75px", targets = c(4)), # Category
+                                                         list(width = "65px", targets = c(4)), # Category
                                                          list(width = "145px", targets = c(5)) # Concepts
                                                         )
                             ) #"Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"
@@ -88,5 +88,5 @@ output_table
 <!-- | Funding            | 1        | Center    | 80px          | -->
 <!-- | Broad Audience     | 2        | Center    | 80px          | -->
 <!-- | Description        | 3        | Left      | 190px         | -->
-<!-- | Category           | 4        | Center    | 75px          | -->
+<!-- | Category           | 4        | Center    | 65px          | -->
 <!-- | Concepts Discussed | 5        | Left      | 145px         | -->
