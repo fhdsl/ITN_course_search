@@ -64,11 +64,12 @@ output_table <- setup_table(output_prep, "Type in key words to find courses rele
                                                          list(className = "dt-left", targets = c(3,5)), #Description and concepts
                                                          list(width = '190px', targets = c(3)), #Description
                                                          list(width = '80px', targets = c(1)), # Funding
-                                                         list(width = "80px", targets = c(2)), # Audience 
+                                                         list(width = "80px", targets = c(2)), # Audience
                                                          list(width = "65px", targets = c(4)), # Category
                                                          list(width = "145px", targets = c(5)) # Concepts
                                                         )
-                            ) #"Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"
+                            ) %>%
+                            DT::formatStyle(columns = c(2,4), fontSize = '8pt') #specify text size for image name in Audience and category columns hopefully
 ```
 
 ```{r display_table}
@@ -82,11 +83,11 @@ output_table
 
 <!-- And these are the column justifications and sizes I've got set right now -->
 
-<!-- | Column Name        | Location | Justified | Width         | -->
-<!-- | :----------------: | :------: | :-------: | :-----------: | -->
-<!-- | Course Name        | 0        | Center    | Not Specified | -->
-<!-- | Funding            | 1        | Center    | 80px          | -->
-<!-- | Broad Audience     | 2        | Center    | 80px          | -->
-<!-- | Description        | 3        | Left      | 190px         | -->
-<!-- | Category           | 4        | Center    | 65px          | -->
-<!-- | Concepts Discussed | 5        | Left      | 145px         | -->
+<!-- | Column Name        | Location | Justified | Width         | Font size     |-->
+<!-- | :----------------: | :------: | :-------: | :-----------: | :------------:|-->
+<!-- | Course Name        | 0        | Center    | Not Specified | 12            |-->
+<!-- | Funding            | 1        | Center    | 80px          | Not Specified |-->
+<!-- | Broad Audience     | 2        | Center    | 80px          | 8             |-->
+<!-- | Description        | 3        | Left      | 190px         | Not Specified |-->
+<!-- | Category           | 4        | Center    | 65px          | 8             |-->
+<!-- | Concepts Discussed | 5        | Left      | 145px         | Not Specified |-->
