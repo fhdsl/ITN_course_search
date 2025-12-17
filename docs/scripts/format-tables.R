@@ -50,9 +50,9 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     mutate(CourseName = paste0('<a href="', name, '_coursePage.html" target="_blank"><b>', CourseName, '</b></a>')) %>% #mutate the name to be bolded and link to the single course page with more information
     mutate(Funding = #add logos for funding and link to appropriate about pages
              case_when(
-               (is_itn == TRUE) & (hutch_funding == FALSE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"30\"></img></a>',
-               (is_itn == TRUE) & (hutch_funding == TRUE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"30\"></img></a><br></br>
-                                                  <a href =\"https://www.fredhutch.org/en/about/about-the-hutch.html"style="color:#0000FF\" target=\"_blank\"<div title =\"About Fred Hutch\"></div><img src=\"resources/images/FH_DaSL.png\" height=\"50\"></img></a>'
+               (is_itn == TRUE) & (hutch_funding == FALSE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"25\"></img></a>',
+               (is_itn == TRUE) & (hutch_funding == TRUE) ~ '<a href=\"https://itcr.cancer.gov/\"style=\"color:#0000FF\" target=\"_blank\"<div title =\"About ITCR\"></div><img src=\"resources/images/ITCRLogo.png\" height=\"25\"></img></a><br></br>
+                                                  <a href =\"https://www.fredhutch.org/en/about/about-the-hutch.html"style="color:#0000FF\" target=\"_blank\"<div title =\"About Fred Hutch\"></div><img src=\"resources/images/FH_DaSL.png\" height=\"45\"></img></a>'
              )
     ) %>% #Make the concepts bulletted instead of separated by semi-colons
     mutate(Concepts = paste0("• ", Concepts)) %>%
@@ -60,9 +60,9 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     mutate(Concepts = str_replace_all(Concepts, "-", " ")) %>% #replace the hyphens/dashes with a space; special cases/substitutions are taken care of before rendering within index.Rmd
     mutate(BroadAudience = str_replace_all(BroadAudience, ";", "<br></br>")) %>%
     #Replace the broad audiences with logos
-    mutate(BroadAudience = str_replace(BroadAudience, "Software Developers", "<img src=\"resources/images/SoftwareDeveloper.png\" alt=\"Software Developers\" height=\"40\"></img><p class=\"image-name\">Software Developers</p>")) %>%
-    mutate(BroadAudience = str_replace(BroadAudience, "Researchers", "<img src=\"resources/images/NewToDataScience.png\" alt =\"Researchers\" height=\"40\"></img><p class=\"image-name\">Researchers</p>")) %>%
-    mutate(BroadAudience = str_replace(BroadAudience, "Leaders", "<img src=\"resources/images/leader_avataaars.png\" alt=\"Leaders\" height=\"40\"></img><p class=\"image-name\">Leaders</p>")) %>%
+    mutate(BroadAudience = str_replace(BroadAudience, "Software Developers", "<img src=\"resources/images/SoftwareDeveloper.png\" alt=\"Software Developers\" height=\"35\"></img><p class=\"image-name\">Software Developers</p>")) %>%
+    mutate(BroadAudience = str_replace(BroadAudience, "Researchers", "<img src=\"resources/images/NewToDataScience.png\" alt =\"Researchers\" height=\"35\"></img><p class=\"image-name\">Researchers</p>")) %>%
+    mutate(BroadAudience = str_replace(BroadAudience, "Leaders", "<img src=\"resources/images/leader_avataaars.png\" alt=\"Leaders\" height=\"35\"></img><p class=\"image-name\">Leaders</p>")) %>%
     #Replace the categories with logos
     mutate(Category = str_replace(Category, "Software Development", "<img src=\"resources/images/keyboard-1405.png\" alt=\"Software Development\" height=\"20\"></img><p class=\"image-name\">Software Development</p>")) %>%
     mutate(Category = str_replace(Category, "Best Practices", "<img src=\"resources/images/golden-cup-7825.png\" alt=\"Best Practices\" height=\"20\"></img><p class=\"image-name\">Best Practices</p>")) %>%
@@ -80,6 +80,7 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Concepts)) %>%
       `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Concepts Discussed"))
   }
+  outputdf$`More Resources` <- "Filler"
   return(outputdf)
 }
 
@@ -98,14 +99,17 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
   output_table <- inputdf %>%
     DT::datatable(
       style = 'default',
-      width="100%",
+      width="960px",
       rownames = FALSE,
       escape = FALSE,
       caption = some_caption,
       filter = "top",
-      options = list(scrollX = TRUE, autoWidth = TRUE, pageLength = 15,
+      options = list(scrollX = TRUE,
+                     autoWidth = FALSE,
+                     pageLength = 15,
                      lengthMenu = list(c(5,10,15, -1), c('5', '10', '15', 'All')),
-                     scrollCollapse = TRUE, fillContainer = TRUE,
+                     scrollCollapse = TRUE,
+                     fillContainer = TRUE,
                      order = (list(0, 'asc')),
                      columnDefs = columnDefsListOfLists,
                      initComplete = JS(
