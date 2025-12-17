@@ -94,4 +94,4 @@ output_table
 <!-- | Concepts Discussed | 5        | Left      | 145px         | Not Specified |-->
 <!-- | More Resources     | 6        | Center    | 295px         | Not Specified |-->
 
-Font sizes are specified in the format-tables.R file (for Course Name column) and the styles.css file (for Broad Audience and Category columns)
+<!-- Font sizes are specified in the format-tables.R file (for Course Name column) and the styles.css file (for Broad Audience and Category columns) -->
