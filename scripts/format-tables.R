@@ -80,6 +80,7 @@ prep_table <- function(inputdf, current=TRUE, keep_category = FALSE){
     outputdf %<>% select(c(CourseName, Funding, BroadAudience, description, Concepts)) %>%
       `colnames<-`(c("Course Name", "Funding", "Broad Audience", "Description", "Concepts Discussed"))
   }
+  outputdf$`More Resources` <- "Filler"
   return(outputdf)
 }
 
