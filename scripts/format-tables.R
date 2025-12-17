@@ -99,7 +99,7 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
   output_table <- inputdf %>%
     DT::datatable(
       style = 'default',
-      width="100%",
+      width="960px",
       rownames = FALSE,
       escape = FALSE,
       caption = some_caption,
