@@ -249,9 +249,10 @@ The `query_collection.R` file does some removal of topic tags but
 generally does NOT clean the topic tags data. Topic tags that are
 removed include `data4all` and `reproducible-research` (dasl course
 categorization tags) as well as the tags that provide information on
-funding, audience, category, and launch date. Additionally, we remove
-the tag just “reproducibility” as this is redundant information
-(`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
+funding (`course$`), audience, category, and launch date. Additionally,
+we remove the tag just “reproducibility” as this is redundant
+information
+(`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course$|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
 
 Very minimal cleaning is done within the `prep_table()` function within
 the `format-tables.R` script. This minimal cleaning includes (1)

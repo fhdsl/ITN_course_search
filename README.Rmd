@@ -175,7 +175,7 @@ All courses with an `itn-course` or just `itn` tag are assumed to be ITN funded.
 
 ### Cleaning up topic tags for display in the table
 
-The `query_collection.R` file does some removal of topic tags but generally does NOT clean the topic tags data. Topic tags that are removed include `data4all` and `reproducible-research` (dasl course categorization tags) as well as the tags that provide information on funding, audience, category, and launch date. Additionally, we remove the tag just "reproducibility" as this is redundant information (`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
+The `query_collection.R` file does some removal of topic tags but generally does NOT clean the topic tags data. Topic tags that are removed include `data4all` and `reproducible-research` (dasl course categorization tags) as well as the tags that provide information on funding (`course$`), audience, category, and launch date. Additionally, we remove the tag just "reproducibility" as this is redundant information (`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course$|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
 
 Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the collection following querying) and (2) replacing hyphens with a space. Special cases or substitutions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk.
 
