@@ -283,6 +283,8 @@ Within that chunk …
 10. Latex –&gt; LaTeX (for the Overleaf and LaTeX course)
 11. And –&gt; & (space saving, used for the Choosing Genomics Tools
     course )
+12. Dms –&gt; DMS (for Data Management and Sharing for NIH Proposals
+    course)
 
 Add any additional specific changes to the topic tags for cleaning
 within that chunk going forward.

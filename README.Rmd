@@ -192,6 +192,7 @@ Within that chunk ...
 9. Arxiv --> ArXiv (for the Overleaf and LaTeX course)
 10. Latex --> LaTeX (for the Overleaf and LaTeX course)
 11. And --> & (space saving, used for the Choosing Genomics Tools course )
+12. Dms --> DMS (for Data Management and Sharing for NIH Proposals course)
 
 Add any additional specific changes to the topic tags for cleaning within that chunk going forward.
 
