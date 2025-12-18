@@ -56,7 +56,7 @@ Course title specification is **within the course material files**, usually the 
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_63#slide=id.g371dc0bfdb3_0_63")
 ```
 
-Note that the query procedure looks for an `index.Rmd` file first, and if it doesn't find one in the repository, it then assumes it could be a quarto course and looks for the `_quarto.yml` file next automatically. 
+Note that the query procedure looks for an `index.Rmd` file first, and if it doesn't find one in the repository, it then assumes it could be a quarto course and looks for the `_quarto.yml` file next automatically.
 
 ```{r, echo=FALSE, fig.alt = "A quarto course will have the title specified in the _quarto.yml file and replaces the title colon and space with nothing to extract the title.", fig.link = "https://github.com/fhdsl/Containers_for_Scientists/blob/main/_quarto.yml"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_69#slide=id.g371dc0bfdb3_0_69")
@@ -80,7 +80,7 @@ ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ru
 
 <details><summary>What the code is looking for exactly</summary>
 
-Because the `get_linkOI()` function is set up to find line(s) with the course format "pattern" (e.g., "Coursera" or "Leanpub"), then extract all URLs from those lines, and then subset to the relevant URL if needed (again using the "pattern"), these available course formats do not need to be in an ordered, bulleted, or enumerated list. They could all be mentioned in a notice box or paragraph. As long as the line with the link says "Coursera" or "Leanpub", this process will find and extract the relevant links. 
+Because the `get_linkOI()` function is set up to find line(s) with the course format "pattern" (e.g., "Coursera" or "Leanpub"), then extract all URLs from those lines, and then subset to the relevant URL if needed (again using the "pattern"), these available course formats do not need to be in an ordered, bulleted, or enumerated list. They could all be mentioned in a notice box or paragraph. As long as the line with the link says "Coursera" or "Leanpub", this process will find and extract the relevant links.
 
 ```{r echo=FALSE, fig.alt = "Available course formats do not need to be listed or enumerated in a bulleted or ordered list in order for the process to extract the information as seen with the NIH for Data Sharing course", fig.link = "https://github.com/fhdsl/NIH_Data_Sharing/blob/main/index.Rmd"}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g371dc0bfdb3_0_91#slide=id.g371dc0bfdb3_0_91")
@@ -92,7 +92,7 @@ ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ru
 
 Necessary background information and learning objectives are typically specified as images (Google Slides grabbed with `ottrpal::include_slide()` function) **within the course material files**, usually the `01-intro.Rmd` (or `01-intro.qmd` for quarto book) file. The code blocks where these are specified need to have specific identifiers.
 
-- [ ] Verify that the `01-intro.Rmd` (or `01-intro.qmd` file for quarto courses, [ex: Containers for Scientists](https://github.com/fhdsl/Containers_for_Scientists/blob/main/01-intro.qmd)) file has identifiers for code blocks grabbing relevant google slide images. 
+- [ ] Verify that the `01-intro.Rmd` (or `01-intro.qmd` file for quarto courses, [ex: Containers for Scientists](https://github.com/fhdsl/Containers_for_Scientists/blob/main/01-intro.qmd)) file has identifiers for code blocks grabbing relevant google slide images.
   - LOs: `learning_objectives`
   - Audience: `for_individuals_who`
   - Topics covered: `topics_covered`
@@ -103,7 +103,7 @@ Necessary background information and learning objectives are typically specified
 
 The code in the `get_slide_info()` function within the `query_collection.R` file looks for these code block identifiers exactly
 
-Note that the query procedure first checks the course name to make sure it's not part of a special set of courses that don't follow the usual convention/location for this information. If the course isn't in that list, the procedure checks for the `01-intro.Rmd` file first and if that file isn't found it assumes it could be a quarto course and looks for `01-intro.qmd` automatically next. 
+Note that the query procedure first checks the course name to make sure it's not part of a special set of courses that don't follow the usual convention/location for this information. If the course isn't in that list, the procedure checks for the `01-intro.Rmd` file first and if that file isn't found it assumes it could be a quarto course and looks for `01-intro.qmd` automatically next.
 
 </details>
 
@@ -130,7 +130,7 @@ If your course's introductory material isn't located within the expected `01-int
 
 </details>
 
-### Audience specification 
+### Audience specification
 
 Audience specification is **not within the course material files** but instead **is within the repository settings**
 
@@ -171,11 +171,13 @@ ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ru
 
 ### Funding
 
-All courses with an `itn-course` or just `itn` tag are assumed to be ITN funded. Add a `hutch-course` topic tag to the repo if it was Hutch funded and should include Hutch branding as well. 
+All courses with an `itn-course` or just `itn` tag are assumed to be ITN funded. Add a `hutch-course` topic tag to the repo if it was Hutch funded and should include Hutch branding as well.
 
 ### Cleaning up topic tags for display in the table
 
-The `query_collection.R` file does NOT clean the topic tags data. Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the collection following querying) and (2) replacing hyphens with a space. Special cases or substitutions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk. 
+The `query_collection.R` file does some removal of topic tags but generally does NOT clean the topic tags data. Topic tags that are removed include `data4all` and `reproducible-research` (dasl course categorization tags) as well as the tags that provide information on funding, audience, category, and launch date. Additionally, we remove the tag just "reproducibility" as this is redundant information (`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
+
+Very minimal cleaning is done within the `prep_table()` function within the `format-tables.R` script. This minimal cleaning includes (1) inserting a line break and a bullet point in place of every semicolon (which separates the topic tags in the collection following querying) and (2) replacing hyphens with a space. Special cases or substitutions of cleaning are handled within `index.Rmd` of this ITN_course_search repo, specifically in the `wrangle_data` code chunk.
 
 Within that chunk ...
 
@@ -190,14 +192,11 @@ Within that chunk ...
 9. Arxiv --> ArXiv (for the Overleaf and LaTeX course)
 10. Latex --> LaTeX (for the Overleaf and LaTeX course)
 11. And --> & (space saving, used for the Choosing Genomics Tools course )
-12. Iv --> IV (for the Containers for Scientists course which we called Reproducibility Series IV)
-13. Iii --> III (for the GitHub Automation for Scientists course which we called Reproducibility Series III)
-14. Ii --> II (for the Adv Reproducibility course which we called Reproducibility Series II)
 
 Add any additional specific changes to the topic tags for cleaning within that chunk going forward.
 
 
-### Adding icons 
+### Adding icons
 
 Audience (column is `BroadAudience`), course categories (column is `Category`), and funding (column is `Funding`) information adds icons to the data while building the tables. This is done within the `prep_table()` function of the `format-tables.R` file. If you are editing or adding a category to any of these, you will need to update those `mutate` steps there.  
 
