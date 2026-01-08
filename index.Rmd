@@ -55,6 +55,10 @@ wrangled <- full_repo_df %>%
         )
 ```
 
+```{r, eval=FALSE, echo=FALSE}
+gs4_auth(email = TRUE)
+```
+
 ```{r join_additional_modalities}
 modality_df <- read_sheet("https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing")
 
