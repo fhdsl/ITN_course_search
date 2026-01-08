@@ -55,8 +55,8 @@ wrangled <- full_repo_df %>%
         )
 ```
 
-```{r, eval=FALSE, echo=FALSE}
-gs4_auth(email = TRUE)
+```{r}
+gs4_deauth()
 ```
 
 ```{r join_additional_modalities}
