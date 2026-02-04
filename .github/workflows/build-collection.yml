@@ -1,0 +1,101 @@
+
+name: Build Collection
+
+on:
+  workflow_dispatch:
+    inputs:
+      render-type:
+        description: 'main or preview rendering'
+        required: true
+        type: string
+        default: 'main'
+    secrets:
+      gh_pat:
+        required: true
+  workflow_call:
+    inputs:
+      render-type:
+        required: true
+        type: string
+    secrets:
+      gh_pat:
+        required: true
+
+jobs:
+  build-repo-collection:
+    name: Gather Repositories
+    runs-on: ubuntu-latest
+    container:
+      image: jhudsl/base_ottr:main
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.gh_pat }}
+
+      - name: Configure git
+        run: |
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        shell: bash
+
+      - name: Merge if rendering preview
+        if: ${{ inputs.render-type == 'preview' }}
+        run: |
+          branch_name='preview-${{ github.event.pull_request.number }}'
+          git fetch --all
+          git checkout $branch_name
+          git merge -s recursive --strategy-option=theirs origin/${{ github.head_ref }} --allow-unrelated-histories
+        shell: bash
+
+      - name: Checkout if main
+        if: ${{ inputs.render-type == 'main' }}
+        run: |
+          git fetch --all
+          git checkout main
+        shell: bash
+
+      - name: Query API and make repo collection
+        id: anvil_repos
+        env:
+          GH_PAT: ${{ secrets.gh_pat }}
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
+
+          # Need a clean render of the collection every time
+          rm -f resources/collection.tsv
+          rm -f index.html
+
+          # Run repo check script
+          Rscript --vanilla "scripts/query_collection.R" --git_pat "$GH_PAT"
+
+      - name: Archive collection
+        uses: actions/upload-artifact@v4
+        with:
+          name: collection
+          path: resources/collection.tsv
+
+      # Commit the created files
+      - name: Commit .tsv file to main
+        if: ${{ inputs.render-type == 'main' }}
+        env:
+          GH_PAT: ${{ secrets.gh_pat }}
+        run: |
+          git add --force resources/collection.tsv
+          git commit -m 'Add API query files' || echo "No changes to commit"
+          git fetch
+          git merge -s recursive --strategy-option=ours origin/main --allow-unrelated-histories
+          git push -u origin main || echo "No changes to push"
+
+      - name: Commit .tsv file to preview
+        if: ${{ inputs.render-type == 'preview' }}
+        run: |
+          branch_name='preview-${{ github.event.pull_request.number }}'
+          git add --force resources/collection.tsv
+          git commit -m 'Add API query files' || echo "No changes to commit"
+          git fetch
+          git merge -s recursive --strategy-option=theirs origin/${{ github.head_ref }} --allow-unrelated-histories
+          git push --force origin $branch_name || echo "No changes to commit"
