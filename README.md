@@ -245,13 +245,21 @@ funded and should include Hutch branding as well.
 
 ### Cleaning up topic tags for display in the table
 
-The `query_collection.R` file does NOT clean the topic tags data. Very
-minimal cleaning is done within the `prep_table()` function within the
-`format-tables.R` script. This minimal cleaning includes (1) inserting a
-line break and a bullet point in place of every semicolon (which
-separates the topic tags in the collection following querying) and (2)
-replacing hyphens with a space. Special cases or substitutions of
-cleaning are handled within `index.Rmd` of this ITN\_course\_search
+The `query_collection.R` file does some removal of topic tags but
+generally does NOT clean the topic tags data. Topic tags that are
+removed include `data4all` and `reproducible-research` (dasl course
+categorization tags) as well as the tags that provide information on
+funding (`course$`), audience, category, and launch date. Additionally,
+we remove the tag just “reproducibility” as this is redundant
+information
+(`mutate(across(starts_with("topics_"), ~replace(., str_detect(., "audience-|category-|course$|launched-|data4all|reproducible-research|^reproducibility$"), NA))) %>%`).
+
+Very minimal cleaning is done within the `prep_table()` function within
+the `format-tables.R` script. This minimal cleaning includes (1)
+inserting a line break and a bullet point in place of every semicolon
+(which separates the topic tags in the collection following querying)
+and (2) replacing hyphens with a space. Special cases or substitutions
+of cleaning are handled within `index.Rmd` of this ITN\_course\_search
 repo, specifically in the `wrangle_data` code chunk.
 
 Within that chunk …
@@ -275,12 +283,8 @@ Within that chunk …
 10. Latex –&gt; LaTeX (for the Overleaf and LaTeX course)
 11. And –&gt; & (space saving, used for the Choosing Genomics Tools
     course )
-12. Iv –&gt; IV (for the Containers for Scientists course which we
-    called Reproducibility Series IV)
-13. Iii –&gt; III (for the GitHub Automation for Scientists course which
-    we called Reproducibility Series III)
-14. Ii –&gt; II (for the Adv Reproducibility course which we called
-    Reproducibility Series II)
+12. Dms –&gt; DMS (for Data Management and Sharing for NIH Proposals
+    course)
 
 Add any additional specific changes to the topic tags for cleaning
 within that chunk going forward.
