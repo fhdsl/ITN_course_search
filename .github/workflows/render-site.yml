@@ -1,17 +1,35 @@
 # Candace Savonen 2021
 # Updated April 2025
 
+# This workflow was adapted by Carrie Wright to enable automated rendering of the site associated with this repository
+# This code now incorporates adaptation by Ava Hoffman to build a collection on a schedule
+
+# +---------------- minute (0 - 59)
+# |  +------------- hour (0 - 23)
+# |  |  +---------- day of month (1 - 31)
+# |  |  |  +------- month (1 - 12)
+# |  |  |  |  +---- day of week (0 - 6) (Sunday=0 or 7)
+# |  |  |  |  |
+# *  *  *  *  *  command to be executed
+
 name: Render website
+
+# Controls when the action will run. Triggers the workflow on push
+# events only for the main branch
 
 on:
   workflow_dispatch:
+  schedule:
+  - cron: "0 3 * * 0"
   push:
-    branches: [ main, staging ]
+    branches: [ main ]
     paths:
-      - '*.qmd'
-      - '*.Rmd'
-      - assets/*
-      - quizzes/*
+      - '**.Rmd'
+      - styles.css
+      - _site.yml
+      - resources/images/*.png
+      - resources/images/favicon.ico
+      - resources/collection.tsv
 
 jobs:
 
@@ -31,9 +49,18 @@ jobs:
       toggle_website: "${{ env.RENDER_WEBSITE }}"
       rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
 
+  build-collection:
+    name: Build Collection
+    needs: yaml-check
+    uses: ./.github/workflows/build-collection.yml
+    with:
+      render-type: 'main'
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
+
   render-website:
     name: Render website
-    needs: yaml-check
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
 
     steps:

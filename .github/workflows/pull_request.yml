@@ -56,6 +56,16 @@ jobs:
       toggle_dictionary_sort: "${{ env.DICTIONARY_SORT }}"
       rendering_docker_image: "${{ env.RENDERING_DOCKER_IMAGE }}"
 
+  build-collection:
+    name: Build Collection
+    needs: yaml-check
+    uses: ./.github/workflows/build-collection.yml
+    with:
+      render-type: 'preview'
+    secrets:
+      gh_pat: ${{ secrets.GH_PAT }}
+
+
 ########################## Make the error reports ##############################
   ottr-reports:
     name: Run Reports
@@ -131,7 +141,7 @@ jobs:
 ############################# Render Preview ###################################
   render-preview:
     name: Render preview
-    needs: yaml-check
+    needs: [yaml-check, build-collection]
     runs-on: ubuntu-latest
     if: ${{needs.yaml-check.outputs.toggle_render_preview == 'true'}}
     permissions:
