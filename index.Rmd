@@ -58,7 +58,7 @@ gs4_deauth()
 ```
 
 ```{r join_additional_modalities}
-modality_df <- read_sheet("https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing")
+modality_df <- read_sheet("https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing", range = "A:C")
 
 wrangled <- add_modalities(wrangled, modality_df)
 
