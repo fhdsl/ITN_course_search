@@ -11,6 +11,7 @@ library(here)
 library(tidyverse)
 library(DT)
 library(rmarkdown)
+library(googlesheets4)
 ```
 
 ```{r import_fxns}
@@ -52,21 +53,84 @@ wrangled <- full_repo_df %>%
         )
 ```
 
-```{r prep_table}
-output_prep <- prep_table(wrangled, keep_category = TRUE) %>% mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
+```{r}
+gs4_deauth()
+```
+
+```{r join_additional_modalities}
+modality_df <- read_sheet("https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing", range = "A:C")
+
+wrangled <- add_modalities(wrangled, modality_df)
+
+```
+
+```{r prep_table_wcat, eval=FALSE}
+#this includes the category column
+output_prep <- prep_table(wrangled, keep_category = TRUE) %>%
+  mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
 
 # See scripts/format-tables.R to see the function setup_table() for formatting details of the tables
 
 output_table <- setup_table(output_prep, "Type in key words to find courses relevant for you. Click on filter arrows to sort.",
-                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4)),
+                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2,4, 6)), #Course Name, Funding, Audience, Category, More Resources
                                                          list(className = "dt-left", targets = c(3,5)), #Description and concepts
+                                                         list(width = '135px', targets = c(0)), #Course Name
                                                          list(width = '190px', targets = c(3)), #Description
-                                                         list(width = '80px', targets = c(1)), # Funding
-                                                         list(width = "80px", targets = c(2,4)), # Audience and Category
-                                                         list(width = "145px", targets = c(5)) # Concepts
+                                                         list(width = '65px', targets = c(1)), # Funding
+                                                         list(width = "65px", targets = c(2)), # Audience
+                                                         list(width = "65px", targets = c(4)), # Category
+                                                         list(width = "145px", targets = c(5)), # Concepts
+                                                         list(width = "295px", targets = c(6)) #More Resources
                                                         )
-                            ) #"Course Name", "Funding", "Broad Audience", "Description", "Category", "Concepts Discussed"
+                            )
 ```
+
+<!-- And these are the column justifications and sizes I've got set right now if you include category column -->
+
+<!-- | Column Name        | Location | Justified | Width         | Font size     |-->
+<!-- | :----------------: | :------: | :-------: | :-----------: | :------------:|-->
+<!-- | Course Name        | 0        | Center    | 135px         | 12pt          |-->
+<!-- | Funding            | 1        | Center    | 65px          | Not Specified |-->
+<!-- | Broad Audience     | 2        | Center    | 65px          | 10px          |-->
+<!-- | Description        | 3        | Left      | 190px         | Not Specified |-->
+<!-- | Category           | 4        | Center    | 65px          | 10px          |-->
+<!-- | Concepts Discussed | 5        | Left      | 145px         | Not Specified |-->
+<!-- | More Resources     | 6        | Center    | 295px         | Not Specified |-->
+
+<!-- Font sizes are specified in the format-tables.R file (for Course Name column) and the styles.css file (for Broad Audience and Category columns) -->
+
+```{r prep_table_wocat, eval=TRUE}
+#this excludes the category column
+output_prep <- prep_table(wrangled, keep_category = FALSE) %>%
+  mutate("Concepts Discussed" = str_replace_all(`Concepts Discussed`, "De Identification", "De-Identification"))
+
+# See scripts/format-tables.R to see the function setup_table() for formatting details of the tables
+
+output_table <- setup_table(output_prep, "Type in key words to find courses relevant for you. Click on filter arrows to sort.",
+                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2, 5)), #Course Name, Funding, Audience, Category, More Resources
+                                                         list(className = "dt-left", targets = c(3,4)), #Description and concepts
+                                                         list(width = '135px', targets = c(0)), #Course Name
+                                                         list(width = '200px', targets = c(3)), #Description
+                                                         list(width = '85px', targets = c(1)), # Funding
+                                                         list(width = "95px", targets = c(2)), # Audience
+                                                         list(width = "150px", targets = c(4)), # Concepts
+                                                         list(width = "295px", targets = c(5)) #More Resources
+                                                        )
+                            )
+```
+
+<!-- And these are the column justifications and sizes I've got set right now if you don't include the category column-->
+
+<!-- | Column Name        | Location | Justified | Width         | Font size     |-->
+<!-- | :----------------: | :------: | :-------: | :-----------: | :------------:|-->
+<!-- | Course Name        | 0        | Center    | 135px         | 12pt          |-->
+<!-- | Funding            | 1        | Center    | 85px          | Not Specified |-->
+<!-- | Broad Audience     | 2        | Center    | 95px          | 14px          |-->
+<!-- | Description        | 3        | Left      | 200px         | Not Specified |-->
+<!-- | Concepts Discussed | 4        | Left      | 150px         | Not Specified |-->
+<!-- | More Resources     | 5        | Center    | 295px         | Not Specified |-->
+
+<!-- Font sizes are specified in the format-tables.R file (for Course Name column) and the styles.css file (for Broad Audience and Category columns) -->
 
 ```{r display_table}
 output_table
@@ -77,13 +141,4 @@ output_table
 
 <!-- This is the URL that the ITCR logo goes to: https://itcr.cancer.gov -->
 
-<!-- And these are the column justifications and sizes I've got set right now -->
 
-<!-- | Column Name        | Location | Justified | Width         | -->
-<!-- | :----------------: | :------: | :-------: | :-----------: | -->
-<!-- | Course Name        | 0        | Center    | Not Specified | -->
-<!-- | Funding            | 1        | Center    | 80px          | -->
-<!-- | Broad Audience     | 2        | Center    | 80px          | -->
-<!-- | Description        | 3        | Left      | 190px         | -->
-<!-- | Category           | 4        | Center    | 80px          | -->
-<!-- | Concepts Discussed | 5        | Left      | 145px         | -->
