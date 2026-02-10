@@ -44,7 +44,7 @@ At the moment, to add a course to the table, either wait for the repo to fetch t
 
 Make sure the rest of the information for the table (e.g., title, access links/available course formats, etc.) is specified (where and how) the query procedure expects (explained below).
 
-```{r, echo=FALSE, fig.alt="Shows the Actions tab on GitHub, specifically the Build Collection workflow and how to manually trigger the action to run on the main branch. First within the GitHub repository for the search table, navigate to the actions tab along the top. Then navigate to the build collection workflow along the left sidebar. Then click on the Run workflow dropdown menu and click on the Run workflow green button without adjusting any defaults.}
+```{r, echo=FALSE, fig.alt="Shows the Actions tab on GitHub, specifically the Build Collection workflow and how to manually trigger the action to run on the main branch. First within the GitHub repository for the search table, navigate to the actions tab along the top. Then navigate to the build collection workflow along the left sidebar. Then click on the Run workflow dropdown menu and click on the Run workflow green button without adjusting any defaults."}
 ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw/edit?slide=id.g3bdbe577820_0_0#slide=id.g3bdbe577820_0_0")
 ```
 
@@ -53,7 +53,7 @@ ottrpal::include_slide("https://docs.google.com/presentation/d/15e_r5bth-eEp98ru
 Course title specification is **within the course material files**, usually the `index.Rmd` (or `_quarto.yml` for quarto book) file.
 
 - [ ] Verify that the title is in the `index.Rmd` (or `_quarto.yml` for quarto book) file.
-  - For Rmarkdown courses, need to follow the convention of being listed between `---` with `title:` at the front of the line
+  - For RMarkdown courses, need to follow the convention of being listed between `---` with `title:` at the front of the line
   - [Quarto books just replaces `title: ` to extract the title.](https://github.com/fhdsl/ITN_course_search/blob/e389cbd43d2923649e5422c17189d53a812bfb13/scripts/query_collection.R#L149)
 
 ```{r, echo=FALSE, fig.alt = "Rmarkdown courses specify the title in the index.Rmd file in the area between 3 dashes. The code looks for title with a colon at the beginning of the line to distinguish it from the subtitlet", fig.link = "https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles/blob/main/index.Rmd"}
@@ -206,27 +206,28 @@ Add any additional specific changes to the topic tags for cleaning within that c
 
 This is the only part of the table that is manually curated with information outside of GitHub that we can query or extract. The modalities data is added to the rest of the queried collection in the `join_additional_modalities` chunk of `index.Rmd`.
 
-- [ ] Add any additional modalities that are relevant to the course material in the [relevant Google sheet](https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing) following the standard/expected order of information below. Note that courses can have multiple additional resources 
+- [ ] Add any additional modalities that are relevant to the course material in the [relevant Google sheet](https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing) following the standard/expected order of information below for the first three columns. Note that courses can have multiple additional resources. And if an additional resource is relevant for two or more courses, it will need to be listed separately (as a different row) for each of those courses. 
   * Course/GitHub Repo name for the course in the first column
   * the description of the modality (this is what will be displayed under the icon) in the second column
   * a link to the resource in the third column
 
 Supported modalities currently include 
 
-* Videos (link contains "youtu.be")
-* Podcasts (link contains "buzzsprout")
-* Cheatsheets (link contains "cheatsheets")
+* Videos (link contains `"youtu.be"`)
+* Podcasts (link contains `"buzzsprout"`)
+* Cheatsheets (link contains `"cheatsheets"`)
 
 Additional modalities that will be supported are soon to include
 
-* Soundbite (link contains "sciencecast")
-* Publication (link contains "doi|articles")
-* Workshop Materials (link contains "hutchdatascience|docs.google")
-* Computing Resources (table) (link contains "computing_resources")
-* Data Resources (table) (link contains "dataResource")
+* Soundbite (link contains `"sciencecast"`)
+* Publication (link contains `"doi|articles"`)
+* Workshop Materials (link contains `"hutchdatascience|docs.google"`)
+* Data Resources (table) (link contains `"dataResource"`) (this one has to be listed/looked for first in the `case_when()` because both the data resources and the computing resources have `"computing_resources"` in the URL)
+* Computing Resources (table) (link contains `"computing_resources"`)
 
 
-Note, each modality link will have both an icon and a type associated with it. This renders to be an icon that links out to the specific resource with the displayed name/description from the second column and the modality type specified at the end of that description. Look at how `modality_constructed_link` is built within the second mutate statement in the `add_modalities()` function within the `prep_table()`
+
+Note, each modality link will have both an icon and a type associated with it. This renders to be an icon that links out to the specific resource with the displayed name/description from the second column and the modality type specified at the end of that description. Look at how `modality_constructed_link` is built within the second mutate statement in the `add_modalities()` function within the `format-tables.R` file.
 
 ### Adding icons
 

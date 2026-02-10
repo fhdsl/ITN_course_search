@@ -107,7 +107,7 @@ output_prep <- prep_table(wrangled, keep_category = FALSE) %>%
 # See scripts/format-tables.R to see the function setup_table() for formatting details of the tables
 
 output_table <- setup_table(output_prep, "Type in key words to find courses relevant for you. Click on filter arrows to sort.",
-                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2, 5)), #Course Name, Funding, Audience, Category, More Resources
+                            columnDefsListOfLists = list(list(className = 'dt-center', targets = c(0,1,2, 5)), #Course Name, Funding, Audience, More Resources
                                                          list(className = "dt-left", targets = c(3,4)), #Description and concepts
                                                          list(width = '135px', targets = c(0)), #Course Name
                                                          list(width = '200px', targets = c(3)), #Description
@@ -140,5 +140,3 @@ output_table
 <!-- This is the URL that the Hutch logo goes to: https://www.fredhutch.org/en/about/about-the-hutch.html -->
 
 <!-- This is the URL that the ITCR logo goes to: https://itcr.cancer.gov -->
-
-

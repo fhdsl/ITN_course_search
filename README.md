@@ -4,11 +4,11 @@
 
 A auto-generating searchable table for ITN courses. The collection of
 information about the courses is programmatically queried from GitHub
-and processed..
+and processed, all except for additional modalities.
 
 ## About
 
-ITN\_course\_search uses the Github API to gather jhudsl and fhdsl
+ITN\_course\_search uses the Github API to gather `jhudsl` and `fhdsl`
 organization repositories, specifically ITN courses, that we have worked
 on. It renders the table in a markdown-readable format. This repo has
 workflows that trigger collection building and table rendering once a
@@ -36,9 +36,11 @@ The table only includes repositories that meet the following
 ## Interested in adding a course to the table?
 
 At the moment, to add a course to the table, either wait for the repo to
-fetch the collection data, or open a PR with a trivial change. A later
-PR will add a way to manually trigger the workflow but this is not
-available yet.
+fetch the collection data, or open a PR with a trivial change.
+Alternatively, you can manually trigger the Build Collection Action
+within the “Actions” tab on GitHub. This will update the collection
+which will then automatically trigger rendering of the table and
+deployment with GitHub pages.
 
 - ☐ Make sure the above required criteria (1-7) are met (jhudsl/fhdsl
   organization, public, homepage, description, itn-course tag, isn’t a
@@ -48,6 +50,8 @@ Make sure the rest of the information for the table (e.g., title, access
 links/available course formats, etc.) is specified (where and how) the
 query procedure expects (explained below).
 
+<img src="man/figures/README-/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw_g3bdbe577820_0_0.png" alt="Shows the Actions tab on GitHub, specifically the Build Collection workflow and how to manually trigger the action to run on the main branch. First within the GitHub repository for the search table, navigate to the actions tab along the top. Then navigate to the build collection workflow along the left sidebar. Then click on the Run workflow dropdown menu and click on the Run workflow green button without adjusting any defaults." width="100%" />
+
 ### Course title specification
 
 Course title specification is **within the course material files**,
@@ -55,7 +59,7 @@ usually the `index.Rmd` (or `_quarto.yml` for quarto book) file.
 
 - ☐ Verify that the title is in the `index.Rmd` (or `_quarto.yml` for
   quarto book) file.
-  - For Rmarkdown courses, need to follow the convention of being listed
+  - For RMarkdown courses, need to follow the convention of being listed
     between `---` with `title:` at the front of the line
   - [Quarto books just replaces `title:` to extract the
     title.](https://github.com/fhdsl/ITN_course_search/blob/e389cbd43d2923649e5422c17189d53a812bfb13/scripts/query_collection.R#L149)
@@ -210,6 +214,8 @@ exactly.](https://github.com/fhdsl/ITN_course_search/blob/e389cbd43d2923649e5422
 
 ### Category specification
 
+(Note that the table does not currently display categories)
+
 Category specification is **not within the course material files** but
 instead **is within the repository settings**.
 
@@ -266,28 +272,72 @@ Within that chunk …
 
 1.  Use title case on the concepts with the `str_to_title()` function
     because the repo topic tags are all lower case.
-2.  Ai –&gt; AI (for the AI for Efficient Programming and AI for
+2.  `Ai` –&gt; AI (for the AI for Efficient Programming and AI for
     Decision Makers courses)
-3.  Ci-Cd –&gt; Continuous Integration/Continuous Deployment (for the
+3.  `Ci-Cd` –&gt; Continuous Integration/Continuous Deployment (for the
     Containers for Scientists Course)
-4.  Nih –&gt; NIH (for the Data Management and Sharing for NIH Proposals
+4.  `Nih` –&gt; NIH (for the Data Management and Sharing for NIH
+    Proposals course)
+5.  `Hipaa` –&gt; HIPAA (for the Ethical Data Handling for Cancer
+    Research course)
+6.  `Llm` –&gt; LLM (for the AI for Efficient Programming course)
+7.  `Phi` –&gt; (PHI) (for the Ethical Data Handling for Cancer Research
     course)
-5.  Hipaa –&gt; HIPAA (for the Ethical Data Handling for Cancer Research
+8.  `Pii` –&gt; (PII) (for the Ethical Data Handling for Cancer Research
     course)
-6.  Llm –&gt; LLM (for the AI for Efficient Programming course)
-7.  Phi –&gt; (PHI) (for the Ethical Data Handling for Cancer Research
-    course)
-8.  Pii –&gt; (PII) (for the Ethical Data Handling for Cancer Research
-    course)
-9.  Arxiv –&gt; ArXiv (for the Overleaf and LaTeX course)
-10. Latex –&gt; LaTeX (for the Overleaf and LaTeX course)
-11. And –&gt; & (space saving, used for the Choosing Genomics Tools
+9.  `Arxiv` –&gt; ArXiv (for the Overleaf and LaTeX course)
+10. `Latex` –&gt; LaTeX (for the Overleaf and LaTeX course)
+11. `And` –&gt; & (space saving, used for the Choosing Genomics Tools
     course )
-12. Dms –&gt; DMS (for Data Management and Sharing for NIH Proposals
+12. `Dms` –&gt; DMS (for Data Management and Sharing for NIH Proposals
     course)
 
 Add any additional specific changes to the topic tags for cleaning
 within that chunk going forward.
+
+### Additional Modalities for material
+
+This is the only part of the table that is manually curated with
+information outside of GitHub that we can query or extract. The
+modalities data is added to the rest of the queried collection in the
+`join_additional_modalities` chunk of `index.Rmd`.
+
+- ☐ Add any additional modalities that are relevant to the course
+  material in the [relevant Google
+  sheet](https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing)
+  following the standard/expected order of information below for the
+  first three columns. Note that courses can have multiple additional
+  resources. And if an additional resource is relevant for two or more
+  courses, it will need to be listed separately (as a different row) for
+  each of those courses.
+  - Course/GitHub Repo name for the course in the first column
+  - the description of the modality (this is what will be displayed
+    under the icon) in the second column
+  - a link to the resource in the third column
+
+Supported modalities currently include
+
+- Videos (link contains `"youtu.be"`)
+- Podcasts (link contains `"buzzsprout"`)
+- Cheatsheets (link contains `"cheatsheets"`)
+
+Additional modalities that will be supported are soon to include
+
+- Soundbite (link contains `"sciencecast"`)
+- Publication (link contains `"doi|articles"`)
+- Workshop Materials (link contains `"hutchdatascience|docs.google"`)
+- Data Resources (table) (link contains `"dataResource"`) (this one has
+  to be listed/looked for first in the `case_when()` because both the
+  data resources and the computing resources have
+  `"computing_resources"` in the URL)
+- Computing Resources (table) (link contains `"computing_resources"`)
+
+Note, each modality link will have both an icon and a type associated
+with it. This renders to be an icon that links out to the specific
+resource with the displayed name/description from the second column and
+the modality type specified at the end of that description. Look at how
+`modality_constructed_link` is built within the second mutate statement
+in the `add_modalities()` function within the `format-tables.R` file.
 
 ### Adding icons
 
@@ -297,6 +347,15 @@ the data while building the tables. This is done within the
 `prep_table()` function of the `format-tables.R` file. If you are
 editing or adding a category to any of these, you will need to update
 those `mutate` steps there.
+
+The additional modalities (or “More Resources” in the final table) also
+adds icons while building the table. However, this is done within the
+`add_modalities()` function of the `format-tables.R` file. If you are
+editing or adding a category to the modalities, you will need to update
+those `mutate` steps there. First set of `case_when()` statements relate
+to the icon that will be used for that type of modality, and the second
+set relate to the one or two words modality type description that will
+be used in labeling that icon.
 
 ## Important files
 

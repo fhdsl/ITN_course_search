@@ -1,9 +1,12 @@
+ArXiv
 BOOKDOWN
 cheatsheet
 Coursera
 css
 custimization
 cwrigh
+dasl
+DMS
 Dockerfile
 Dockerhub
 favicon
@@ -11,6 +14,7 @@ fhdsl
 GH
 Github
 GitHub
+HIPAA
 HTTPS
 ITCR
 ITN
@@ -19,11 +23,17 @@ jhudsl
 Leanpub
 lightblue
 lightgreen
+LLM
 LOs
 OTTR
+PII
+pre
 Pre
+PREREQ
 programmatically
 px
+reproducibility
+reqs
 Rmd
 subdir
 tabset
@@ -33,4 +43,5 @@ automations
 Bootstap
 glyphicons
 repo
+RMarkdown
 RStudio
