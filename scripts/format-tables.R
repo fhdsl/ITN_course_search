@@ -18,8 +18,8 @@ add_modalities <- function(collection_df, modalitity_df){
                                      str_detect(modality_link, "cheatsheets") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-to-do-list-13178.png' width='15%'/>",
                                      str_detect(modality_link, "doi|articles") ~ "<img src='https://www.iconpacks.net/icons/1/free-icon-document-663.png' width='15%'/>",
                                      str_detect(modality_link, "sciencecast") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-sound-on-14606.png' width='15%' />",
-                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://img.icons8.com/?size=100&id=buLmwdZ06hkX&format=png&color=000000' width='15%' />",
-                                     str_detect(modality_link, "dataResource") ~ "<img src='https://www.iconpacks.net/icons/free-icons-6/free-black-database-server-icon-20338.png'", #has to be before computing_resources because both computing and data resources contain "computing_resources" phrase
+                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://www.iconpacks.net/icons/1/free-icon-hand-cursor-1285.png' width='15%' />",
+                                     str_detect(modality_link, "dataResource") ~ "<img src='https://www.iconpacks.net/icons/free-icons-6/free-black-database-server-icon-20338.png' width='15%' />", #has to be before computing_resources because both computing and data resources contain "computing_resources" phrase
                                      str_detect(modality_link, "computing_resources") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-server-12262.png' width='15%' />"
                                      ),
            modality_type = case_when(str_detect(modality_link, "youtu.be") ~ "Video",

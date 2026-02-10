@@ -204,6 +204,8 @@ Add any additional specific changes to the topic tags for cleaning within that c
 
 ### Additional Modalities for material
 
+This is the only part of the table that is manually curated with information outside of GitHub that we can query or extract. The modalities data is added to the rest of the queried collection in the `join_additional_modalities` chunk of `index.Rmd`.
+
 - [ ] Add any additional modalities that are relevant to the course material in the [relevant Google sheet](https://docs.google.com/spreadsheets/d/1Dol8d16WF4see4JjGwt-ODj7QzRAuDeYixufNpxtWlM/edit?usp=sharing) following the standard/expected order of information below. Note that courses can have multiple additional resources 
   * Course/GitHub Repo name for the course in the first column
   * the description of the modality (this is what will be displayed under the icon) in the second column
@@ -224,11 +226,13 @@ Additional modalities that will be supported are soon to include
 * Data Resources (table) (link contains "dataResource")
 
 
+Note, each modality link will have both an icon and a type associated with it. This renders to be an icon that links out to the specific resource with the displayed name/description from the second column and the modality type specified at the end of that description. Look at how `modality_constructed_link` is built within the second mutate statement in the `add_modalities()` function within the `prep_table()`
+
 ### Adding icons
 
 Audience (column is `BroadAudience`), course categories (column is `Category`), and funding (column is `Funding`) information adds icons to the data while building the tables. This is done within the `prep_table()` function of the `format-tables.R` file. If you are editing or adding a category to any of these, you will need to update those `mutate` steps there.  
 
-The additional modalities (or "More Resources" in the final table) also adds icons while building the table. However, this is done within the `add_modalities()` function of the `format-tables.R` file. If you are editing or adding a category to the modalities, you will need to update those `mutate` steps there. 
+The additional modalities (or "More Resources" in the final table) also adds icons while building the table. However, this is done within the `add_modalities()` function of the `format-tables.R` file. If you are editing or adding a category to the modalities, you will need to update those `mutate` steps there. First set of `case_when()` statements relate to the icon that will be used for that type of modality, and the second set relate to the one or two words modality type description that will be used in labeling that icon.
 
 ## Important files
 
