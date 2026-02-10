@@ -7,7 +7,7 @@ library(here)
 
 #' Join the additional resources or modality information to the course collection data frame and construct icon links
 #'
-#' This function takes the course collection data frame from the query action while it still has github repo names (these will be what are used to join the two data frames) before `prep_table()` has been run
+#' @description This function takes the course collection data frame from the query action while it still has github repo names (these will be what are used to join the two data frames) before `prep_table()` has been run
 #' and also takes the dataframe read from the googlesheet of the resources, and joins the information together.
 #' The links for the additional resources are assessed to assign icons to the resources (e.g., videos get a certain icon, publications another, etc.) and a modality type label based on the contents of the link
 #' Then an icon with a link and displayed description are constructed for each resource. Note that the displayed description includes information `modality_description` from the googlesheet in front of the assigned modality type from the step before
