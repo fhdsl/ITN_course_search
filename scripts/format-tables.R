@@ -18,7 +18,7 @@ add_modalities <- function(collection_df, modalitity_df){
                                      str_detect(modality_link, "cheatsheets") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-to-do-list-13178.png' width='15%'/>",
                                      str_detect(modality_link, "doi|articles") ~ "<img src='https://www.iconpacks.net/icons/1/free-icon-document-663.png' width='15%'/>",
                                      str_detect(modality_link, "sciencecast") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-sound-on-14606.png' width='15%' />",
-                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://img.icons8.com/?size=100&id=24466&format=png&color=000000' width='15%' />"
+                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://img.icons8.com/?size=100&id=13373&format=png&color=000000' />"
                                      ),
            modality_type = case_when(str_detect(modality_link, "youtu.be") ~ "Video",
                                      str_detect(modality_link, "buzzsprout") ~ "Podcast",
