@@ -5,8 +5,22 @@ library(tidyverse)
 library(DT)
 library(here)
 
+#' Join the additional resources or modality information to the course collection data frame and construct icon links
 #'
+#' This function takes the course collection data frame from the query action while it still has github repo names (these will be what are used to join the two data frames) before `prep_table()` has been run
+#' and also takes the dataframe read from the googlesheet of the resources, and joins the information together.
+#' The links for the additional resources are assessed to assign icons to the resources (e.g., videos get a certain icon, publications another, etc.) and a modality type label based on the contents of the link
+#' Then an icon with a link and displayed description are constructed for each resource. Note that the displayed description includes information `modality_description` from the googlesheet in front of the assigned modality type from the step before
+#' The resources are arranged so that they'll appear in the same order if they are relevant for multiple courses
+#' Then we drop the info we no longer need (modality_link, modality_icon, and modality_type) because they are all represented in modality_constructed_link
+#' We use pivot_wider to make new columns for each course that has additional modalities. THe number of columns with information will depend upon the number of resources for that course
+#' New columns have a standardized name prefix `course_spec_mod_` so we can use that later, the modality_description is appended to the end of the column name, and the constructed link is the stored value
+#' We remove all columns that have a suffix of NA because they don't have info we need
+#' Then we unite the columns for each course separating resource icon/links with a newline character and removing any NAs.
 #'
+#' @param collection_df dataframe with at least the name column where that uses the GitHub repo name of the course (minus org)
+#' @param modality_df dataframe with 3 columns (Course, modality_link, and modality_description) where one of them (Course) uses the GitHub repo name of the course (minus org)
+#' @return joined_df dataframe with all columns from collection_df as well as the `MoreResources` column that now contains linked icons separated by line breaks as applicable for each course
 
 add_modalities <- function(collection_df, modalitity_df){
 
@@ -41,17 +55,6 @@ add_modalities <- function(collection_df, modalitity_df){
     select(-course_spec_mod_NA) %>%
     unite(starts_with("course_spec_mod"), col = "MoreResources", na.rm = TRUE, remove = TRUE, sep = " <br/> ")
 
-  #make the links with the icons
-  # look at the URL `Modality_Link` for "youtu.be", "buzzsprout", "cheatsheets" to pick the icon and put it first
-  #make a column that is the icon
-
-
-  #pivot wider so they're all lined up with the single course mentioned once (handling the unique problem)
-
-  #make a single column/pasting them together in a single column for more resources and get rid of the original columns
-
-  #build `More Resources` column based off of the number of rows with that course in joined_df
-  #ensure outputdf course names are unique
 return(joined_df)
 }
 
