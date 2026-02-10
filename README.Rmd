@@ -182,17 +182,17 @@ Very minimal cleaning is done within the `prep_table()` function within the `for
 Within that chunk ...
 
 1. Use title case on the concepts with the `str_to_title()` function because the repo topic tags are all lower case.
-2. Ai --> AI (for the AI for Efficient Programming and AI for Decision Makers courses)
-3. Ci-Cd --> Continuous Integration/Continuous Deployment (for the Containers for Scientists Course)
-4. Nih --> NIH (for the Data Management and Sharing for NIH Proposals course)
-5. Hipaa --> HIPAA (for the Ethical Data Handling for Cancer Research course)
-6. Llm --> LLM (for the AI for Efficient Programming course)
-7. Phi --> (PHI) (for the Ethical Data Handling for Cancer Research course)
-8. Pii --> (PII) (for the Ethical Data Handling for Cancer Research course)
-9. Arxiv --> ArXiv (for the Overleaf and LaTeX course)
-10. Latex --> LaTeX (for the Overleaf and LaTeX course)
-11. And --> & (space saving, used for the Choosing Genomics Tools course )
-12. Dms --> DMS (for Data Management and Sharing for NIH Proposals course)
+2. `Ai` --> AI (for the AI for Efficient Programming and AI for Decision Makers courses)
+3. `Ci-Cd` --> Continuous Integration/Continuous Deployment (for the Containers for Scientists Course)
+4. `Nih` --> NIH (for the Data Management and Sharing for NIH Proposals course)
+5. `Hipaa` --> HIPAA (for the Ethical Data Handling for Cancer Research course)
+6. `Llm` --> LLM (for the AI for Efficient Programming course)
+7. `Phi` --> (PHI) (for the Ethical Data Handling for Cancer Research course)
+8. `Pii` --> (PII) (for the Ethical Data Handling for Cancer Research course)
+9. `Arxiv` --> ArXiv (for the Overleaf and LaTeX course)
+10. `Latex` --> LaTeX (for the Overleaf and LaTeX course)
+11. `And` --> & (space saving, used for the Choosing Genomics Tools course )
+12. `Dms` --> DMS (for Data Management and Sharing for NIH Proposals course)
 
 Add any additional specific changes to the topic tags for cleaning within that chunk going forward.
 
