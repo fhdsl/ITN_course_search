@@ -18,14 +18,17 @@ add_modalities <- function(collection_df, modalitity_df){
                                      str_detect(modality_link, "cheatsheets") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-to-do-list-13178.png' width='15%'/>",
                                      str_detect(modality_link, "doi|articles") ~ "<img src='https://www.iconpacks.net/icons/1/free-icon-document-663.png' width='15%'/>",
                                      str_detect(modality_link, "sciencecast") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-sound-on-14606.png' width='15%' />",
-                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://img.icons8.com/?size=100&id=13373&format=png&color=000000' />"
+                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "<img src='https://img.icons8.com/?size=100&id=buLmwdZ06hkX&format=png&color=000000' width='15%' />",
+                                     str_detect(modality_link, "computing_resources") ~ "<img src='https://www.iconpacks.net/icons/4/free-icon-server-12262.png' width='15%' />",
+                                     str_detect(modality_link, "dataResource") ~ "<img src='https://www.iconpacks.net/icons/free-icons-6/free-black-database-server-icon-20338.png'"
                                      ),
            modality_type = case_when(str_detect(modality_link, "youtu.be") ~ "Video",
                                      str_detect(modality_link, "buzzsprout") ~ "Podcast",
                                      str_detect(modality_link, "cheatsheets") ~ "Cheatsheet",
                                      str_detect(modality_link, "doi|articles") ~ "Publication",
                                      str_detect(modality_link, "sciencecast") ~ "Soundbite",
-                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "Workshop material"
+                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "Workshop material",
+                                     str_detect(modality_link, "computing_resources") ~ "Table"
 
            )
           ) %>%
