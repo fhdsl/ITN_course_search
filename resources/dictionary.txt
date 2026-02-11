@@ -25,6 +25,7 @@ lightblue
 lightgreen
 LLM
 LOs
+navbar
 OTTR
 PII
 pre
