@@ -52,7 +52,7 @@ add_modalities <- function(collection_df, modalitity_df){
     pivot_wider(names_prefix = 'course_spec_mod_',
                 names_from = modality_description,
                 values_from = modality_constructed_link) %>%
-    select(!contains("_NA")) %>%
+    select(!ends_with("_NA")) %>%
     unite(starts_with("course_spec_mod"), col = "MoreResources", na.rm = TRUE, remove = TRUE, sep = " <br/> ")
 
 return(joined_df)
