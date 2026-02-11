@@ -15,7 +15,7 @@ library(here)
 #' Then we drop the info we no longer need (modality_link, modality_icon, and modality_type) because they are all represented in modality_constructed_link
 #' We use pivot_wider to make new columns for each course that has additional modalities. THe number of columns with information will depend upon the number of resources for that course
 #' New columns have a standardized name prefix `course_spec_mod_` so we can use that later, the modality_description is appended to the end of the column name, and the constructed link is the stored value
-#' We remove all columns that have a suffix of NA because they don't have info we need
+#' We remove all columns that have a suffix of NA because they don't have info we need (and will only be there if a course doesn't have relevant additional resources)
 #' Then we unite the columns for each course separating resource icon/links with a newline character and removing any NAs.
 #'
 #' @param collection_df dataframe with at least the name column where that uses the GitHub repo name of the course (minus org)
@@ -52,7 +52,7 @@ add_modalities <- function(collection_df, modalitity_df){
     pivot_wider(names_prefix = 'course_spec_mod_',
                 names_from = modality_description,
                 values_from = modality_constructed_link) %>%
-    select(-any_of(course_spec_mod_NA)) %>%
+    select(!contains("_NA")) %>%
     unite(starts_with("course_spec_mod"), col = "MoreResources", na.rm = TRUE, remove = TRUE, sep = " <br/> ")
 
 return(joined_df)
