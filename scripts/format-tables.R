@@ -41,7 +41,7 @@ add_modalities <- function(collection_df, modalitity_df){
                                      str_detect(modality_link, "cheatsheets") ~ "Cheatsheet",
                                      str_detect(modality_link, "doi|articles") ~ "Publication",
                                      str_detect(modality_link, "sciencecast") ~ "Soundbite",
-                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "Workshop material",
+                                     str_detect(modality_link, "hutchdatascience|docs.google") ~ "Workshop Material",
                                      str_detect(modality_link, "computing_resources") ~ "Table"
 
            )
