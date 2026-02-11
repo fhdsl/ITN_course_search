@@ -33,6 +33,10 @@ The table only includes repositories that meet the following
 
 <a href="https://github.com/fhdsl/Overleaf_and_LaTeX_for_Scientific_Articles" target="_blank"><img src="man/figures/README-/15e_r5bth-eEp98ruq7c0nNpOU6f0D00003gT8vcrCtw_p.png" alt="Shows the seven required criteria for including a course in the search table using the Overleaf course GitHub page as an example" width="100%" /></a>
 
+**Previewing changes in a PR?** You’ll have to use the comprehensive
+download. The quick preview isn’t enabled since we removed the navbar
+from `_site.yml`
+
 ## Interested in adding a course to the table?
 
 At the moment, to add a course to the table, either wait for the repo to
