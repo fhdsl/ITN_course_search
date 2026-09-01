@@ -156,7 +156,7 @@ setup_table <- function(inputdf, some_caption, columnDefsListOfLists=NULL){
       filter = "top",
       options = list(scrollX = TRUE,
                      autoWidth = FALSE,
-                     pageLength = 15,
+                     pageLength = 17,
                      lengthMenu = list(c(5,10,15, -1), c('5', '10', '15', 'All')),
                      scrollCollapse = TRUE,
                      fillContainer = TRUE,
